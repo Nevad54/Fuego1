@@ -277,7 +277,7 @@
         
         
                 function fetchDataAndAddMarkers(endpoint, customIcon) {
-            fetch(`http://52.41.36.82:5000/${endpoint}`)
+            fetch(`https://fdas-drz5.onrender.com/${endpoint}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -352,7 +352,7 @@
         }
         
         function sendDataToServer(endpoint, data, callback) {
-            fetch(`http://52.41.36.82:5000/${endpoint}`, {
+            fetch(`https://fdas-drz5.onrender.com/${endpoint}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
