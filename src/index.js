@@ -8,7 +8,7 @@ const session = require("express-session");
 const authMiddleware = require("./authMiddleware");
 const { body, validationResult } = require('express-validator');
 const { MongoClient, Admin } = require('mongodb');
-const http = require('https');
+const http = require('http');
 const mqtt = require('mqtt');
 const fs = require('fs');
 const cors = require("cors");
@@ -17,7 +17,7 @@ const { Admin1, User, FDAS } = require("./config");
 
 const app = express();
 app.use(express.json());
-app.use(express.static("public"));
+app.use(express.static("public"));s
 app.use(express.urlencoded({ extended: false }));
 app.set("view engine", "ejs");
 // Example assuming CSS files are in the 'public' directory
@@ -60,7 +60,7 @@ const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Types; 
 // Start HTTP server
 httpServer.listen(port, WebURL, () => {
-  console.log(`Server listening at https://${WebURL}:${port}.`);
+  console.log(`Server listening at http://${WebURL}:${port}.`);
 })
   .on('error', (err) => {
       console.error(`Error starting HTTP server: ${err.message}`);
