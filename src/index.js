@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 app.set("view engine", "ejs");
 // Example assuming CSS files are in the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/uploads', express.static('https://github.com/Nevad54/Fuego1/tree/main/uploads'));
+app.use('/uploads', express.static('D:/GitHub/Fuego1/uploads'));
 
 const mqttOptions = {
   host: process.env.MQTT_HOST,
