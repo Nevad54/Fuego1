@@ -8,7 +8,7 @@ const session = require("express-session");
 const authMiddleware = require("./authMiddleware");
 const { body, validationResult } = require('express-validator');
 const { MongoClient, Admin } = require('mongodb');
-const http = require('http');
+const http = require('https');
 const mqtt = require('mqtt');
 const fs = require('fs');
 const cors = require("cors");
@@ -53,14 +53,14 @@ const io = require('socket.io')(httpServer, {
     origin: '*',
   },
 });
-const WebURL = 'https://fdas-drz5.onrender.com';
+const WebURL = 'fdas-drz5.onrender.com';
 
 const mongoHost = 'mongodb+srv://systembfp8:iwantaccess@bfp.ezea3nm.mongodb.net/?retryWrites=true&w=majority/accounts';
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Types; 
 // Start HTTP server
 httpServer.listen(port, WebURL, () => {
-  console.log(`Server listening at http://${WebURL}:${port}.`);
+  console.log(`Server listening at https://${WebURL}:${port}.`);
 })
   .on('error', (err) => {
       console.error(`Error starting HTTP server: ${err.message}`);
