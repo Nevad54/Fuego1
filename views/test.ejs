@@ -1,0 +1,53 @@
+<!-- Display users -->
+<h2>Users:</h2>
+<form action="/search" method="post">
+  <label for="searchInput">Search FDAS:</label>
+  <input type="text" id="searchInput" name="searchInput" required>
+  <button type="submit">Search</button>
+</form>
+<ul>
+  <% users.forEach(user => { %>
+    <li>
+      <strong>Username:</strong> <%= user.username %>, <br>
+      <strong>Email:</strong> <%= user.email %>, <br>
+      <strong>FDAS ID:</strong> <%= user.FDASID %> <!-- Adjust this based on your actual field names -->
+      <form action="/connectFDAS/<%= user._id %>" method="get">
+        <label for="connectFDASInput">Connect FDAS:</label>
+        <select id="connectFDASInput" name="connectFDASInput" required>
+          <option value="" selected disabled>Select FDAS</option>
+          <% fdas.forEach(fdas => { %>
+            <option value="<%= fdas._id %>"><%= fdas.title %></option>
+          <% }); %>
+        </select>
+        <button type="submit">Connect</button>
+      </form>
+    </li>
+  <% }); %>
+</ul>
+
+<!-- Display FDAS -->
+<h2>FDAS:</h2>
+<ul>
+  <% fdas.forEach(fdas => { %>
+    <li>
+      <strong>Title:</strong> <%= fdas.title %>,<br>
+      <strong>Longitude:</strong> <%= fdas.longitude %>,<br>
+      <strong>Latitude:</strong> <%= fdas.latitude %>
+      <!-- Adjust this based on your actual field names -->
+    </li>
+  <% }); %>
+</ul>
+
+<!-- Display the form to connect FDAS to the user -->
+
+<form action="/connectFDASPost" method="post">
+    <label for="selectedFDASID">Select FDAS:</label>
+    <select name="selectedFDASID" id="selectedFDASID">
+      <% fdasList.forEach(fdas => { %>
+        <option value="<%= fdas._id %>"><%= fdas.title %></option>
+      <% }); %>
+    </select>
+    <input type="hidden" name="userID" value="<%= user._id %>">
+    <button type="submit">Connect</button>
+  </form>
+  

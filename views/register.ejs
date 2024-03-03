@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="/style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        /* Add your custom styles for error messages */
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+    </style>
+    <script>
+     // Function to remove error messages after 5 seconds
+  setTimeout(() => {
+    const errorMessages = document.querySelectorAll('.error-message');
+    errorMessages.forEach(message => {
+      message.style.display = 'none'; // Hide the error message
+    });
+  }, 10000); // 10000 milliseconds = 10 seconds
+      
+  </script>
+
+  
+</head>
+<body>
+    <div class="wrapper">
+        <span class="bg-animate"></span>
+        <div class="form-box login">
+            <h2>Register</h2>
+            <% if (errors && errors.length > 0) { %>
+                <% errors.forEach(error => { %>
+                  <% if (error.param === 'email' || error.param === 'username') { %>
+                    <p class="error-message"><%= error.msg %></p>
+                  <% } else if (error.msg === 'Password must be at least 8 characters long') { %>
+                    <p class="error-message"><%= error.msg %></p>
+                  <% } %>
+                <% }) %>
+              <% } %>
+            
+              <form action="/register" method="POST">
+                <div class="input-box">
+                    <input type="text" id="name" name="username" required autocomplete="off">
+                    <label>Username:</label>
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box">
+                    <input type="email" id="email" name="email" required autocomplete="off">
+                    <label>Email:</label>
+                    <i class='bx bxs-envelope'></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" id="password" name="password" required>
+                    <label>Password:</label>
+                    <i class='bx bxs-lock-alt' ></i>
+                </div>
+                <button type="submit" class="btn">Submit</button>
+            </form>
+        </div>
+        <div class="custom-alert" id="customAlert" style="display: none;">
+          <div class="alert-content">
+              <span class="close-btn" onclick="closeCustomAlert()">&times;</span>
+              <p id="alertMessage"></p>
+          </div>
+      </div>
+        <div class="info-text login">
+            <h1>Welcome Back!</h1>
+            <h2>FireWatch Portal</h2>
+        </div>
+    </div>
+</body>
+</html>

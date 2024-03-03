@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="/database.css">
+    <title>BFP- Batac- City</title>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Sidebar Section -->
+        <aside>
+            <div class="toggle">
+                <div class="logo">
+                    <img src="../images/logo.png">
+                    <h2>BFP <span class="danger">Batac-City</span></h2>
+                </div>
+                <div class="close" id="close-btn">
+                    <span class="material-icons-sharp">
+                        close
+                    </span>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <a href="/adminHome">
+                    <span class="material-icons-sharp">
+                        dashboard
+                    </span>
+                    <h3>Dashboard</h3>
+                </a>
+              
+               
+                <a href="/charts">
+                    <span class="material-icons-sharp">
+                        insights
+                    </span>
+                    <h3>Charts</h3>
+                </a>
+                <a href="/alert" class="active">
+                    <span class="material-symbols-outlined">
+                        notifications
+                        </span>
+                    <h3>Alerts</h3>
+                 
+                </a>
+                <a href="/database" >
+                    <span class="material-symbols-outlined">
+                        database
+                        </span>
+                    <h3>Database</h3>
+                    
+                </a>
+                           
+                    <a href="/user">
+                        <span class="material-symbols-outlined">
+                            manage_accounts
+                        </span>
+                        <h3>User</h3>
+                    </a>
+                    
+                <a href="/location">
+                    <span class="material-icons-sharp">pin_drop</span>
+                    <h3>Maps</h3>
+                </a>
+                <a href="/userList">
+                    <span class="material-symbols-outlined"> admin_panel_settings </span>
+                    <h3>Admin Panel</h3>
+                </a>
+                <a href="/AboutUs">
+                    <span class="material-symbols-outlined">
+                        help
+                    </span>
+                    <h3>About Us</h3>
+                </a>
+                <a href="/logout">
+                    <span class="material-icons-sharp">
+                        logout
+                    </span>
+                    <h3>Logout</h3>
+                </a>
+            </div>
+        </aside>
+        <!-- End of Sidebar Section -->
+
+<!-- Main Content -->
+<main>
+    <div>
+
+        <details>
+            <summary>Alerts Logs</summary>
+            <table id="timeTable">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+        <th>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data for 'conventional' will be displayed here -->
+                </tbody>
+            </table>
+        </details>
+
+       
+
+        <script>
+            // Function to fetch and display data for a specific type
+            function fetchAndDisplayData() {
+        fetch(`http://192.168.239.189:5000/time`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(`Retrieved Time Data:`, data);
+                displayData(data);
+            })
+            .catch(error => {
+                handleFetchError(error, `Failed to load time data from the database.`);
+            });
+    }
+
+    // Function to display data in a table
+    function displayData(data) {
+        const table = document.querySelector(`#timeTable tbody`);
+        table.innerHTML = ''; // Clear existing data
+
+        data.forEach(item => {
+            console.log('Item:', item); // Log the item to the console for debugging
+
+            const row = table.insertRow();
+            const titleCell = row.insertCell(0);
+            const timestampCell = row.insertCell(1);
+
+            titleCell.textContent = item.title || '';
+            timestampCell.textContent = item.timestamp || '';
+        });
+    }
+
+    // Fetch and display data for the 'time' collection
+    fetchAndDisplayData();
+</script>
+    </div>
+</main>
+<!-- End of Main Content -->
+
+
+        <!-- Right Section -->
+        <div class="right-section">
+            <div class="nav">
+                <button id="menu-btn">
+                    <span class="material-icons-sharp">
+                        menu
+                    </span>
+                </button>
+                <div class="dark-mode">
+                    <span class="material-icons-sharp active">
+                        light_mode
+                    </span>
+                    <span class="material-icons-sharp">
+                        dark_mode
+                    </span>
+                </div>
+
+                <div class="profile">
+                    <div class="info">
+                        <p>Hey, <b><%= admin1.username %></b></p>
+                        <small class="text-muted">Admin</small>
+                    </div>
+                    <div class="profile-photo">
+                        <a href="/user"> <!-- Navigate back to user profile -->
+                            <% if (admin1.profilePicture) { %>
+                                <img src="<%= admin1.profilePicture.replace(/\\/g, '/') %>" alt="Profile Picture">
+                            <% } else { %>
+                                <!-- Placeholder image or default image when no profile picture exists -->
+                                <img src="/images/profile-icon.jpg" width="40" class="rounded-circle">
+                            <% } %>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- End of Nav -->
+
+            <div class="user-profile">
+                <div class="logo">
+                    <img src="../images/logo.png">
+                    <h2>BFP Batac-City</h2>
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/control.js"></script>
+</body>
+
+</html>

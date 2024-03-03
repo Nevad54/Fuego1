@@ -1,0 +1,249 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height:100vh;
+  background: #081b29;
+}
+
+.wrapper {
+  position: relative;
+  width: 750px;
+  height: 450px;
+  background: transparent;
+  border: 2px solid #b2b2b2;
+  box-shadow: 0 0 25px #ffffff;
+  overflow: hidden;
+}
+
+.logo {
+  /* Unique positioning for the logo */
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.logo img {
+  width: 300px; /* Set the width of your logo */
+  height: auto; /* Maintain aspect ratio */
+  /* Add more styles if needed */
+}
+
+.wrapper .form-box {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.wrapper .form-box.login {
+  left: 0;
+  padding: 0 60px 0 40px;
+}
+
+.wrapper .form-box.register {
+  left: 0;
+  padding: 0 60px 0 40px;
+}
+
+.wrapper .form-box.login .bg-animation {
+  transform: translateX(0);
+  transition: .7s ease;
+}
+
+.wrapper.active .form-box.login .bg-animation {
+  transform: translateX(-120%);
+}
+
+
+.form-box h2 {
+  font: 32px;
+  color: #fff;
+  text-align: center;
+}
+
+.form-box .input-box {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  margin: 25px 0;
+}
+
+.input-box input {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  border-bottom: 2px solid #fff;
+  padding-right: 23px;
+  font-size: 16px;
+  color: #fff;
+  font-weight: 500;
+  transition: .5s;
+}
+
+.input-box input:focus,
+.input-box input:valid {
+  border-bottom-color: #dc143c;
+}
+
+.input-box label {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  color: #fff;
+  pointer-events: none;
+  transition: .5s;
+}
+
+.input-box input:focus~label,
+.input-box input:valid~label {
+  top: -5px;
+  color: #dc143c;
+}
+
+.input-box i {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #fff;
+  transition: .5s;
+}
+
+.input-box input:focus~i,
+.input-box input:valid~i {
+  color: #dc143c;
+}
+
+.btn {
+  position: relative;
+  width: 100%;
+  height: 45px;
+  background: transparent;
+  border: 2px solid #efbcc6;
+  outline: none;
+  border-radius: 40px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #fff;
+  font-weight: 600;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: " ";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 300%;
+  background: linear-gradient(#081b29, #dc143c,#081b29,#dc143c );
+  z-index: -1;
+  transition: .5s;
+}
+
+.form-box .logreg-link {
+  font-size: 14.5px;
+  color: #fff;
+  text-align: center;
+  margin: 20px 0 10px;
+}
+
+.logreg-link p a {
+  color: #dc143c;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.logreg-link p a:hover {
+  text-decoration: underline;
+}
+
+.wrapper .info-text {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.wrapper .info-text.login {
+  right: 0;
+  text-align: right;
+  padding: 0 0 10px 100px;
+}
+
+.wrapper .info-text.register {
+  left: 0;
+  text-align: left;
+  padding: 0 150px 60px 40px;
+  display: none;
+}
+
+.info-text h2{
+  font-size: 36px;
+  color: #fff;
+  line-height: 1.3;
+  text-transform: uppercase;
+  padding-left: 35px;
+  padding-right: 15px;
+  text-align:left;
+}
+
+.info-text h1 {
+  font-size: 24px;
+  color: #fff;
+  margin: 0;
+  padding-left: 60px;
+  padding-right: 15px;
+  text-align:left;
+}
+
+.wrapper .bg-animate {
+  position: absolute;
+  top: -4px;
+  right: 0;
+  width: 850px;
+  height: 600px;
+  background: linear-gradient(45deg, #081b29, #dc143c);
+  border-bottom: 3px solid #dc143c;
+  transform: rotate(10deg) skewY(40deg);
+  /* transform: rotate(0) skewY(0); */
+  transform-origin: bottom right;
+}
+
+.wrapper .bg-animate2 {
+  position: absolute;
+  top: 100px;
+  left: 250px;
+  width: 850px;
+  height: 600px;
+  background: #081b29;
+  border-bottom: 3px solid #dc143c;
+  transform: rotate(-11deg) skewY(-41deg);  
+  /* transform: rotate(0) skewY(0); */
+  transform-origin: bottom left;
+}
+/* styles.css */
+/* Define styles for error messages */
+
+
+
+/* added css */

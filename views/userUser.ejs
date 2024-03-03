@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="/profile.css">
+    <title>BFP- Batac- City</title>
+
+    <style>
+      
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Sidebar Section -->
+        <aside>
+            <div class="toggle">
+                <div class="logo">
+                    <img src="../images/logo.png">
+                    <h2>BFP <span class="danger">Batac-City</span></h2>
+                </div>
+                <div class="close" id="close-btn">
+                    <span class="material-icons-sharp">
+                        close
+                    </span>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <a href="/userHome" >
+                    <span class="material-icons-sharp">
+                        dashboard
+                    </span>
+                    <h3>Dashboard</h3>
+                </a>
+             
+                <a href="/userUser" class="active">
+                    <span class="material-symbols-outlined">
+                        manage_accounts
+                        </span>
+                    <h3>User</h3>
+                </a>
+             
+                <a href="/userAboutUs">
+                    <span class="material-symbols-outlined">
+                        help
+                    </span>
+                    <h3>About Us</h3>
+                </a>
+                <a href="/logout">
+                    <span class="material-icons-sharp">
+                        logout
+                    </span>
+                    <h3>Logout</h3>
+                </a>
+            </div>
+        </aside>
+        <!-- End of Sidebar Section -->
+      
+       <!-- Main Content -->
+       <main class="profile-container">
+        <div class="cover-photo">
+            <h2>User Profile</h2>
+        </div>
+        <div class="container">
+            <div class="profile-picture-container text-center">
+                <!-- Profile Image -->
+                <% if (user.profilePicture) { %>
+                    <img src="<%= user.profilePicture.replace(/\\/g, '/') %>" alt="Profile Picture">
+                <% } else { %>
+                    <!-- Placeholder image or default image when no profile picture exists -->
+                    <img src="/images/profile-icon.jpg" width="40" class="rounded-circle">
+                <% } %>
+            </div>
+    
+            <!-- Profile Details Section -->
+            <div class="profile-details">
+                <h3><%= user.username %></h3>
+                <p>Email: <%= user.email %></p>
+                <p>Phone Number: <%= user.phone %></p>
+                <div class="social-icons">
+                    <!-- Facebook icon -->
+                    <i class="fab fa-facebook-f" onclick="toggleInput('facebook')"></i>
+                    <!-- Instagram icon -->
+                    <i class="fab fa-instagram" onclick="toggleInput('instagram')"></i>
+                </div>
+            </div>
+    
+            <!-- Edit Profile Button -->
+            <button id="editProfileBtn" onclick="openEditProfilePopup()">Edit Profile</button>
+    
+            <!-- Edit Profile Form (Initially hidden) -->
+            <div id="editProfilePopup" class="edit-profile-form hidden">
+                <h3>Edit Profile</h3>
+                <form action="/profile/save/user" method="POST" enctype="multipart/form-data">
+                    <!-- Other form fields (username, email, etc.) -->
+                    <div class="form-group">
+                        <label for="profilePicture">Profile Picture:</label>
+                        <input type="file" id="profilePicture" name="profilePicture">
+    
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="text" id="username" name="username" value="<%= user.username %>" required>
+                        </div>
+    
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" value="<%= user.email %>" required>
+                        </div>
+    
+                        <div class="form-group">
+                            <label for="phone">Phone Number:</label>
+                            <input type="tel" id="phone" name="phone" value="<%= user.phone %>" required>
+                        </div>
+    
+                        <label for="facebook">Facebook:</label>
+                        <div class="input-with-icon">
+                            <img src="/images/facebook-svgrepo-com.svg" class="social-logo" alt="facebook-icon" onclick="toggleInput('facebook')">
+                            <input type="text" id="facebook" name="facebook" placeholder="Facebook Profile URL">
+                        </div>
+    
+                        <label for="instagram">Instagram:</label>
+                        <div class="input-with-icon">
+                            <img src="/images/instagram-svgrepo-com.svg" class="social-logo" alt="instagram-icon" onclick="toggleInput('instagram')">
+                            <input type="text" id="instagram" name="instagram" placeholder="Instagram Profile URL">
+                        </div>
+    
+                        <div class="social-icons">
+                            <!-- Replace these with your social media icons -->
+                            <i class="fab fa-facebook-f"></i> <!-- Font Awesome Facebook icon -->
+                            <i class="fab fa-instagram"></i> <!-- Font Awesome Instagram icon -->
+                            <!-- Add more icons for other social media platforms -->
+                        </div>
+                    </div>
+                    <button type="submit">Save Changes</button>
+                </form>
+            </div>
+    
+            <!-- Social Links Placeholder -->
+            <ul class="social-list">
+                <!-- Social links -->
+            </ul>
+        </div>
+    </main>
+    
+<!-- End of Main Content -->
+
+        <!-- Right Section -->
+        <div class="right-section">
+            <div class="nav">
+                <button id="menu-btn">
+                    <span class="material-icons-sharp">
+                        menu
+                    </span>
+                </button>
+                <div class="dark-mode">
+                    <span class="material-icons-sharp active">
+                        light_mode
+                    </span>
+                    <span class="material-icons-sharp">
+                        dark_mode
+                    </span>
+                </div>
+
+                <div class="profile">
+                    <div class="info">
+                        <p>Hey, <b><%= user.username %></b></p>
+                        <small class="text-muted">User</small>
+                    </div>
+                    <div class="profile-photo">
+                        <a href="/profile"> <!-- Add this anchor tag -->
+                            <% if (user.profilePicture) { %>
+                                <img src="<%= user.profilePicture.replace(/\\/g, '/') %>" alt="Profile Picture">
+
+                            <% } else { %>
+                                <!-- Placeholder image or default image when no profile picture exists -->
+                                <img src="/images/profile-icon.jpg" width="40" class="rounded-circle">
+                            <% } %>
+
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            <!-- End of Nav -->
+
+          
+            <div class="user-profile">
+                <div class="logo">
+                    <img src="../images/logo.png">
+                    <h2>BFP Batac-City</h2>
+                    <p></p>
+                </div>
+            </div>
+
+            
+        </div>
+
+
+    </div>
+    <script src="../js/control.js"></script>
+</body>
+
+</html>

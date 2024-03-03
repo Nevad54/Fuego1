@@ -1,0 +1,447 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+        <link rel="stylesheet" href="/userList.css">
+        <title>BFP- Batac- City</title>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.1.0/mqtt.min.js"></script>
+        <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+
+
+    </head>
+
+    <body>
+
+        <div class="container">
+
+            <!-- Sidebar Section -->
+            <aside>
+                <div class="toggle">
+                    <div class="logo">
+                        <img src="../images/logo.png">
+                        <h2>BFP <span class="danger">Batac-City</span></h2>
+                    </div>
+                    <div class="close" id="close-btn">
+                        <span class="material-icons-sharp">
+                            close
+                        </span>
+                    </div>
+                </div>
+
+                <div class="sidebar">
+                    <a href="/adminHome" >
+                        <span class="material-icons-sharp">
+                            dashboard
+                        </span>
+                        <h3>Dashboard</h3>
+                    </a>
+                
+                
+                    <a href="/charts">
+                        <span class="material-icons-sharp">
+                            insights
+                        </span>
+                        <h3>Charts</h3>
+                    </a>
+                    <a href="/alert">
+                        <span class="material-symbols-outlined">
+                            notifications
+                            </span>
+                        <h3>Alerts</h3>
+                        
+                    </a>
+                    <a href="/database">
+                        <span class="material-symbols-outlined">
+                            database
+                        </span>
+                        <h3>Database</h3>
+                    </a>
+                              
+                    <a href="/user">
+                        <span class="material-symbols-outlined">
+                            manage_accounts
+                        </span>
+                        <h3>User</h3>
+                    </a>
+                    
+                    <a href="/location">
+                        <span class="material-icons-sharp">pin_drop</span>
+                        <h3>Maps</h3>
+                    </a>
+                    <a href="/userList" class="active">
+                        <span class="material-symbols-outlined"> admin_panel_settings </span>
+                        <h3>Admin Panel</h3>
+                    </a>
+                    
+                    <a href="/AboutUs">
+                        <span class="material-symbols-outlined">
+                            help
+                        </span>
+                        <h3>About Us</h3>
+                    </a>
+                    <a href="/logout">
+                        <span class="material-icons-sharp">
+                            logout
+                        </span>
+                        <h3>Logout</h3>
+                    </a>
+                </div>
+            </aside>
+            <!-- End of Sidebar Section -->
+
+            <!-- Main Content -->
+            <head>
+                <!-- ... your existing head content ... -->
+            </head>     
+            <body>
+            
+                <div class="container">
+                <div class="table-container">
+                    <main>
+                        <div class="message-container">
+                            <div class="message" id="errorMessage" style="display: none;"></div>
+                            <div class="message" id="successMessage" style="display: none;"></div>
+                        </div>
+                        <h2 class="table-title"> <h2>Account Manager</h2>
+                    </h2>
+                    <table>
+                    <thead>
+                        <tr>
+                        
+                        <th>Email</th>
+                        <th>Username</th>
+                        <th>Associated FDAS</th>
+                        <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (users && users.length > 0) { %>
+                        <% users.forEach(user => { %>
+                        <tr>
+                        
+                            <td><%= user.email %></td>
+                            <td><%= user.username %> </td>
+                            <td><%= user.FDASID ? user.FDASID.title : 'N/A' %></td> <!-- Display associated FDAS title or 'N/A' if not associated -->
+                        
+                            <td>
+                                <a href="#" onclick="openEditModal('<%= user.email %>', '<%= user.username %>', '<%= user._id %>', '<%= user.FDASID ? user.FDASID.title : ',' %>')">
+                                    <span class="material-icons-sharp">edit</span> Edit
+                                </a>
+                                
+                            
+                            <a href="/deleteUser/<%= user._id %>" onclick="return confirm('Are you sure?')">
+                                <span class="material-icons-sharp">delete</span> Delete
+                            </a>  
+                        </td>
+                        </tr>
+                        <% }); %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="3">No users found</td> <!-- colspan should match the number of columns in your table -->
+                            </tr>
+                        <% } %>
+                    </tbody>
+                    </table>
+                
+                    <script>
+                        document.addEventListener('DOMContentLoaded', () => {
+                            // Load dark mode state from localStorage
+                            loadDarkModeState();
+                        
+                            // Add event listener to the dark mode toggle button
+                            const darkModeToggle = document.querySelector('.dark-mode');
+                            darkModeToggle.addEventListener('click', toggleDarkMode);
+                        });
+
+
+                        // Add a click event listener to the register button
+                        function redirectToRegister() {
+                            window.location.href = "/register"; // Redirect to the register page
+                        }
+                        
+                            // Function to display error message
+                            function displayErrorMessage(message) {
+                                var errorMessageElement = document.getElementById("errorMessage");
+                                errorMessageElement.innerText = message;
+                                errorMessageElement.style.display = "block"; // Display the error message
+                                setTimeout(function() {
+                                    errorMessageElement.style.display = "none"; // Hide the error message after 5 seconds
+                                }, 5000);
+                            }
+
+                            // Function to display success message
+                            function displaySuccessMessage(message) {
+                                var successMessageElement = document.getElementById("successMessage");
+                                successMessageElement.innerText = message;
+                                successMessageElement.style.display = "block"; // Display the success message
+                                setTimeout(function() {
+                                    successMessageElement.style.display = "none"; // Hide the success message after 5 seconds
+                                }, 5000);
+                            }
+            
+
+
+                        function openEditModal(email, username, userId, associatedFDASTitle) {
+                            document.getElementById("editEmail").value = email;
+                            document.getElementById("editUsername").value = username;
+                        
+                            document.getElementById("editUserId").value = userId;
+                            document.getElementById("associatedFDASTitle").innerText = associatedFDASTitle; // This line assigns the associatedFDASTitle to an element
+                            document.getElementById("editModal").style.display = "block";
+                            
+                            // Show or hide the remove FDAS button based on whether there is an associated FDAS
+                            const removeFDASButton = document.getElementById("removeFDASButton");
+                            if (associatedFDASTitle) {
+                                removeFDASButton.style.display = "inline";
+                            } else {
+                                removeFDASButton.style.display = "none";
+                            }
+                        }
+                    
+                        function closeEditModal() {
+                            document.getElementById("editModal").style.display = "none";
+                        } 
+                        <!-- Inside the updateUser() function -->
+                        function updateUser() {
+                            const userId = document.getElementById("editUserId").value;
+                            const email = document.getElementById("editEmail").value;
+                            const username = document.getElementById("editUsername").value;
+                           
+                            fetch(`/updateUser/${userId}`, {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify({ email, username })
+                            })
+                            .then(response => {
+                                if (response.ok) {
+                                    closeEditModal();
+                                    displaySuccessMessage("User updated successfully!");
+                                    location.reload();
+                                } else {
+                                    displayErrorMessage("Failed to update user");
+                                    throw new Error('Failed to update user');
+                                }
+                            })
+                            .catch(error => {
+                                console.error("Error updating user:", error);
+                                displayErrorMessage("Error updating user");
+                            });
+                        }
+                        
+                    
+                        function removeAssociatedFDAS() {
+                            const userId = document.getElementById("editUserId").value;
+                            fetch(`/removeAssociatedFDAS/${userId}`, {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                }
+                            })
+                            .then(response => {
+                                if (response.ok) {
+                                    displaySuccessMessage("Associated FDAS removed successfully!");
+                                    document.getElementById("successMessage").innerText = "Associated FDAS removed successfully";
+                                    setTimeout(() => {
+                                        document.getElementById("successMessage").innerText = ""; // Clear success message after 5 seconds
+                                    }, 5000);
+                                    location.reload();
+                                } else {
+                                    displayErrorMessage("Failed to remove associated FDAS");
+                                    throw new Error('Failed to remove associated FDAS');
+                                }
+                            })
+                            .catch(error => {
+                                console.error("Error removing associated FDAS:", error);
+                                displayErrorMessage("Error removing associated FDAS");
+                                document.getElementById("errorMessage").innerText = "Error removing associated FDAS";
+                                setTimeout(() => {
+                                    document.getElementById("errorMessage").innerText = ""; // Clear error message after 5 seconds
+                                }, 5000);
+                            });
+                        }
+                    
+                                
+                        function associateFDAS() {
+                            const userId = document.getElementById('user').value;
+                            const fdasId = document.getElementById('fdas').value;
+                    
+                            fetch('http://192.168.116.189:5000/associateFDAS', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ userId, fdasId }),
+                            })
+                            .then(response => {
+                                if (response.ok) {
+                                    document.getElementById("successMessage").innerText = "FDAS associated successfully";
+                                    displaySuccessMessage("FDAS associated successfully!");
+                                    setTimeout(() => {
+                                        document.getElementById("successMessage").innerText = ""; // Clear success message after 5 seconds
+                                    }, 5000);
+                                    // Reload the page after associating the FDAS
+                                    location.reload();
+                                } else {
+                                    displayErrorMessage("Failed to associate FDAS");
+                                    throw new Error('Failed to associate FDAS');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                displayErrorMessage("Error associating FDAS");
+                                document.getElementById("errorMessage").innerText = "Error associating FDAS";
+                                setTimeout(() => {
+                                    document.getElementById("errorMessage").innerText = ""; // Clear error message after 5 seconds
+                                }, 5000);
+                            });
+                        }
+                    const socket = io.connect('http://192.168.116.189:5000');
+                    console.log('Connecting to Socket.IO');
+                    
+                    socket.on('connect', () => {
+                    console.log('Connected to Socket.IO');
+                    });
+                    </script>
+                </main>
+            
+            
+                    <!-- ... your existing right-section content ... -->
+                </div>
+                </div>
+                <script src="../js/control.js"></script>
+            </body>
+            
+            </html>
+        
+        
+                
+            
+            <!-- Right Section -->
+            <div class="right-section">
+                <div class="nav">
+                    <button id="menu-btn">
+                        <span class="material-icons-sharp">
+                            menu
+                        </span>
+                    </button>
+                    <div class="dark-mode">
+                        <span class="material-icons-sharp active">
+                            light_mode
+                        </span>
+                        <span class="material-icons-sharp">
+                            dark_mode
+                        </span>
+                    </div>
+                    <div class="profile">
+                        <div class="info">
+                            <% if (admin1 && admin1.username) { %>
+                                <p>Hey, <b><%= admin1.username %></b></p>
+                                <small class="text-muted">Admin</small>
+                            <% } else { %>
+                                <!-- Handle the case where admin1 is not defined -->
+                                <p>Hey, <b>Admin</b></p>
+                                <small class="text-muted">Admin</small>
+                            <% } %>
+                        </div>
+                        <div class="profile-photo">
+                            <a href="/user"> <!-- Navigate back to user profile -->
+                                <% if (admin1 && admin1.profilePicture) { %>
+                                    <img src="<%= admin1.profilePicture.replace(/\\/g, '/') %>" alt="Profile Picture">
+                                <% } else { %>
+                                    <!-- Placeholder image or default image when no profile picture exists -->
+                                    <img src="/images/profile-icon.jpg" width="40" class="rounded-circle">
+                                <% } %>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+                <!-- End of Nav -->
+
+                <div class="user-profile">
+                    <div class="logo">
+                        <img src="../images/logo.png">
+                        <h2>BFP Batac-City</h2>
+                        <p></p>
+                    </div>
+                </div>
+
+                <form id="associateForm" action="/associateFDAS" method="post">
+                <label for="user">Select User:</label>
+                <select name="user" id="user">
+                    <% users.forEach(user => { %>
+                        <option value="<%= user._id %>"> <%= user.username %></option>
+                    <% }); %>
+                </select>
+                                            
+                <label for="fdas">Select FDAS:</label>
+                <select name="fdas" id="fdas">
+                    <% fdasData.forEach(fdasSensor => { %>
+                        <option value="<%= fdasSensor._id %>">- <%= fdasSensor.title %></option>
+                    <% }); %>
+                </select>
+                
+                <!-- Add a button to associate the selected FDAS with the user -->
+                <button type="button" onclick="associateFDAS()">Associate FDAS</button>
+                
+                <!-- Confirmation message -->
+                <% if (confirmationMessage) { %>
+                    <div class="confirmation-message">
+                        <%= confirmationMessage %>
+                    </div>
+                    <script>
+                        // Script to hide the confirmation message after a brief delay
+                        setTimeout(() => {
+                            document.querySelector('.confirmation-message').style.display = 'none';
+                        }, 3000); // Adjust the delay as needed (in milliseconds)
+
+                        
+                    </script>
+                   
+                <% } %>
+                </form>
+                <div id="editModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeEditModal()">&times;</span>
+                        <form id="editForm">
+                            <label for="editEmail">Email:</label>
+                            <input type="email" id="editEmail" name="email" >
+                        
+                            <label for="editUsername">Username:</label>
+                            <input type="text" id="editUsername" name="username" >
+                        
+                            <div id="associatedFDASTitle"></div>
+                        
+                            <button id="removeFDASButton" onclick="removeAssociatedFDAS()">Remove Associated FDAS</button>
+                            <!-- Hidden input field to store user ID -->
+                            <input type="hidden" id="editUserId" name="userId" value="<%= user._id %>">
+                            
+                            <button type="button" onclick="updateUser()">Update User</button>
+                        </form>
+                        
+                    </div>
+                   
+                </div>
+                <div class="logreg-link">
+                    <button onclick="redirectToRegister()" class="register-button">Register User</button>
+                </div>
+            </div>
+        </div>
+        <script src="../js/control.js"></script>
+    </body>
+
+    </html>
+
+
+
+
+
