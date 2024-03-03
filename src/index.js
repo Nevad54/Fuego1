@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 app.set("view engine", "ejs");
 // Example assuming CSS files are in the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/uploads', express.static('D:/GitHub/Fuego1/uploads'));
+app.use('/uploads', express.static('uploads'));
 
 const mqttOptions = {
   host: process.env.MQTT_HOST,
@@ -59,13 +59,13 @@ const mongoHost = 'mongodb+srv://systembfp8:iwantaccess@bfp.ezea3nm.mongodb.net/
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Types; 
 // Start HTTP server
-httpServer.listen(port, WebURL, () => {
-  console.log(`Server listening at http://${WebURL}:${port}.`);
+httpServer.listen(port, () => {
+  console.log(`Server listening at port ${port}.`);
 })
-  .on('error', (err) => {
-      console.error(`Error starting HTTP server: ${err.message}`);
-      // Handle HTTP server start error here
-  });
+.on('error', (err) => {
+  console.error(`Error starting HTTP server: ${err.message}`);
+  // Handle HTTP server start error here
+});
 
 // Connect to MQTT
 mqttClient.on('connect', () => {
