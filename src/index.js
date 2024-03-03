@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 app.set("view engine", "ejs");
 // Example assuming CSS files are in the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/uploads', express.static('D:/Downloads/Fuego1/uploads'));
+app.use('/uploads', express.static('https://github.com/Nevad54/Fuego1/tree/main/uploads'));
 
 const mqttOptions = {
   host: process.env.MQTT_HOST,
@@ -1004,6 +1004,6 @@ app.post('/removeAssociatedFDAS/:id', async (req, res) => {
 
 
 // Listen on port
-const server = app.listen(5000, '0.0.0.0', () => {
-  console.log('Server is running on port 5000');
+app.listen(port, () => {
+    console.log(`Server listening on port ${port}`)
 });
