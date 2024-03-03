@@ -186,7 +186,7 @@
     const fdasId = document.getElementById('fdas').value;
 
     // Make an AJAX request or use Fetch API to send the association data
-            fetch('http://52.41.36.82:5000/associateFDAS', {
+            fetch('https://fdas-drz5.onrender.com:5000/associateFDAS', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -203,7 +203,7 @@
             });
              }
 
-            const socket = io.connect('http://52.41.36.82:5000');
+            const socket = io.connect('https://fdas-drz5.onrender.com:5000');
             console.log('Connecting to Socket.IO');
 
             socket.on('connect', () => {
