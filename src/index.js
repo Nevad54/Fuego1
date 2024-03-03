@@ -1004,6 +1004,6 @@ app.post('/removeAssociatedFDAS/:id', async (req, res) => {
 
 
 // Listen on port
-app.listen(port, () => {
-    console.log(`Server listening on port ${port}`)
+const server = app.listen(5000, '0.0.0.0', () => {
+  console.log('Server is running on port 5000');
 });
