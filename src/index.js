@@ -17,7 +17,7 @@ const { Admin1, User, FDAS } = require("./config");
 
 const app = express();
 app.use(express.json());
-app.use(express.static("public"));s
+app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 app.set("view engine", "ejs");
 // Example assuming CSS files are in the 'public' directory
