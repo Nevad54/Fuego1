@@ -53,7 +53,7 @@ const io = require('socket.io')(httpServer, {
     origin: '*',
   },
 });
-const WebURL = '192.168.239.189';
+const WebURL = '52.41.36.82';
 
 const mongoHost = 'mongodb+srv://systembfp8:iwantaccess@bfp.ezea3nm.mongodb.net/?retryWrites=true&w=majority/accounts';
 const mongoose = require('mongoose');
