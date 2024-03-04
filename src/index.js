@@ -1,4 +1,3 @@
-// index.js
 const multer = require('multer');
 const express = require("express");
 const path = require("path");
@@ -56,16 +55,13 @@ const io = require('socket.io')(httpServer, {
   },
 });
 
-// Declare WebURL here
-const WebURL = 'fuego1.onrender.com';
-
 const mongoHost = 'mongodb+srv://systembfp8:iwantaccess@bfp.ezea3nm.mongodb.net/?retryWrites=true&w=majority/accounts';
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Types;
 
 // Start HTTP server
 httpServer.listen(port, () => {
-  console.log(`Server listening at https://${WebURL}:${port}.`);
+  console.log(`Server listening on port ${port}.`);
 })
 .on('error', (err) => {
   console.error(`Error starting HTTP server: ${err.message}`);
