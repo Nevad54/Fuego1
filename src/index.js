@@ -14,6 +14,7 @@ const fs = require('fs');
 const cors = require("cors");
 require('dotenv').config();
 const { Admin1, User, FDAS } = require("./config");
+const socketIo = require('socket.io');
 
 const app = express();
 app.use(express.json());
