@@ -45,7 +45,6 @@ const isLoggedIn = (req, res, next) => {
 app.use(cors({
   origin: '*',
 }));
-
 const httpServer = http.createServer(app);
 const mqttClient = mqtt.connect(mqttOptions);
 const port = 5000;
@@ -54,22 +53,19 @@ const io = require('socket.io')(httpServer, {
     origin: '*',
   },
 });
-// Update the WebURL to match the domain provided by Render.com
-const WebURL = 'https://fdas-drz5.onrender.com';
+const WebURL = 'fdas-drz5.onrender.com';
 
 const mongoHost = 'mongodb+srv://systembfp8:iwantaccess@bfp.ezea3nm.mongodb.net/?retryWrites=true&w=majority/accounts';
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Types; 
-
 // Start HTTP server
 httpServer.listen(port, () => {
-  console.log(`Server listening at ${WebURL}:${port}.`);
+  console.log(`Server listening at https://${WebURL}:${port}.`);
 })
   .on('error', (err) => {
       console.error(`Error starting HTTP server: ${err.message}`);
       // Handle HTTP server start error here
   });
-
 
 // Connect to MQTT
 mqttClient.on('connect', () => {
