@@ -54,7 +54,7 @@ const io = require('socket.io')(httpServer, {
     origin: '*',
   },
 });
-const WebURL = 'fdas-drz5.onrender.com';
+const WebURL = 'fuego1.onrender.com';
 
 
 const mongoHost = 'mongodb+srv://systembfp8:iwantaccess@bfp.ezea3nm.mongodb.net/?retryWrites=true&w=majority/accounts';
