@@ -51,26 +51,24 @@ const mqttClient = mqtt.connect(mqttOptions);
 const port = process.env.PORT || 5000;
 const httpServer = http.createServer(app);
 const io = socketio(httpServer, {
-  path: '/socket.io', // Specify the correct path here
   cors: {
     origin: '*',
   },
 });
 const WebURL = 'fuego1.onrender.com';
-const hostname = '0.0.0.0';
 
 
 const mongoHost = 'mongodb+srv://systembfp8:iwantaccess@bfp.ezea3nm.mongodb.net/?retryWrites=true&w=majority/accounts';
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Types; 
 // Start HTTP server
-httpServer.listen(port, hostname, () => {
-  console.log(`Server listening at http://${hostname}:${port}.`);
+httpServer.listen(port, WebURL, () => {
+  console.log(`Server listening at https://${WebURL}:${port}.`);
 })
-.on('error', (err) => {
-  console.error(`Error starting HTTP server: ${err.message}`);
-  // Handle HTTP server start error here
-});
+  .on('error', (err) => {
+      console.error(`Error starting HTTP server: ${err.message}`);
+      // Handle HTTP server start error here
+  });
 
 
 io.on('connection', (socket) => {
