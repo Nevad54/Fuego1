@@ -48,7 +48,7 @@ app.use(cors({
 }));
 
 const mqttClient = mqtt.connect(mqttOptions);
-const port = process.env.PORT || 5001;
+const port = process.env.PORT || 5000;
 const httpServer = http.createServer(app);
 const io = socketio(httpServer, {
   path: '/socket.io', // Specify the correct path here
