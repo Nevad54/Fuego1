@@ -70,6 +70,23 @@ httpServer.listen(port, WebURL, () => {
       // Handle HTTP server start error here
   });
 
+
+  io.on('connection', (socket) => {
+    console.log('A client connected');
+  
+    // Example: Handle 'mqttMessage' event
+    socket.on('mqttMessage', (data) => {
+      console.log('Received mqttMessage:', data);
+      // Emit the received message to all clients
+      io.emit('mqttMessage', data);
+    });
+  
+    // Handle disconnections
+    socket.on('disconnect', () => {
+      console.log('A client disconnected');
+    });
+  });
+
 // Connect to MQTT
 mqttClient.on('connect', () => {
   console.log(`Connected to MQTT.`);
