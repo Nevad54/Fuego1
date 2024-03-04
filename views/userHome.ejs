@@ -131,7 +131,8 @@
         
         <!-- End of Main Content -->
         <script>
-            const socket = io.connect('https://fuego1.onrender.com');
+            const socket = io.connect('https://fuego1.onrender.com', { path: '/socket.io' });
+
         console.log('Connecting to Socket.IO');
 
         socket.on('connect', () => {

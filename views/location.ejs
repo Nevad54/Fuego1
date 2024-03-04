@@ -513,7 +513,8 @@ map.on('click', function (e) {
                         }
                     });
                 }
-                const socket = io.connect('https://fuego1.onrender.com');
+                const socket = io.connect('https://fuego1.onrender.com', { path: '/socket.io' });
+
 
 socket.on('connect', () => {
     console.log('Connected to Socket.IO');
