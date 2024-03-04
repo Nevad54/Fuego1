@@ -172,6 +172,7 @@ mqttClient.on('connect', () => {
         }
       }
     };
+
     
     
     async function saveTimestampToDatabase(timestamp) {
@@ -251,6 +252,10 @@ const handleRoute = async (req, res, collectionName) => {
 };
 
 
+app.get('/socket.io/socket.io.js', (req, res) => {
+  res.setHeader('Content-Type', 'application/javascript');
+  res.sendFile(path.join(__dirname, '/node_modules/socket.io/client-dist/socket.io.js'));
+});
 const markerTypes = ['conventional', 'sprinkler', 'hydrants', 'extinguisher','fdas'];
 markerTypes.forEach((type) => {
     app.post(`/${type}`, async (req, res) => {
