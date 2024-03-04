@@ -71,21 +71,22 @@ httpServer.listen(port, WebURL, () => {
   });
 
 
-  io.on('connection', (socket) => {
-    console.log('A client connected');
-  
-    // Example: Handle 'mqttMessage' event
-    socket.on('mqttMessage', (data) => {
-      console.log('Received mqttMessage:', data);
-      // Emit the received message to all clients
-      io.emit('mqttMessage', data);
-    });
-  
-    // Handle disconnections
-    socket.on('disconnect', () => {
-      console.log('A client disconnected');
-    });
+io.on('connection', (socket) => {
+  console.log('A client connected');
+
+  // Example: Handle 'mqttMessage' event
+  socket.on('mqttMessage', (data) => {
+    console.log('Received mqttMessage:', data);
+    // Emit the received message to all clients
+    io.emit('mqttMessage', data);
   });
+
+  // Handle disconnections
+  socket.on('disconnect', () => {
+    console.log('A client disconnected');
+  });
+});
+
 
 // Connect to MQTT
 mqttClient.on('connect', () => {
