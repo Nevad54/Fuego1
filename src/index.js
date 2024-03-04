@@ -1,3 +1,4 @@
+// index.js
 const multer = require('multer');
 const express = require("express");
 const path = require("path");
@@ -13,7 +14,6 @@ const fs = require('fs');
 const cors = require("cors");
 require('dotenv').config();
 const { Admin1, User, FDAS } = require("./config");
-const socketIo = require('socket.io');
 
 const app = express();
 app.use(express.json());
@@ -45,36 +45,20 @@ const isLoggedIn = (req, res, next) => {
 app.use(cors({
   origin: '*',
 }));
-
 const httpServer = http.createServer(app);
 const mqttClient = mqtt.connect(mqttOptions);
 const port = 5000;
+const io = require('socket.io')(httpServer, {
+  cors: {
+    origin: '*',
+  },
+});
 const WebURL = 'https://fdas-drz5.onrender.com';
 
 const mongoHost = 'mongodb+srv://systembfp8:iwantaccess@bfp.ezea3nm.mongodb.net/?retryWrites=true&w=majority/accounts';
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Types; 
-
 // Start HTTP server
-httpServer.listen(port, () => {
-  console.log(`Server listening at ${WebURL}:${port}.`);
-})
-.on('error', (err) => {
-  console.error(`Error starting HTTP server: ${err.message}`);
-  // Handle HTTP server start error here
-});
-
-const io = socketIo(httpServer, {
-  cors: {
-    origin: '*',
-  },
-});
-
-io.on('connection', (socket) => {
-  console.log('A user connected to the socket.');
-});
-
-
 
 
 // Connect to MQTT
