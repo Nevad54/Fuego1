@@ -45,7 +45,6 @@ const isLoggedIn = (req, res, next) => {
 app.use(cors({
   origin: '*',
 }));
-const socket = io.connect('https://fdas-drz5.onrender.com');
 
 const httpServer = http.createServer(app);
 const mqttClient = mqtt.connect(mqttOptions);
@@ -55,7 +54,7 @@ const io = require('socket.io')(httpServer, {
     origin: '*',
   },
 });
-const WebURL = 'https://fdas-drz5.onrender.com';
+const WebURL = 'wss://fdas-drz5.onrender.com';
 
 const mongoHost = 'mongodb+srv://systembfp8:iwantaccess@bfp.ezea3nm.mongodb.net/?retryWrites=true&w=majority/accounts';
 const mongoose = require('mongoose');
