@@ -60,7 +60,7 @@ const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Types; 
 // Start HTTP server
 httpServer.listen(port, WebURL, () => {
-  console.log(`Server listening at http://${WebURL}:${port}.`);
+  console.log(`Server listening at http://${WebURL}:3000.`);
 })
   .on('error', (err) => {
       console.error(`Error starting HTTP server: ${err.message}`);
