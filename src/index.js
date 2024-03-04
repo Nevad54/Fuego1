@@ -46,10 +46,11 @@ const isLoggedIn = (req, res, next) => {
 app.use(cors({
   origin: '*',
 }));
-const httpServer = http.createServer(app);
+
 const mqttClient = mqtt.connect(mqttOptions);
 const port = process.env.PORT || 5000;
-const io = require('socket.io')(httpServer, {
+const httpServer = http.createServer(app);
+const io = socketio(httpServer, {
   cors: {
     origin: '*',
   },
