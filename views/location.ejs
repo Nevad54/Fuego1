@@ -343,7 +343,7 @@
         }
         
         function sendDataToServer(endpoint, data, callback) {
-            fetch(`http://192.168.1.15:5000/${endpoint}`, {
+            fetch(`https://fdas-drz5.onrender.com/${endpoint}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -443,7 +443,7 @@ map.on('click', function (e) {
     var radius = 500; // Adjust the radius as needed
 
     // Fetch nearby hydrants within the specified radius
-    fetch('http://192.168.1.15:5000/hydrants')
+    fetch('https://fdas-drz5.onrender.com/hydrants')
         .then(response => response.json())
         .then(data => {
             if (Array.isArray(data)) {
