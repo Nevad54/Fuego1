@@ -57,19 +57,20 @@ const io = socketio(httpServer, {
   },
 });
 const WebURL = 'fuego1.onrender.com';
+const hostname = '0.0.0.0';
 
 
 const mongoHost = 'mongodb+srv://systembfp8:iwantaccess@bfp.ezea3nm.mongodb.net/?retryWrites=true&w=majority/accounts';
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Types; 
 // Start HTTP server
-httpServer.listen(port, WebURL, () => {
-  console.log(`Server listening at https://${WebURL}:${port}.`);
+httpServer.listen(port, hostname, () => {
+  console.log(`Server listening at http://${hostname}:${port}.`);
 })
-  .on('error', (err) => {
-      console.error(`Error starting HTTP server: ${err.message}`);
-      // Handle HTTP server start error here
-  });
+.on('error', (err) => {
+  console.error(`Error starting HTTP server: ${err.message}`);
+  // Handle HTTP server start error here
+});
 
 
 io.on('connection', (socket) => {
