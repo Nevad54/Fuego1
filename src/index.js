@@ -62,13 +62,13 @@ const mongoHost = 'mongodb+srv://systembfp8:iwantaccess@bfp.ezea3nm.mongodb.net/
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Types; 
 // Start HTTP server
-httpServer.listen(port, WebURL, () => {
-  console.log(`Server listening at https://${WebURL}:${port}.`);
+httpServer.listen(port, '0.0.0.0', () => {
+  console.log(`Server listening at http://0.0.0.0:${port}.`);
 })
-  .on('error', (err) => {
-      console.error(`Error starting HTTP server: ${err.message}`);
-      // Handle HTTP server start error here
-  });
+.on('error', (err) => {
+  console.error(`Error starting HTTP server: ${err.message}`);
+  // Handle HTTP server start error here
+});
 
 
 io.on('connection', (socket) => {
