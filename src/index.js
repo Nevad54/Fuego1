@@ -53,19 +53,25 @@ const io = require('socket.io')(httpServer, {
     origin: '*',
   },
 });
-const WebURL = 'fdas-drz5.onrender.com';
+const WebURL = 'https://fdas-drz5.onrender.com';
 
 const mongoHost = 'mongodb+srv://systembfp8:iwantaccess@bfp.ezea3nm.mongodb.net/?retryWrites=true&w=majority/accounts';
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Types; 
 // Start HTTP server
-httpServer.listen(port, WebURL, () => {
-  console.log(`Server listening at http://${WebURL}:${port}.`);
+httpServer.listen(port, () => {
+  console.log(`Server listening at ${WebURL}:${port}.`);
 })
-  .on('error', (err) => {
-      console.error(`Error starting HTTP server: ${err.message}`);
-      // Handle HTTP server start error here
-  });
+.on('error', (err) => {
+  console.error(`Error starting HTTP server: ${err.message}`);
+  // Handle HTTP server start error here
+});
+const socket = io.connect(WebURL);
+console.log('Connecting to Socket.IO');
+
+socket.on('connect', () => {
+  console.log('Connected to Socket.IO');
+});
 
 
 // Connect to MQTT
