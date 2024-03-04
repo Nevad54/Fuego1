@@ -45,6 +45,8 @@ const isLoggedIn = (req, res, next) => {
 app.use(cors({
   origin: '*',
 }));
+const socket = io.connect('https://fdas-drz5.onrender.com');
+
 const httpServer = http.createServer(app);
 const mqttClient = mqtt.connect(mqttOptions);
 const port = 5000;
