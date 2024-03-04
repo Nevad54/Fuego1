@@ -111,6 +111,8 @@
             <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
             <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
             <script src="https://unpkg.com/esri-leaflet"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.1.0/mqtt.min.js"></script>
+            <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
             <script>
 
                   // Function to display error message
@@ -135,12 +137,12 @@
 
                 var map = L.map('map').setView([18.059999, 120.543470], 14);
         
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '© OpenStreetMap contributors'
+                L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
                 }).addTo(map);
         
             var fdasIcon = L.icon({
-            iconUrl: '../images/123.png', // Path to the FDAS System icon image
+            iconUrl: '../images/fdas1.png', // Path to the FDAS System icon image
             iconSize: [25, 41],
             iconAnchor: [12, 41],
             popupAnchor: [1, -34],
@@ -149,14 +151,6 @@
         });
         
         // Add FDAS System marker to the map
-                    var extinguisherIcon = L.icon({
-                iconUrl: '../images/este.png',
-                iconSize: [25, 41],
-                iconAnchor: [12, 41],
-                popupAnchor: [1, -34],
-                tooltipAnchor: [16, -28],
-                shadowSize: [41, 41]
-                });
                 var hydrantIcon = L.icon({
                     iconUrl: '../images/353902.png',
                     iconSize: [25, 41],
@@ -166,14 +160,17 @@
                     shadowSize: [41, 41]
                 });
         
-                var customIcon1 = L.icon({
-                    iconUrl: '../images/alarmno.png',
+ 
+
+                var customIcon3 = L.icon({
+                    iconUrl: '../images/fdp.png',
                     iconSize: [25, 41],
                     iconAnchor: [12, 41],
                     popupAnchor: [1, -34],
                     tooltipAnchor: [16, -28],
                     shadowSize: [41, 41]
                 });
+        
         
                 var customIcon2 = L.icon({
                     iconUrl: '../images/alarm.png',
@@ -247,37 +244,33 @@
                 }
             });
         }
-                var startMarker = null;
-        var currentRoute = null;
+        var defaultStartPoint = L.latLng(18.064449, 120.558718); // Set your default starting point
+    var currentRoute = null;
         
         function createRoute(endLatLng) {
-            if (startMarker) {
-                if (currentRoute) {
-                    map.removeControl(currentRoute);
-                }
-        
-                currentRoute = L.Routing.control({
-                    waypoints: [
-                        L.latLng(startMarker.getLatLng().lat, startMarker.getLatLng().lng),
-                        L.latLng(endLatLng.lat, endLatLng.lng)
-                    ],
-                    routeWhileDragging: true,
-                    show: true,
-                    language: 'en',
-                    routeDragTimeout: 250
-                }).addTo(map);
-            } else {
-                alert('Please select a starting point by clicking on a marker.');
-            }
+        if (currentRoute) {
+            map.removeControl(currentRoute);
         }
+
+        currentRoute = L.Routing.control({
+            waypoints: [
+                defaultStartPoint, // Use the default starting point as the origin
+                L.latLng(endLatLng.lat, endLatLng.lng)
+            ],
+            routeWhileDragging: true,
+            show: true,
+            language: 'en',
+            routeDragTimeout: 250
+        }).addTo(map);
+    }
         
-        
+                addMarkerWithCustomIcon(18.064449, 120.558718, 'BFP', customIcon3);   
             
         
         
         
                 function fetchDataAndAddMarkers(endpoint, customIcon) {
-            fetch(`https://fdas-drz5.onrender.com/${endpoint}`)
+            fetch(`http://192.168.1.15:5000/${endpoint}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -314,10 +307,9 @@
             alert(message);
         }
         
-        fetchDataAndAddMarkers('conventional', customIcon2);
-        fetchDataAndAddMarkers('sprinkler', customIcon1);
+    
+ 
         fetchDataAndAddMarkers('hydrants', hydrantIcon);
-        fetchDataAndAddMarkers('extinguisher', extinguisherIcon);
         fetchDataAndAddMarkers('fdas', fdasIcon);
         
         
@@ -335,7 +327,6 @@
             // Send data to the server for custom conventional hydrant
             sendDataToServer('conventional', { title, latitude, longitude }, function(data) {
                 // Add the new marker to the map
-                addMarkerWithCustomIcon(data.latitude, data.longitude, data.title, customIcon1);
             });
         }
         function createCustomExtinguisher() {
@@ -352,7 +343,7 @@
         }
         
         function sendDataToServer(endpoint, data, callback) {
-            fetch(`https://fdas-drz5.onrender.com/${endpoint}`, {
+            fetch(`http://192.168.1.15:5000/${endpoint}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -406,7 +397,6 @@
                     }
                     sendDataToServer('sprinkler', { title, latitude, longitude }, function(data) {
                 // Add the new marker to the map
-                addMarkerWithCustomIcon(data.latitude, data.longitude, data.title, customIcon2);
             });
         }
         
@@ -428,25 +418,60 @@
         
                 
         function addMarkerWithCustomIcon(lat, lon, label, customIcon) {
-            var marker = L.marker([lat, lon], { icon: customIcon, title: label }).addTo(map)
-                .bindPopup(label)
-                .openPopup();
-        
-            marker.on('click', function (e) {
-                if (!startMarker) {
-                    // If there is no start marker, set the clicked marker as the start marker
-                    startMarker = e.target;
-                    alert('Start marker set. Click on another marker to set the destination.');
-                } else {
-                    // If there is a start marker, set the clicked marker as the end marker
-                    var endMarker = e.target;
-                    createRoute(endMarker.getLatLng());
-        
-                    // Reset the startMarker for the next route
-                    startMarker = null;
-                }
-            });
-        }
+    var marker = L.marker([lat, lon], { icon: customIcon, title: label }).addTo(map)
+        .bindPopup(label);
+
+    // Add a click event to each marker
+    marker.on('click', function (e) {
+        createRoute(e.latlng);
+
+        // Fetch and display nearby hydrants
+        fetchNearbyHydrants(e.latlng);
+    });
+}
+
+// Add a click event to the map
+map.on('click', function (e) {
+    createRoute(e.latlng);
+
+    // Fetch and display nearby hydrants
+    fetchNearbyHydrants(e.latlng);
+});
+
+    function fetchNearbyHydrants(location) {
+    // Define a radius to consider nearby hydrants (adjust as needed)
+    var radius = 500; // Adjust the radius as needed
+
+    // Fetch nearby hydrants within the specified radius
+    fetch('http://192.168.1.15:5000/hydrants')
+        .then(response => response.json())
+        .then(data => {
+            if (Array.isArray(data)) {
+                // Filter hydrants that are within the specified radius
+                var nearbyHydrants = data.filter(hydrant => {
+                    var hydrantLocation = L.latLng(parseFloat(hydrant.latitude), parseFloat(hydrant.longitude));
+                    return location.distanceTo(hydrantLocation) <= radius;
+                });
+
+                // Hide all hydrants on the map
+                map.eachLayer(function (layer) {
+                    if (layer instanceof L.Marker && layer.options.icon === hydrantIcon) {
+                        map.removeLayer(layer);
+                    }
+                });
+
+                // Display only nearby hydrants
+                nearbyHydrants.forEach(hydrant => {
+                    addMarkerWithCustomIcon(hydrant.latitude, hydrant.longitude, hydrant.title, hydrantIcon);
+                });
+            } else {
+                console.error('Error: Data from server for hydrants is not an array:', data);
+            }
+        })
+        .catch(error => {
+            handleFetchError(error, 'Failed to fetch nearby hydrants.');
+        });
+}
         
                 function searchIcon() {
                     var searchTerm = document.getElementById('searchInput').value.toLowerCase();
@@ -488,6 +513,30 @@
                         }
                     });
                 }
+                const socket = io.connect('http://192.168.1.15:5000');
+
+socket.on('connect', () => {
+    console.log('Connected to Socket.IO');
+});
+
+socket.on('mqttMessage', (payload) => {
+            console.log('Received mqttMessage:', payload);
+
+            if (payload.topic === 'Fire') {
+                // Display pop-up message on top of markers with fdas1 icon
+                displayPopUpOnFdas1Markers(payload.message);
+            }
+        });
+
+        function displayPopUpOnFdas1Markers(message) {
+            map.eachLayer(function (layer) {
+                // Check if the layer is a marker with fdas1 icon
+                if (layer instanceof L.Marker && layer.options.icon.options.iconUrl === '../images/fdas1.png') {
+                    // Create a pop-up with the received message
+                    layer.bindPopup(message).openPopup();
+                }
+            });
+        }
             </script>
 
         </main>
@@ -555,6 +604,7 @@
         
                 <button onclick="createCustomMarker()">Create Custom Marker</button>
             </div>
+
 
             
         </div>
