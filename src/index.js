@@ -47,7 +47,7 @@ app.use(cors({
 }));
 const httpServer = http.createServer(app);
 const mqttClient = mqtt.connect(mqttOptions);
-const port = 5000;
+const port = 3000;
 const io = require('socket.io')(httpServer, {
   cors: {
     origin: '*',
@@ -60,7 +60,7 @@ const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Types; 
 // Start HTTP server
 httpServer.listen(port, WebURL, () => {
-  console.log(`Server listening at http://${WebURL}:3000.`);
+  console.log(`Server listening at http://${WebURL}:${port}.`);
 })
   .on('error', (err) => {
       console.error(`Error starting HTTP server: ${err.message}`);
