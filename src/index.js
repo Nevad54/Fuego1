@@ -59,7 +59,13 @@ const mongoHost = 'mongodb+srv://systembfp8:iwantaccess@bfp.ezea3nm.mongodb.net/
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Types; 
 // Start HTTP server
-
+httpServer.listen(port, () => {
+  console.log(`Server listening at https://${WebURL}:${port}.`);
+})
+  .on('error', (err) => {
+      console.error(`Error starting HTTP server: ${err.message}`);
+      // Handle HTTP server start error here
+  });
 
 // Connect to MQTT
 mqttClient.on('connect', () => {
