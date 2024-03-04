@@ -47,7 +47,7 @@ app.use(cors({
 }));
 const httpServer = http.createServer(app);
 const mqttClient = mqtt.connect(mqttOptions);
-const port = 5000;
+const port = 3000;
 const io = require('socket.io')(httpServer, {
   cors: {
     origin: '*',
