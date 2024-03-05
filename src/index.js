@@ -14,7 +14,6 @@ const fs = require('fs');
 const cors = require("cors");
 require('dotenv').config();
 const { Admin1, User, FDAS } = require("./config");
-const socketio = require('socket.io');
 
 const app = express();
 app.use(express.json());
@@ -47,14 +46,10 @@ app.use(cors({
   origin: '*',
 }));
 
-const mqttClient = mqtt.connect(mqttOptions);
-const port = process.env.PORT || 5000;
 const httpServer = http.createServer(app);
-const io = socketio(httpServer, {
-  cors: {
-    origin: '*',
-  },
-});
+const mqttClient = mqtt.connect(mqttOptions);
+const port = 5000;
+const io = require('socket.io')(httpServer);
 const WebURL = 'fuego1.onrender.com';
 
 
@@ -62,13 +57,13 @@ const mongoHost = 'mongodb+srv://systembfp8:iwantaccess@bfp.ezea3nm.mongodb.net/
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Types; 
 // Start HTTP server
-httpServer.listen(port, '0.0.0.0', () => {
-  console.log(`Server listening at http://0.0.0.0:${port}.`);
+httpServer.listen(port, () => {
+  console.log(`Server listening at https://${WebURL}:${port}.`);
 })
-.on('error', (err) => {
-  console.error(`Error starting HTTP server: ${err.message}`);
-  // Handle HTTP server start error here
-});
+  .on('error', (err) => {
+      console.error(`Error starting HTTP server: ${err.message}`);
+      // Handle HTTP server start error here
+  });
 
 
 io.on('connection', (socket) => {
@@ -172,7 +167,6 @@ mqttClient.on('connect', () => {
         }
       }
     };
-
     
     
     async function saveTimestampToDatabase(timestamp) {
@@ -252,10 +246,6 @@ const handleRoute = async (req, res, collectionName) => {
 };
 
 
-app.get('/socket.io/socket.io.js', (req, res) => {
-  res.setHeader('Content-Type', 'application/javascript');
-  res.sendFile(path.join(__dirname, '/node_modules/socket.io/client-dist/socket.io.js'));
-});
 const markerTypes = ['conventional', 'sprinkler', 'hydrants', 'extinguisher','fdas'];
 markerTypes.forEach((type) => {
     app.post(`/${type}`, async (req, res) => {
@@ -1030,6 +1020,6 @@ app.post('/removeAssociatedFDAS/:id', async (req, res) => {
 
 
 // Listen on port
-app.listen(port, () => {
-    console.log(`Server listening on port ${port}`)
-});
+// app.listen(port, () => {
+//     console.log(`Server listening on port ${port}`)
+// });
