@@ -241,89 +241,9 @@ body {
   /* transform: rotate(0) skewY(0); */
   transform-origin: bottom left;
 }
-/* For smaller devices (phones, 768px and below) */
-@media only screen and (max-width: 768px) {
-  .wrapper {
-      width: 100%;
-  }
-  
-  .form-box.login {
-      padding: 0 20px;
-  }
-
-  .form-box h2 {
-      font-size: 26px;
-  }
-
-  .input-box input {
-      font-size: 14px;
-  }
-
-  .btn {
-      font-size: 14px;
-      height: 40px;
-  }
-
-  .info-text h2 {
-      font-size: 28px;
-      padding-left: 50px;
-      padding-right: 15px;
-  }
-}
-@media only screen and (min-width: 1200px) {
-  .wrapper {
-    width: 90%;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  
-  .form-box.login {
-    padding: 0 40px;
-  }
-
-  .form-box h2 {
-    font-size: 28px;
-  }
-
-  .input-box input {
-    font-size: 16px;
-  }
-
-  .btn {
-    font-size: 16px;
-    height: 45px;
-  }
-
-  .info-text h2 {
-    font-size: 32px;
-    padding-left: 50px;
-    padding-right: 15px;
-  }
-}
-
-@media only screen and (max-width: 430px) {
-  .form-box.login {
-    padding: 0 20px;
-  }
-
-  .form-box h2 {
-    font-size: 24px;
-  }
-
-  .input-box input {
-    font-size: 14px;
-  }
-
-  .btn {
-    font-size: 14px;
-    height: 40px;
-  }
-
-  .info-text h2 {
-    font-size: 26px;
-    padding-left: 25px;
-    padding-right: 10px;
-  }
-}
+/* styles.css */
+/* Define styles for error messages */
 
 
+
+/* added css */

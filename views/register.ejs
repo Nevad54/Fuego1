@@ -1,77 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <link rel="stylesheet" href="/style.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <style>
-        /* Add your custom styles for error messages */
-        .error-message {
-            color: red;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-        
-    </style>
-    <script>
-     // Function to remove error messages after 5 seconds
-  setTimeout(() => {
-    const errorMessages = document.querySelectorAll('.error-message');
-    errorMessages.forEach(message => {
-      message.style.display = 'none'; // Hide the error message
-    });
-  }, 10000); // 10000 milliseconds = 10 seconds
-      
-  </script>
 
-  
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+  <style>
+    /* Materialize CSS */
+    body {
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    main {
+      flex: 1 0 auto;
+    }
+
+    body {
+      background: #fff;
+    }
+
+    .input-field input[type=text]:focus + label,
+    .input-field input[type=email]:focus + label,
+    .input-field input[type=password]:focus + label {
+      color: #e91e63;
+    }
+
+    .input-field input[type=text]:focus,
+    .input-field input[type=email]:focus,
+    .input-field input[type=password]:focus {
+      border-bottom: 2px solid #e91e63;
+      box-shadow: none;
+    }
+
+    /* Additional styling */
+    .form-container {
+      margin-bottom: 20px; /* Adjust as needed */
+    }
+
+    /* Increase form size */
+    .input-field input[type=text],
+    .input-field input[type=email],
+    .input-field input[type=password] {
+      font-size: 18px;
+      padding: 10px;
+      border-radius: 20px; /* Curved edges */
+    }
+
+    /* Error message styling */
+    .error-message {
+      color: red;
+      font-size: 20px;
+      margin-top: 5px;
+    }
+    
+    /* Resize logo image */
+    .logo img {
+      width: 250px; /* Adjust the width as needed */
+      height: auto; /* Maintain aspect ratio */
+    }
+
+    /* Curved edges for buttons */
+    .btn {
+      border-radius: 20px; /* Curved edges */
+    }
+    
+    /* Button hover effect */
+    .btn:hover {
+      background-color: #3949ab; /* Change the background color on hover */
+      color: #fff; /* Change the text color on hover */
+    }
+  </style>
+  <script>
+    // Function to remove error messages after 5 seconds
+ setTimeout(() => {
+   const errorMessages = document.querySelectorAll('.error-message');
+   errorMessages.forEach(message => {
+     message.style.display = 'none'; // Hide the error message
+   });
+ }, 10000); // 10000 milliseconds = 10 seconds
+     
+ </script>
 </head>
+
 <body>
-    <div class="wrapper">
-        <span class="bg-animate"></span>
-        <div class="form-box login">
-            <h2>Register</h2>
-            <% if (errors && errors.length > 0) { %>
-                <% errors.forEach(error => { %>
-                  <% if (error.param === 'email' || error.param === 'username') { %>
-                    <p class="error-message"><%= error.msg %></p>
-                  <% } else if (error.msg === 'Password must be at least 8 characters long') { %>
-                    <p class="error-message"><%= error.msg %></p>
-                  <% } %>
-                <% }) %>
+  <div class="section"></div>
+  <main>
+    <center>
+      <div class="section"></div>
+
+      <h5 class="indigo-text">Create a New Account</h5>
+      <div class="section"></div>
+
+      <div class="container form-container z-depth-1 grey lighten-4" style="padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
+        <div class="logo">
+          <img src="images/logo.png" alt="Logo"> 
+        </div>
+        <div class='row'>
+          <% if (errors && errors.length > 0) { %>
+            <% errors.forEach(error => { %>
+              <% if (error.param === 'email' || error.param === 'username') { %>
+                <p class="error-message"><%= error.msg %></p>
+              <% } else if (error.msg === 'Password must be at least 8 characters long') { %>
+                <p class="error-message"><%= error.msg %></p>
               <% } %>
-            
-              <form action="/register" method="POST">
-                <div class="input-box">
-                    <input type="text" id="name" name="username" required autocomplete="off">
-                    <label>Username:</label>
-                    <i class='bx bxs-user'></i>
-                </div>
-                <div class="input-box">
-                    <input type="email" id="email" name="email" required autocomplete="off">
-                    <label>Email:</label>
-                    <i class='bx bxs-envelope'></i>
-                </div>
-                <div class="input-box">
-                    <input type="password" id="password" name="password" required>
-                    <label>Password:</label>
-                    <i class='bx bxs-lock-alt' ></i>
-                </div>
-                <button type="submit" class="btn">Submit</button>
-            </form>
+            <% }) %>
+          <% } %>
         </div>
-        <div class="custom-alert" id="customAlert" style="display: none;">
-          <div class="alert-content">
-              <span class="close-btn" onclick="closeCustomAlert()">&times;</span>
-              <p id="alertMessage"></p>
+        <form class="col s12" method="post" action="/register">
+          <div class='row'>
+            <div class='input-field col s12'>
+              <input type="text" id="username" name="username" required autocomplete="off">
+              <label for='username'>Enter your username</label>
+            </div>
           </div>
+
+          <div class='row'>
+            <div class='input-field col s12'>
+              <input type="email" id="email" name="email" required autocomplete="off">
+              <label for='email'>Enter your email</label>
+            </div>
+          </div>
+
+          <div class='row'>
+            <div class='input-field col s12'>
+              <input class='validate' type='password' name='password' id='password' required>
+              <label for='password'>Enter your password</label>
+            </div>
+          </div>
+
+          <br />
+          <center>
+            <div class='row'>
+              <button type='submit' name='btn_register' class='col s12 btn btn-large waves-effect indigo'>Register</button>
+            </div>
+          </center>
+        </form>
       </div>
-        <div class="info-text login">
-            <h1>Welcome Back!</h1>
-            <h2>FireWatch Portal</h2>
-        </div>
-    </div>
+    </center>
+
+    <div class="section"></div>
+    <div class="section"></div>
+  </main>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
 </body>
+
 </html>

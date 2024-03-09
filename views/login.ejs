@@ -1,84 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <style>
-        .error-message {
-            color: red;
-            font-size: 14px;
-            margin-top: 5px;
-          }
-    </style>
-    <script>
-     // Function to remove error messages after 5 seconds
-  setTimeout(() => {
-    const errorMessages = document.querySelectorAll('.error-message');
-    errorMessages.forEach(message => {
-      message.style.display = 'none'; // Hide the error message
-    });
-  }, 5000); // 5000 milliseconds = 5 seconds
-      
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+  <style>
+    /* Materialize CSS */
+    body {
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    main {
+      flex: 1 0 auto;
+    }
+
+    body {
+      background: #fff;
+    }
+
+    .input-field input[type=text]:focus + label,
+    .input-field input[type=email]:focus + label,
+    .input-field input[type=password]:focus + label {
+      color: #e91e63;
+    }
+
+    .input-field input[type=text]:focus,
+    .input-field input[type=email]:focus,
+    .input-field input[type=password]:focus {
+      border-bottom: 2px solid #e91e63;
+      box-shadow: none;
+    }
+
+    /* Additional styling */
+    .form-container {
+      margin-bottom: 20px; /* Adjust as needed */
+    }
+
+    /* Increase form size */
+    .input-field input[type=text],
+    .input-field input[type=email],
+    .input-field input[type=password] {
+      font-size: 18px;
+      padding: 10px;
+      border-radius: 20px; /* Curved edges */
+    }
+
+    /* Error message styling */
+    .error-message {
+      color: red;
+      font-size: 20px;
+      margin-top: 5px;
+    }
+    
+    /* Resize logo image */
+    .logo img {
+      width: 250px; /* Adjust the width as needed */
+      height: auto; /* Maintain aspect ratio */
+    }
+
+    /* Curved edges for buttons */
+    .btn {
+      border-radius: 20px; /* Curved edges */
+    }
+    
+    /* Button hover effect */
+    .btn:hover {
+      background-color: #3949ab; /* Change the background color on hover */
+      color: #fff; /* Change the text color on hover */
+    }
+  </style>
+  <script>
+    // Function to remove error messages after 5 seconds
+    setTimeout(() => {
+      const errorMessages = document.querySelectorAll('.error-message');
+      errorMessages.forEach(message => {
+        message.style.display = 'none'; // Hide the error message
+      });
+    }, 5000); // 5000 milliseconds = 5 seconds
   </script>
 </head>
+
 <body>
+  <div class="section"></div>
+  <main>
+    <center>
+    
+      <div class="section"></div>
 
+      <h5 class="indigo-text">Please, login into your account</h5>
+      <div class="section"></div>
 
- 
-    <div class="wrapper">
-        <span class="bg-animate"></span>
-        <div class="form-box login">
-            <h2> Login</h2>
+      <div class="container form-container"> <!-- Added form-container class -->
+        <div class="z-depth-1 grey lighten-4 row" style="display: inline-block; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
+
+          <form class="col s12" method="post" action="/login" onsubmit="return validateForm()">
+            <div class="logo">
+                <img src="images/logo.png" alt="Logo"> 
+              </div>
+            <div class='row'>
+              
+            </div>
             <% if (typeof errorMessage !== 'undefined') { %>
                 <div class="error-message">
                   <%= errorMessage %>
                 </div>
               <% } %>
-            <form action="/login" method="post">
-                <div class="input-box">
-                    <input type="text" id="userOrEmail" name="userOrEmail" required autocomplete="off">
-                    <label>Username</label>
-                    <i class='bx bxs-user'></i>
-                </div>
-
-                <div class="input-box">
-                    <input type="password" id="password" name="password" required>
-                    <label>Password</label>
-                    <i class='bx bxs-lock-alt' ></i>
-                </div>
-                
-                <button type="submit" class="btn">Login</button>
-              
-            </form>
-             </div>
-            <div class="info-text login">
-                <h2>Welcome!</h2>
-                <img src="images/logo.png" alt="Logo">
+            <div class='row'>
+              <div class='input-field col s12'>
+                <input type="text" id="userOrEmail" name="userOrEmail" required autocomplete="off">
+                <label for='userOrEmail'>Enter your email</label> <!-- Change the "for" attribute to match the input field id -->
+              </div>
             </div>
-        </div>
 
-    <script>
+            <div class='row'>
+              <div class='input-field col s12'>
+                <input class='validate' type='password' name='password' id='password' required>
+                <label for='password'>Enter your password</label>
+              </div>
+            </div>
+
+            <br />
+            <center>
+               
+              <div class='row'>
+                <button type='submit' name='btn_login' class='col s12 btn btn-large waves-effect indigo'>Login</button>
+              </div>
+            </center>
+          </form>
+        </div>
+      </div>
+    </center>
+
+    <div class="section"></div>
+    <div class="section"></div>
+  </main>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+  <  <script>
       
 
         
-        const form = document.querySelector('form');
+    const form = document.querySelector('form');
 
-        form.addEventListener('submit', (event) => {
-        const username = document.getElementById('userOrEmail').value;
-        const password = document.getElementById('password').value;
+    form.addEventListener('submit', (event) => {
+    const username = document.getElementById('userOrEmail').value;
+    const password = document.getElementById('password').value;
 
-        if (!username || !username.trim()) {
-            event.preventDefault();
-            alert('Please enter your username or email address.');
-        } else if (!password || !password.trim()) {
-            event.preventDefault();
-            alert('Please enter your password.');
-        }
-        });
-    </script>
+    if (!username || !username.trim()) {
+        event.preventDefault();
+        alert('Please enter your username or email address.');
+    } else if (!password || !password.trim()) {
+        event.preventDefault();
+        alert('Please enter your password.');
+    }
+    });
+</script>
 </body>
+
 </html>
