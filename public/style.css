@@ -270,3 +270,34 @@ body {
       padding-right: 15px;
   }
 }
+@media only screen and (max-width: 1200px) {
+  .wrapper {
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .form-box.login {
+    padding: 0 40px;
+  }
+
+  .form-box h2 {
+    font-size: 28px;
+  }
+
+  .input-box input {
+    font-size: 16px;
+  }
+
+  .btn {
+    font-size: 16px;
+    height: 45px;
+  }
+
+  .info-text h2 {
+    font-size: 32px;
+    padding-left: 35px;
+    padding-right: 15px;
+  }
+}
+
