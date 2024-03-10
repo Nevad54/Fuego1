@@ -118,7 +118,7 @@ b{
     width: 96%;
     margin: 0 auto;
     gap: 1.8rem;
-    grid-template-columns: 12rem auto 23rem;
+    grid-template-columns: 12rem auto 18rem;
 }
 
 aside{
@@ -229,6 +229,19 @@ main .analyse{
     grid-template-columns: repeat(2, 1fr);
     gap: 2rem;
 }
+
+.analyse {
+    display: flex; /* Display children elements in a row by default */
+    flex-wrap: wrap; /* Allow items to wrap onto multiple lines */
+    justify-content: space-between; /* Distribute items evenly along the main axis */
+}
+
+.sensor-data {
+    width: calc(50% - 20px); /* 50% width for each circle with 20px margin */
+    margin: 10px;
+    box-sizing: border-box;
+}
+
 
 main .analyse > div{
     background-color: var(--color-white);
@@ -489,7 +502,7 @@ main .analyse .sensor-data .percentage{
 @media screen and (max-width: 1200px) {
     .container{
         width: 95%;
-        grid-template-columns: 7rem auto 23rem;
+        grid-template-columns: 7rem auto 20rem;
     }
 
     aside .logo h2{
@@ -566,6 +579,62 @@ main .analyse .sensor-data .percentage{
         left: 0;
        } 
     }
+
+    .main {
+    padding: 20px;
+}
+
+.fdas-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.box-border {
+    border: 1px solid #ccc;
+    padding: 10px;
+    flex: 1 1 100%; /* Take full width on small screens */
+}
+
+.analyse {
+    flex-direction: column; /* Change to a column layout on smaller screens */
+    align-items: center; /* Center items along the cross axis */
+}
+
+.sensor-data {
+    width: calc(50% - 20px); /* 50% width for each circle with 20px margin */
+    margin: 10px;
+    box-sizing: border-box;
+}
+
+.analyse > div {
+    flex: 1 1 100%; /* Take full width on small screens */
+}
+
+
+.status {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sensor-data-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+
+
+.sensor-data svg {
+    width: 100px;
+    height: 100px;
+}
+
+.sensor-data .percentage {
+    text-align: center;
+}
+
+    
 
     aside .logo{
         margin-left: 1rem;
@@ -661,4 +730,21 @@ main .analyse .sensor-data .percentage{
     font-size: 24px;
     color: #7d8da1;
   }
-  
+  @media screen and (max-width: 480px) {
+    main .analyse {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    main .analyse .sensor-data {
+        width: calc(100% - 10px); /* Adjust width and margin as needed */
+    }
+}
+/* CSS for icon-with-percentage class */
+.icon-with-percentage {
+    text-align: center; /* Center-align the content */
+}
+
+/* CSS for percentage class */
+.percentage {
+    margin-top: 40px; /* Adjust the top margin for spacing */
+}
