@@ -11,7 +11,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.1.0/mqtt.min.js"></script>
     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
+
 
 </head>
 
@@ -170,7 +170,7 @@
                 <!-- ... your existing right-section content ... -->
         
             </div>
-            <script src="../js/control.js"></script>
+         
         </body>
         
         </html>
@@ -186,7 +186,7 @@
     const fdasId = document.getElementById('fdas').value;
 
     // Make an AJAX request or use Fetch API to send the association data
-            fetch('https://fuego1.onrender.com/associateFDAS', {
+            fetch('http://192.168.239.189:5000/associateFDAS', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -203,8 +203,7 @@
             });
              }
 
-            const socket = io.connect('https://fuego1.onrender.com');
-
+            const socket = io.connect('http://192.168.239.189:5000');
             console.log('Connecting to Socket.IO');
 
             socket.on('connect', () => {
@@ -259,18 +258,12 @@
 
                 <div class="profile">
                     <div class="info">
-                        <% if (admin1 && admin1.username) { %>
-                            <p>Hey, <b><%= admin1.username %></b></p>
-                            <small class="text-muted">Admin</small>
-                        <% } else { %>
-                            <!-- Handle the case where admin1 is not defined -->
-                            <p>Hey, <b>Admin</b></p>
-                            <small class="text-muted">Admin</small>
-                        <% } %>
+                        <p>Hey, <b><%= admin1.username %></b></p>
+                        <small class="text-muted">Admin</small>
                     </div>
                     <div class="profile-photo">
                         <a href="/user"> <!-- Navigate back to user profile -->
-                            <% if (admin1 && admin1.profilePicture) { %>
+                            <% if (admin1.profilePicture) { %>
                                 <img src="<%= admin1.profilePicture.replace(/\\/g, '/') %>" alt="Profile Picture">
                             <% } else { %>
                                 <!-- Placeholder image or default image when no profile picture exists -->
@@ -278,6 +271,8 @@
                             <% } %>
                         </a>
                     </div>
+                </div>
+
                 </div>
             </div>
             <!-- End of Nav -->
