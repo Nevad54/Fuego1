@@ -114,6 +114,34 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.1.0/mqtt.min.js"></script>
             <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
             <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Add event listener for clicks on the Leaflet Routing container
+                    document.addEventListener('click', function(event) {
+                        const routingContainer = document.querySelector('.leaflet-routing-container');
+                        const searchContainer = document.getElementById('searchContainer');
+                
+                        // Check if the routing container exists before accessing its properties
+                        if (routingContainer) {
+                            // Debugging: Log the event target
+                            console.log('Clicked Element:', event.target);
+                
+                            // Check if the clicked element or any of its ancestors is the Leaflet Routing container
+                            if (event.target.closest('.leaflet-routing-container')) {
+                                // Debugging: Log that the Leaflet Routing container is clicked
+                                console.log('Leaflet Routing Container Clicked');
+                
+                                // Set higher z-index for routing container and lower z-index for search container
+                                routingContainer.style.zIndex = '1002';
+                                searchContainer.style.zIndex = '1';
+                            } else {
+                                // Reset z-index for both elements if the click is outside the routing container
+                                routingContainer.style.zIndex = '';
+                                searchContainer.style.zIndex = '';
+                            }
+                        }
+                    });
+                });
+                
 
                   // Function to display error message
                   function displayErrorMessage(message) {
@@ -471,24 +499,25 @@ map.on('click', function (e) {
         .catch(error => {
             handleFetchError(error, 'Failed to fetch nearby hydrants.');
         });
-}
+}           
+    var tooltipLayerGroup = L.layerGroup().addTo(map);
         
                 function searchIcon() {
-                    var searchTerm = document.getElementById('searchInput').value.toLowerCase();
+                    var searchTerm = document.getElementById('searchInput').value.toLowerCase(); // Get the search term from the input element and convert it to lowercase
                     var matchingMarkers = [];
-        
+
                     // Remove existing tooltips from the map
                     tooltipLayerGroup.clearLayers();
-        
+
                     map.eachLayer(function (layer) {
                         if (layer instanceof L.Marker && layer.options.title) {
-                            var title = layer.options.title.toLowerCase();
+                            var title = layer.options.title.toLowerCase(); // Convert marker title to lowercase for case-insensitive comparison
                             if (title.includes(searchTerm)) {
-                                matchingMarkers.push(layer);
+                                matchingMarkers.push(layer); // Add matching markers to the array
                             }
                         }
                     });
-        
+
                     if (matchingMarkers.length > 0) {
                         var popupContent = "";
                         matchingMarkers.forEach(marker => {
@@ -496,11 +525,13 @@ map.on('click', function (e) {
                             var content = `<div>${iconHtml} ${marker.options.title}</div>`;
                             marker.bindTooltip(content, { direction: 'top', permanent: true }).addTo(tooltipLayerGroup);
                         });
-        
-                        map.flyTo(matchingMarkers[0].getLatLng(), 14);
+
+                        map.flyTo(matchingMarkers[0].getLatLng(), 14); // Fly to the first matching marker's location
+                    } else {
+                        displayErrorMessage("No matching markers found."); // Display error message if no matching markers are found
                     }
                 }
-        
+
                 function toggleCustomHydrantContainer() {
                     var customHydrantContainer = document.getElementById('customHydrantContainer');
                     customHydrantContainer.style.display = (customHydrantContainer.style.display === 'none') ? 'block' : 'none';
@@ -537,6 +568,12 @@ socket.on('mqttMessage', (payload) => {
                 }
             });
         }
+
+
+
+
+
+        
             </script>
 
         </main>

@@ -460,13 +460,13 @@ main #map {
 
 
 
-.dark-mode-map {
 
-    filter: invert(180%) hue-rotate(220deg) brightness(125%) contrast(80%);
-}
 .dark-mode-map .leaflet-popup-content {
     color: var(--color-white) !important;
 
+}
+.leaflet-routing-on-top {
+    z-index: 10000; /* Adjust the z-index value as needed */
 }
 
 

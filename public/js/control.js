@@ -57,16 +57,7 @@ menuBtn.addEventListener('click', () => { sideMenu.style.display = 'block'; });
 closeBtn.addEventListener('click', () => { sideMenu.style.display = 'none'; });
 darkModeToggle.addEventListener('click', toggleDarkMode);
 
-document.addEventListener('click', (event) => {
-    const routingContainer = document.querySelector('.leaflet-routing-container');
-    if (event.target.classList.contains('leaflet-routing-container')) {
-        routingContainer.style.zIndex = '1002';
-        searchContainer.style.zIndex = '1001';
-    } else {
-        routingContainer.style.zIndex = '';
-        searchContainer.style.zIndex = '';
-    }
-});
+
 
 
 document.addEventListener('DOMContentLoaded', () => {
