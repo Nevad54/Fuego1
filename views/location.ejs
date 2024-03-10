@@ -298,7 +298,7 @@
         
         
                 function fetchDataAndAddMarkers(endpoint, customIcon) {
-            fetch(`https://fuego1.onrender.com/${endpoint}`)
+            fetch(`http://192.168.15.189:5000/${endpoint}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -371,7 +371,7 @@
         }
         
         function sendDataToServer(endpoint, data, callback) {
-            fetch(`https://fuego1.onrender.com/${endpoint}`, {
+            fetch(`http://192.168.15.189:5000/${endpoint}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -471,7 +471,7 @@ map.on('click', function (e) {
     var radius = 500; // Adjust the radius as needed
 
     // Fetch nearby hydrants within the specified radius
-    fetch('https://fuego1.onrender.com/hydrants')
+    fetch('http://192.168.15.189:5000/hydrants')
         .then(response => response.json())
         .then(data => {
             if (Array.isArray(data)) {
@@ -502,35 +502,153 @@ map.on('click', function (e) {
 }           
     var tooltipLayerGroup = L.layerGroup().addTo(map);
         
-                function searchIcon() {
-                    var searchTerm = document.getElementById('searchInput').value.toLowerCase(); // Get the search term from the input element and convert it to lowercase
-                    var matchingMarkers = [];
-
-                    // Remove existing tooltips from the map
-                    tooltipLayerGroup.clearLayers();
-
-                    map.eachLayer(function (layer) {
-                        if (layer instanceof L.Marker && layer.options.title) {
-                            var title = layer.options.title.toLowerCase(); // Convert marker title to lowercase for case-insensitive comparison
-                            if (title.includes(searchTerm)) {
-                                matchingMarkers.push(layer); // Add matching markers to the array
-                            }
-                        }
+    function searchIcon() {
+        var searchTerm = document.getElementById('searchInput').value.toLowerCase(); // Get the search term from the input element and convert it to lowercase
+        var latLngPattern = /(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)/; // Regular expression pattern to match latitude and longitude
+    
+        // Check if the search term matches the pattern for latitude and longitude
+        if (searchTerm.match(latLngPattern)) {
+            var match = searchTerm.match(latLngPattern); // Extract latitude and longitude from the search term
+            var latitude = parseFloat(match[1]); // Latitude extracted from the search term
+            var longitude = parseFloat(match[3]); // Longitude extracted from the search term
+    
+            // Fly to the specified latitude and longitude on the map
+            map.flyTo([latitude, longitude], 14);
+    
+            // Clear existing tooltips from the map
+            tooltipLayerGroup.clearLayers();
+    
+            // Fetch the name of the location based on the coordinates
+            fetchLocationName(latitude, longitude)
+                .then(locationName => {
+                    // Create a location icon
+                    var locationIcon = L.icon({
+                        iconUrl: '/images/icons8-location-48.png', // Replace 'path_to_your_location_icon.png' with the actual path to your location icon
+                        iconSize: [29, 38],
+                        iconAnchor: [12, 41],
+                        popupAnchor: [1, -34],
+                        tooltipAnchor: [16, -28],
+                        shadowSize: [41, 41]
                     });
-
-                    if (matchingMarkers.length > 0) {
-                        var popupContent = "";
-                        matchingMarkers.forEach(marker => {
-                            var iconHtml = `<img src="${marker.options.icon.options.iconUrl}" alt="icon" style="width: 20px; height: 20px; margin-right: 5px;">`;
-                            var content = `<div>${iconHtml} ${marker.options.title}</div>`;
-                            marker.bindTooltip(content, { direction: 'top', permanent: true }).addTo(tooltipLayerGroup);
-                        });
-
-                        map.flyTo(matchingMarkers[0].getLatLng(), 14); // Fly to the first matching marker's location
-                    } else {
-                        displayErrorMessage("No matching markers found."); // Display error message if no matching markers are found
+    
+                    // Add a marker with the location name as a popup at the specified latitude and longitude
+                    L.marker([latitude, longitude], { icon: locationIcon }).addTo(map).bindPopup(locationName).openPopup();
+                })
+                .catch(error => {
+                    console.error('Error fetching location name:', error);
+                    displayErrorMessage('Failed to fetch location name.');
+                });
+        } else {
+            // Search for matching markers based on the search term
+            var matchingMarkers = [];
+    
+            // Remove existing tooltips from the map
+            tooltipLayerGroup.clearLayers();
+    
+            map.eachLayer(function (layer) {
+                if (layer instanceof L.Marker && layer.options.title) {
+                    var title = layer.options.title.toLowerCase(); // Convert marker title to lowercase for case-insensitive comparison
+                    if (title.includes(searchTerm)) {
+                        matchingMarkers.push(layer); // Add matching markers to the array
                     }
                 }
+            });
+    
+            if (matchingMarkers.length > 0) {
+                var popupContent = "";
+                matchingMarkers.forEach(marker => {
+                    var iconHtml = `<img src="${marker.options.icon.options.iconUrl}" alt="icon" style="width: 20px; height: 20px; margin-right: 5px;">`;
+                    var content = `<div>${iconHtml} ${marker.options.title}</div>`;
+                    marker.bindTooltip(content, { direction: 'top', permanent: true }).addTo(tooltipLayerGroup);
+                });
+    
+                map.flyTo(matchingMarkers[0].getLatLng(), 14); // Fly to the first matching marker's location
+            } else {
+                displayErrorMessage("No matching markers found."); // Display error message if no matching markers are found
+            }
+        }
+    }
+    
+    // Function to fetch the name of the location based on latitude and longitude
+    function fetchLocationName(latitude, longitude) {
+        return new Promise((resolve, reject) => {
+            // Use a geocoding service API to fetch the location name
+            // Replace the placeholder URL with the actual URL of the geocoding service API
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Extract the location name from the API response
+                    const locationName = data.display_name;
+                    resolve(locationName);
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    }
+    
+    var searchTerm = document.getElementById('searchInput').value.toLowerCase(); // Get the search term from the input element and convert it to lowercase
+    var latLngPattern = /(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)/; // Regular expression pattern to match latitude and longitude
+
+    // Check if the search term matches the pattern for latitude and longitude
+    if (searchTerm.match(latLngPattern)) {
+        var match = searchTerm.match(latLngPattern); // Extract latitude and longitude from the search term
+        var latitude = parseFloat(match[1]); // Latitude extracted from the search term
+        var longitude = parseFloat(match[3]); // Longitude extracted from the search term
+
+        // Fly to the specified latitude and longitude on the map
+        map.flyTo([latitude, longitude], 14);
+
+        // Clear existing tooltips from the map
+        tooltipLayerGroup.clearLayers();
+
+        // Create a location icon
+        var locationIcon = L.icon({
+            iconUrl: '/images/icons8-location-48.png', // Replace 'path_to_your_location_icon.png' with the actual path to your location icon
+            iconSize: [29, 38],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            tooltipAnchor: [16, -28],
+            shadowSize: [41, 41]
+        });
+
+        // Add a marker with the location icon at the specified latitude and longitude
+        L.marker([latitude, longitude], { icon: locationIcon }).addTo(map).bindPopup("Searched Location").openPopup();
+    } else {
+        // Search for matching markers based on the search term
+        var matchingMarkers = [];
+
+        // Remove existing tooltips from the map
+        tooltipLayerGroup.clearLayers();
+
+        map.eachLayer(function (layer) {
+            if (layer instanceof L.Marker && layer.options.title) {
+                var title = layer.options.title.toLowerCase(); // Convert marker title to lowercase for case-insensitive comparison
+                if (title.includes(searchTerm)) {
+                    matchingMarkers.push(layer); // Add matching markers to the array
+                }
+            }
+        });
+
+        if (matchingMarkers.length > 0) {
+            var popupContent = "";
+            matchingMarkers.forEach(marker => {
+                var iconHtml = `<img src="${marker.options.icon.options.iconUrl}" alt="icon" style="width: 20px; height: 20px; margin-right: 5px;">`;
+                var content = `<div>${iconHtml} ${marker.options.title}</div>`;
+                marker.bindTooltip(content, { direction: 'top', permanent: true }).addTo(tooltipLayerGroup);
+            });
+
+            map.flyTo(matchingMarkers[0].getLatLng(), 14); // Fly to the first matching marker's location
+        } else {
+            displayErrorMessage("No matching markers found."); // Display error message if no matching markers are found
+        }
+    }
+
 
                 function toggleCustomHydrantContainer() {
                     var customHydrantContainer = document.getElementById('customHydrantContainer');
@@ -544,7 +662,7 @@ map.on('click', function (e) {
                         }
                     });
                 }
-                const socket = io.connect('https://fuego1.onrender.com');
+                const socket = io.connect('http://192.168.15.189:5000');
 
 socket.on('connect', () => {
     console.log('Connected to Socket.IO');
