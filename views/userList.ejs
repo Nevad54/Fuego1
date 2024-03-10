@@ -265,7 +265,7 @@
                         const userId = document.getElementById('user').value;
                         const fdasId = document.getElementById('fdas').value;
                 
-                        fetch('http://192.168.116.189:5000/associateFDAS', {
+                        fetch('https://fuego1.onrender.com/associateFDAS', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -295,7 +295,7 @@
                             }, 5000);
                         });
                     }
-                const socket = io.connect('http://192.168.116.189:5000');
+                const socket = io.connect('https://fuego1.onrender.com');
                 console.log('Connecting to Socket.IO');
                 
                 socket.on('connect', () => {
