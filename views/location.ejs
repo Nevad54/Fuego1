@@ -539,12 +539,11 @@ map.on('click', function (e) {
                     displayErrorMessage('Failed to fetch location name.');
                 });
         } else {
-            // Search for matching markers based on the search term
-            var matchingMarkers = [];
-    
             // Remove existing tooltips from the map
             tooltipLayerGroup.clearLayers();
     
+            // Search for matching markers based on the search term
+            var matchingMarkers = [];
             map.eachLayer(function (layer) {
                 if (layer instanceof L.Marker && layer.options.title) {
                     var title = layer.options.title.toLowerCase(); // Convert marker title to lowercase for case-insensitive comparison
@@ -555,7 +554,6 @@ map.on('click', function (e) {
             });
     
             if (matchingMarkers.length > 0) {
-                var popupContent = "";
                 matchingMarkers.forEach(marker => {
                     var iconHtml = `<img src="${marker.options.icon.options.iconUrl}" alt="icon" style="width: 20px; height: 20px; margin-right: 5px;">`;
                     var content = `<div>${iconHtml} ${marker.options.title}</div>`;
