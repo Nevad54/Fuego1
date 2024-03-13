@@ -60,6 +60,9 @@ darkModeToggle.addEventListener('click', toggleDarkMode);
 
 
 
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
     loadDarkModeState();
     // Your other DOMContentLoaded logic here...
@@ -104,4 +107,10 @@ const registerButton = document.getElementById('registerButton');
 registerButton.addEventListener('click', function() {
     // Redirect the user to the register page
     window.location.href = '/register';
+});
+
+document.getElementById('searchInput').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        searchIcon();
+    }
 });

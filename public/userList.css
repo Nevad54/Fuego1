@@ -263,26 +263,8 @@ main {
             height: 7rem;
         }
 
-            main .analyse svg circle {
-                fill: none;
-                stroke-width: 14;
-                stroke-linecap: round;
-                transform: translate(5px, 5px);
-            }
-
-        main .analyse .fire svg circle {
-            stroke: var(--color-success);
-            stroke-dashoffset: 0;
-            stroke-dasharray: 0;
-            animation: blink 2s infinite;
-        }
-
-        main .analyse .smoke svg circle {
-            stroke: var(--color-danger);
-            stroke-dashoffset: 0;
-            stroke-dasharray: 0;
-            animation: blink 2s infinite; /* Adjust the duration as needed */
-        }
+       
+        
 
 @keyframes blink {
     0% {
@@ -367,28 +349,8 @@ main .new-users {
                 border-radius: 50%;
             }
 
-main .recent-orders {
-    margin-top: 1.3rem;
-}
 
-    main .recent-orders h2 {
-        margin-bottom: 0.8rem;
-    }
-
-    main .recent-orders table {
-        background-color: var(--color-white);
-        width: 100%;
-        padding: var(--card-padding);
-        text-align: center;
-        box-shadow: var(--box-shadow);
-        border-radius: var(--card-border-radius);
-        transition: all 0.3s ease;
-    }
-
-        main .recent-orders table:hover {
-            box-shadow: none;
-        }
-
+   
 main table tbody td {
     height: 2.8rem;
     border-bottom: 1px solid var(--color-light);
@@ -563,6 +525,119 @@ main .recent-orders a {
                 gap: 0.6rem;
             }
 
+
+
+
+/* Modal container */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Modal content */
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 5px;
+    position: relative;
+}
+
+/* Close button */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+/* Form group styles */
+.form-group {
+    margin-bottom: 30px; /* Adjust the margin bottom as needed */
+}
+
+/* Input field styles */
+input[type="email"],
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+/* Button group styles */
+.btn-group {
+    text-align: center;
+}
+
+/* Update button styles */
+.update-btn {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.update-btn:hover {
+    background-color: #0056b3;
+}
+
+#removeFDASButton {
+        background-color: #ff5555; /* Red background */
+        color: white; /* White text color */
+        padding: 8px 12px; /* Padding */
+        border: none; /* No border */
+        border-radius: 4px; /* Rounded corners */
+        cursor: pointer; /* Cursor on hover */
+        margin-top: 8px; /* Top margin */
+    }
+
+#removeFDASButton:hover{
+    background-color: #364759;  
+}
+/* Style for the associated title */
+#associatedFDASTitle {
+    font-size: 16px; /* Font size */
+    font-weight: bold; /* Bold text */
+    margin-top: 8px; /* Top margin */
+}
+#errorMessage, #successMessage {
+    position: fixed;
+    top: 20px; /* Adjust the top position as needed */
+    left: 50%; /* Center the message horizontally */
+    transform: translateX(-50%);
+    z-index: 9999; /* Ensure the messages appear above other content */
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    display: none; /* Initially hide the messages */
+}
+
+#errorMessage {
+    background-color: red;
+    color: white;
+}
+
+#successMessage {
+    background-color: green;
+    color: white;
+}
 
 
 @media screen and (max-width: 1440px) {
@@ -1136,115 +1211,4 @@ a {
 
 a .material-icons-sharp {
     margin-right: 0.5rem; /* Add some spacing between the icon and text */
-}
-
-/* Modal container */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-}
-
-/* Modal content */
-.modal-content {
-    background-color: #fefefe;
-    margin: 10% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 600px;
-    border-radius: 5px;
-    position: relative;
-}
-
-/* Close button */
-.close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 20px;
-    cursor: pointer;
-}
-/* Form group styles */
-.form-group {
-    margin-bottom: 30px; /* Adjust the margin bottom as needed */
-}
-
-/* Input field styles */
-input[type="email"],
-input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-    font-size: 16px;
-}
-
-/* Button group styles */
-.btn-group {
-    text-align: center;
-}
-
-/* Update button styles */
-.update-btn {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.update-btn:hover {
-    background-color: #0056b3;
-}
-
-#removeFDASButton {
-        background-color: #ff5555; /* Red background */
-        color: white; /* White text color */
-        padding: 8px 12px; /* Padding */
-        border: none; /* No border */
-        border-radius: 4px; /* Rounded corners */
-        cursor: pointer; /* Cursor on hover */
-        margin-top: 8px; /* Top margin */
-    }
-
-#removeFDASButton:hover{
-    background-color: #364759;  
-}
-/* Style for the associated title */
-#associatedFDASTitle {
-    font-size: 16px; /* Font size */
-    font-weight: bold; /* Bold text */
-    margin-top: 8px; /* Top margin */
-}
-#errorMessage, #successMessage {
-    position: fixed;
-    top: 20px; /* Adjust the top position as needed */
-    left: 50%; /* Center the message horizontally */
-    transform: translateX(-50%);
-    z-index: 9999; /* Ensure the messages appear above other content */
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: bold;
-    display: none; /* Initially hide the messages */
-}
-
-#errorMessage {
-    background-color: red;
-    color: white;
-}
-
-#successMessage {
-    background-color: green;
-    color: white;
 }

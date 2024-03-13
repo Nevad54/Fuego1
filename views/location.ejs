@@ -104,7 +104,7 @@
                 <label for="searchInput">Search:</label>
                 <input type="text" id="searchInput" placeholder="">
                 <button onclick="searchIcon()">Search</button>
-                <button onclick="stopDisplayingTooltips()">Back</button>
+                <button onclick="stopDisplayingTooltips()">Clear</button>
                 <!-- Add Back button -->
             </div>
            
@@ -132,7 +132,7 @@
                 
                                 // Set higher z-index for routing container and lower z-index for search container
                                 routingContainer.style.zIndex = '1002';
-                                searchContainer.style.zIndex = '1';
+                                searchContainer.style.zIndex = '0';
                             } else {
                                 // Reset z-index for both elements if the click is outside the routing container
                                 routingContainer.style.zIndex = '';
@@ -164,10 +164,71 @@
                 }
 
                 var map = L.map('map').setView([18.059999, 120.543470], 14);
+                map.zoomControl.setPosition('bottomright');
+
+        var defaultTileLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+        }).addTo(map);
+
+        var alternativeTileLayer =  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+	subdomains: 'abcd',
+	maxZoom: 20
+        });
+
+       
+
+
+        function switchTileLayer() {
+            if (map.hasLayer(defaultTileLayer)) {
+                map.removeLayer(defaultTileLayer);
+                map.addLayer(alternativeTileLayer);
+                document.getElementById('switchButton').innerHTML = 'Satellite View';
+            } else {
+                map.removeLayer(alternativeTileLayer);
+                map.addLayer(defaultTileLayer);
+                document.getElementById('switchButton').innerHTML = 'Map View';
+            }
+        }
         
-                L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-                }).addTo(map);
+        var switchTileLayerButton = L.Control.extend({
+            options: {
+                position: 'bottomleft'
+            },
+            onAdd: function () { 
+                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+        
+                // Create a wrapper div with a high z-index
+                var wrapper = L.DomUtil.create('div', 'switch-button-wrapper', container);
+                wrapper.style.zIndex = '10000'; // Set a high z-index for the wrapper
+        
+                // Add the button inside the wrapper
+                wrapper.innerHTML = '<button id="switchButton">Map View</button>';
+        
+                // Set the z-index of the button container
+                container.style.zIndex = '10001'; // Set the z-index of the button container
+        
+                // Add click event listener to the button
+                wrapper.querySelector('#switchButton').addEventListener('click', function(event) {
+                    // Prevent default action
+                    event.preventDefault();
+                    // Stop event propagation to prevent the map from receiving the click event
+                    event.stopPropagation();
+                    // Call the switchTileLayer function
+                    switchTileLayer();
+                });
+        
+                return container;
+            }
+        });
+        
+        map.addControl(new switchTileLayerButton());
+        
+        var customSwitchButtonContainer = document.querySelector('.custom-switch-button-container');
+if (customSwitchButtonContainer) {
+    customSwitchButtonContainer.style.zIndex = '10000'; // Set the desired z-index value
+}
+
         
             var fdasIcon = L.icon({
             iconUrl: '../images/fdas1.png', // Path to the FDAS System icon image
@@ -516,7 +577,7 @@ map.on('click', function (e) {
             map.flyTo([latitude, longitude], 14);
     
             // Clear existing tooltips from the map
-          
+        
     
             // Fetch the name of the location based on the coordinates
             fetchLocationName(latitude, longitude)
@@ -539,10 +600,12 @@ map.on('click', function (e) {
                     displayErrorMessage('Failed to fetch location name.');
                 });
         } else {
-            // Remove existing tooltips from the map
-       
             // Search for matching markers based on the search term
             var matchingMarkers = [];
+    
+            // Remove existing tooltips from the map
+     
+    
             map.eachLayer(function (layer) {
                 if (layer instanceof L.Marker && layer.options.title) {
                     var title = layer.options.title.toLowerCase(); // Convert marker title to lowercase for case-insensitive comparison
@@ -553,6 +616,7 @@ map.on('click', function (e) {
             });
     
             if (matchingMarkers.length > 0) {
+                var popupContent = "";
                 matchingMarkers.forEach(marker => {
                     var iconHtml = `<img src="${marker.options.icon.options.iconUrl}" alt="icon" style="width: 20px; height: 20px; margin-right: 5px;">`;
                     var content = `<div>${iconHtml} ${marker.options.title}</div>`;
@@ -565,6 +629,7 @@ map.on('click', function (e) {
             }
         }
     }
+    
     
     // Function to fetch the name of the location based on latitude and longitude
     function fetchLocationName(latitude, longitude) {
@@ -714,10 +779,6 @@ socket.on('mqttMessage', (payload) => {
                 </div>
 
                 <div class="profile">
-                    <div class="info">
-                        <p>Hey, <b><%= admin1.username %></b></p>
-                        <small class="text-muted">Admin</small>
-                    </div>
                     <div class="profile-photo">
                         <a href="/user"> <!-- Navigate back to user profile -->
                             <% if (admin1.profilePicture) { %>

@@ -668,25 +668,29 @@ main .container {
         padding: 0 1rem;
     }
 
-    main .new-users .user-list .user{
-        flex-basis: 35%;
-    }
-
-    main .recent-orders{
-        position: relative;
-        margin: 3rem 0 0 0;
-        width: 100%;
-    }
-
     main .recent-orders table{
         width: 100%;
         margin: 0;
     }
+    .right-section{
+        margin-top: -46.4rem;
+    }
+    .right-section .nav {
+        display: flex;
+        justify-content: end;
+        gap: 2rem;
+    }
+    .right-section .nav button {
+        display: flex;
+        margin-right: 39rem;
+        align-items: stretch;
 
+    }
 }
 .material-icons-sharp {
     font-size: 24px;
     color: #7d8da1;
+    background-color: var(--color-background);
   }
 
 

@@ -247,10 +247,11 @@ main .analyse > div{
     background-color: var(--color-white);
     padding: 3rem;
     border-radius: var(--card-border-radius);
-    margin-top: 1rem;
+   
     box-shadow: var(--box-shadow);
     cursor: pointer;
     transition: all 0.3s ease;
+    margin: 50px;
 }
 
 main .analyse > div:hover{

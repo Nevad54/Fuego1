@@ -363,6 +363,7 @@ main table tbody td{
     height: 2.8rem;
     border-bottom: 1px solid var(--color-light);
     color: var(--color-dark-variant);
+    background-color: var(--color-white);
 }
 
 main table tbody tr:last-child td{
@@ -403,8 +404,8 @@ button:hover {
 
 #searchContainer {
     position: absolute;
-    top: 20px;
-    left: 45%;
+    top: 30px;
+    left: 31%;
     transform: translateX(-50%);
     background-color: var(--color-white);
     box-shadow: var(--box-shadow);
@@ -434,7 +435,7 @@ button {
     cursor: pointer;
     border-radius: 3px;
     background-color: #f4093c;
-    color: white;
+    color: var(--color-white);
 }
 
 button:hover {
@@ -448,11 +449,11 @@ button:hover {
 
 
 main #map {
-    height: 700px;
-    width: calc(120% - 100px);
-    margin-left: 30px;
+    height: 735px;
+    width: calc(150% - 100px);
+
     border-radius: 9px;
-    z-index: 2;
+    z-index: 1;
 }
 
 
@@ -480,7 +481,8 @@ main #map {
 
 .right-section {
     margin-top: 1.4rem;
-    margin-left: 5rem;
+    margin-left: 9rem;
+    margin-bottom: 20rem;
     display: flex;
     flex-direction: column;
     z-index: 2;
@@ -496,7 +498,42 @@ main #map {
     z-index: 1000;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
 }
+
+
+
+.leaflet-routing-container.leaflet-bar.leaflet-control{
+    margin-right: 16rem;
+    background-color: var(--color-white);
+}
+
+
+
+
+.leaflet-control-zoom.leaflet-bar.leaflet-control {
+    height: 57px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.3);
+    border-radius: 8px;
+    background-color: var(--color-white);
+}
+.leaflet-touch .leaflet-bar a:first-child {
+    border-top-left-radius: 8px !important;
+    border-top-right-radius: 8px !important;  
+    background-color: var(--color-white);
+}
+.leaflet-touch .leaflet-bar a:last-child {
+    border-bottom-left-radius: 8px !important;
+    border-bottom-right-radius: 8px !important;
+    background-color: var(--color-white);
+}
+
+
+
+
+
+
+
 .leaflet-routing-alt, .leaflet-routing-geocoders, .leaflet-routing-error {
     padding: 6px;
     margin-top: 2px;
@@ -507,10 +544,31 @@ main #map {
     transition: all 0.2s ease;
 }
 
+
 .leaflet-routing-alternatives-container {
     
-    max-height: 150px; /* Adjust the height as needed */
+    max-height: 400px; /* Adjust the height as needed */
     overflow-y: auto; /* Add scrollbar if content exceeds the specified height */
+}
+
+.leaflet-control{
+    margin-right: 10rem;
+}
+
+
+.map-view {
+    background-color: #FFF; /* Set background color to white to represent the map */
+    color: #000; /* Set text color */
+    padding: 5px 10px; /* Adjust padding as needed */
+    border: 1px solid #000; /* Add border for better visibility */
+}
+
+/* Satellite view */
+.satellite-view {
+    background-color: #000; /* Set background color to black to represent the satellite view */
+    color: #FFF; /* Set text color */
+    padding: 5px 10px; /* Adjust padding as needed */
+    border: 1px solid #FFF; /* Add border for better visibility */
 }
 
 
@@ -546,11 +604,17 @@ main #map {
     box-shadow: var(--box-shadow);
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    margin-right: -10rem;
-    width: calc(110% - 40px);
-    margin-left: 150px; /* Adjust margin for better spacing */
+    margin-right: -7rem;
+    width: calc(110% - 20px);
+   
 }
-#customHydrantContainer select,
+#customHydrantContainer select{
+  
+    color: var(--color-info-dark);
+    background-color: var(--color-background);
+
+    margin-bottom: 20px;
+}
 #customHydrantContainer button {
     margin-bottom: 20px;
 }
@@ -586,9 +650,6 @@ main #map {
     background-color: #9a0727; /* Change background color on hover */
 }
 
-/* Media query for smaller screens */
-
-
 
 
 
@@ -598,7 +659,7 @@ main #map {
 }
 
 .right-section .dark-mode{
-    background-color: var(--color-light);
+    background-color: #c2c2cb;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -606,6 +667,8 @@ main #map {
     width: 4.2rem;
     cursor: pointer;
     border-radius: var(--border-radius-1);
+    margin-top: 1rem;
+  
 }
 
 .right-section .dark-mode span{
@@ -615,12 +678,14 @@ main #map {
     display: flex;
     align-items: center;
     justify-content: center;
+   
 }
 
 .right-section .dark-mode span.active{
     background-color: var(--color-primary);
     color: white;
     border-radius: var(--border-radius-1);
+    
 }
 
 
@@ -630,7 +695,9 @@ main #map {
 .right-section .nav .profile{
     display: flex;
     gap: 2rem;
-    text-align: right;
+    justify-content: flex-end;
+   
+    
 }
 
 .right-section .nav .profile .profile-photo{
@@ -638,21 +705,11 @@ main #map {
     height: 2.8rem;
     border-radius: 50%;
     overflow: hidden;
-    margin-top: -1.5rem;
+    margin-top: -2rem;
+    margin-left: 5rem;
 }
 
-.right-section .user-profile{
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    margin-top: 1rem;
-    background-color: var(--color-white);
-    padding: var(--card-padding);
-    border-radius: var(--card-border-radius);
-    box-shadow: var(--box-shadow);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
+
 
 .right-section .user-profile:hover{
     box-shadow: none;
@@ -668,82 +725,11 @@ main #map {
 .right-section .user-profile h2{
     margin-bottom: 0.2rem;
 }
-
-.right-section .reminders{
-    margin-top: 2rem;
-}
-
-.right-section .reminders .header{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 0.8rem;
-}
-
-.right-section .reminders .header span{
-    padding: 10px;
-    box-shadow: var(--box-shadow);
+.leaflet-routing-container h2 {
+    font-size: 14px;
     background-color: var(--color-white);
-    border-radius: 50%;
 }
 
-.right-section .reminders .notification{
-    background-color: var(--color-white);
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 0.7rem;
-    padding: 1.4rem var(--card-padding);
-    border-radius: var(--border-radius-2);
-    box-shadow: var(--box-shadow);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.right-section .reminders .notification:hover{
-    box-shadow: none;
-}
-
-.right-section .reminders .notification .content{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0;
-    width: 100%;
-}
-
-.right-section .reminders .notification .icon{
-    padding: 0.6rem;
-    color: var(--color-white);
-    background-color: var(--color-success);
-    border-radius: 20%;
-    display: flex;
-}
-
-.right-section .reminders .notification.deactive .icon{
-    background-color: var(--color-danger);
-}
-
-.right-section .reminders .add-reminder{
-    background-color: var(--color-white);
-    border: 2px dashed var(--color-primary);
-    color: var(--color-primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
-.right-section .reminders .add-reminder:hover{
-    background-color: var(--color-primary);
-    color: white;
-}
-
-.right-section .reminders .add-reminder div{
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-}
 
 
 
@@ -802,11 +788,10 @@ main #map {
     main table tbody tr td:first-child{
         display: none;
     }
-
     #searchContainer {
         position: absolute;
         top: 30px;
-        left: 40%;
+        left: 33%;
         transform: translateX(-50%);
         background-color: var(--color-white);
         box-shadow: var(--box-shadow);
@@ -815,9 +800,9 @@ main #map {
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         z-index: 2;
         width: calc(80% - 20px);
-        max-width: 400px;
-    
+        max-width: 375px;
     }
+
     #map {
         margin-left: 0;
     }
@@ -826,13 +811,13 @@ main #map {
         width: 70%;
     }
     main #map {
-        height: 600px;
-        width: calc(115% - 20px);
-        margin-left: 10px;
+        height: 635px;
+        width: calc(194% - 100px);
+
     }
 
 
-    #customHydrantContainer {
+    #customHydrantContainer{
         border: 1px solid #ccc;
         padding: 15px;
         box-sizing: border-box;
@@ -841,10 +826,32 @@ main #map {
         box-shadow: var(--box-shadow);
         border-radius: 5px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        margin-right: -10rem;
-        width: calc(120% - 40px);
-        margin-left: 150px; /* Adjust margin for better spacing */
+        margin-right: -8rem;
+        width: calc(110% - 20px);
     }
+    .leaflet-routing-alternatives-container {
+        max-height: 320px;
+        overflow-y: auto;
+        width: calc(143% - 28px);
+        max-width: 220px;
+        margin-left: 0px;
+    }
+    .leaflet-routing-container.leaflet-bar.leaflet-control {
+        margin-right: 15.5rem;
+    }
+
+    .leaflet-routing-container, .leaflet-routing-error {
+        width: 240px;
+        background-color: white;
+        padding-top: 4px;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+    }
+   
+  
+ 
+
+ 
 
    
 
@@ -908,12 +915,12 @@ main #map {
     #searchContainer {
         position: absolute;
         top: 30px;
-        left: 45%;
+       
         transform: translateX(-50%);
         background-color: var(--color-white);
         box-shadow: var(--box-shadow);
         padding: 10px;
-        border-radius: 5px;
+        border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         z-index: 2;
         width: calc(40% - 20px);
@@ -1069,8 +1076,8 @@ main #map {
 
         width: 4.4rem;
         position: absolute;
-        left: 66%;
-        margin-top: 10px;
+        left: 80%;
+        margin-top: 17px;
     }
 
     .right-section .profile .info{
@@ -1091,22 +1098,25 @@ main #map {
 
     .right-section .nav button span{
         font-size: 2rem;
+        margin-top: .6rem;
     }
 
 
     #searchContainer {
         top: 85px;
         width: calc(100% - 20px);
-        left: 150px;
-        margin-left: 250px;
+        max-width: 325px;
+        margin-left: -6rem;
+       
         background-color: var(--color-white);
         box-shadow: var(--box-shadow);
     }
     main #map {
-        height: 500px;
-        width: calc(100% - 20px);
-        margin-left: 10px;
-        margin-top: -30px;
+        height: 580px;
+        width: calc(113% - 20px);
+        margin-left: -39px;
+        margin-top: -50px;
+        z-index: 1;
     }
     #map {
         margin-left: 0;
@@ -1136,6 +1146,36 @@ main #map {
     .leaflet-routing-alt{
         z-index: 1002;
      }
+
+     .leaflet-routing-alternatives-container {
+        max-height: 320px;
+        overflow-y: auto;
+        width: calc(140% - 28px);
+        max-width: 220px;
+        margin-left: 0px;
+        background-color: var(--color-white);
+    }
+    .leaflet-routing-container.leaflet-bar.leaflet-control {
+        margin-right: 1.5rem;
+        background-color: var(--color-white);
+    }
+
+    .leaflet-routing-container, .leaflet-routing-error {
+        width: 230px;
+        background-color: var(--color-white);
+        padding-top: 4px;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+    }
+
+    .leaflet-routing-container, .leaflet-routing-error {
+        width: 250px  !important;
+        background-color: var(--color-white);
+        padding-top: 4px;
+
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+    }
 
 }
 
@@ -1431,8 +1471,8 @@ main #map {
 
         width: 4.4rem;
         position: absolute;
-        left: 50%;
-        margin-top: 15px;
+        left: 67%;
+        margin-top: 25px;
     }
 
     .right-section .profile .info{
@@ -1457,17 +1497,17 @@ main #map {
 
 
     #searchContainer {
-        top: 110px;
-        width: calc(75% - 20px);
-        left: 150px;
-        margin-left: 80px;
+        top: 70px;
+        width: calc(130% - 20px);
+        margin-left: 60px;
+        max-width: 400px;
         background-color: var(--color-white);
         box-shadow: var(--box-shadow);
     }
     main #map {
-        height: 500px;  
-        width: calc(105% - 20px);
-        margin-left: 4px;
+        height: 903px;
+        width: calc(123% - 20px);
+        margin-left: -30px;
     }
     #map {
         margin-left: 0;
@@ -1498,6 +1538,48 @@ main #map {
     .leaflet-routing-alt{
         z-index: 1002;
      }
+
+
+      
+    .leaflet-routing-container  {
+        /* Add your custom styles here */
+        margin-top: 100px; /* Adjust the top margin as needed */
+        margin-right: -10px; /* Adjust the right margin as needed */
+    }
+    .leaflet-routing-alternatives-container {
+        max-height: 320px;
+        overflow-y: auto;
+        width: calc(140% - 28px);
+        max-width: 413px;
+        margin-left: -24px;
+        background-color: var(--color-white);
+    }
+    .leaflet-routing-container.leaflet-bar.leaflet-control {
+        margin-right: 1.5rem;
+        background-color: var(--color-white);
+        top: 550px !important;
+    }
+    .leaflet-routing-container, .leaflet-routing-error {
+        width: 300px;
+        background-color: var(--color-white);
+        padding-top: 4px;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+    }
+
+    .leaflet-routing-container, .leaflet-routing-error {
+        width: 412px !important;
+        background-color: var(--color-white);
+        padding-top: 4px;
+
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+    }
+    #switchButton{
+        margin-bottom: 25px;
+    }
+
+
 }
 
 @media screen and (max-width: 412px) {
@@ -1611,7 +1693,7 @@ main #map {
 
         width: 4.4rem;
         position: absolute;
-        left: 50%;
+        left: 65%;
         margin-top: 15px;
     }
 
@@ -1637,17 +1719,19 @@ main #map {
 
 
     #searchContainer {
-        top: 85px;
-        width: calc(75% - 20px);
-        left: 150px;
-        margin-left: 75px;
-        background-color: var(--color-white);
-        box-shadow: var(--box-shadow);
+       
+    top: 70px;
+    width: calc(130% - 20px);
+    margin-left: 60px;
+    max-width: 400px;
+    background-color: var(--color-white);
+    box-shadow: var(--box-shadow);
+
     }
     main #map {
-        height: 500px;  
-        width: calc(105% - 20px);
-        margin-left: 4px;
+        height: 883px;
+        width: calc(123% - 20px);
+        margin-left: -30px;
     }
     #map {
         margin-left: 0;
@@ -1675,21 +1759,48 @@ main #map {
         width: calc(100% - 20px); /* Adjust margin for better spacing */
     }
 
-    .leaflet-routing-alternatives-container{
-        margin-top: 10px; /* Adjust the top margin as needed */
-        margin-right: 10px; /* Adjust the right margin as needed */
-    
-        
-    }
+  
     .leaflet-routing-container  {
         /* Add your custom styles here */
         margin-top: 100px; /* Adjust the top margin as needed */
         margin-right: -10px; /* Adjust the right margin as needed */
     }
+    .leaflet-routing-alternatives-container {
+        max-height: 320px;
+        overflow-y: auto;
+        width: calc(140% - 28px);
+        max-width: 413px;
+        margin-left: 0px;
+        background-color: var(--color-white);
+    }
+    .leaflet-routing-container.leaflet-bar.leaflet-control {
+        margin-right: 1.5rem;
+        background-color: var(--color-white);
+        top: 550px !important;
+    }
+    .leaflet-routing-container, .leaflet-routing-error {
+        width: 300px;
+        background-color: var(--color-white);
+        padding-top: 4px;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+    }
+
+    .leaflet-routing-container, .leaflet-routing-error {
+        width: 412px !important;
+        background-color: var(--color-white);
+        padding-top: 4px;
+
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+    }
+    #switchButton{
+        margin-bottom: 25px;
+    }
 
 }
 
-@media screen and (max-width: 390px) {
+@media screen and (max-width: 391px) {
     .container{
         width: 100%;
         grid-template-columns: 1fr;
@@ -1786,7 +1897,7 @@ main #map {
         height: 2.8rem;
         border-radius: 50%;
         overflow: hidden;
-        margin-top: .5rem;
+        margin-top: .7rem;
     }
     
 
@@ -1800,8 +1911,8 @@ main #map {
 
         width: 4.4rem;
         position: absolute;
-        left: 48%;
-        margin-top: 17px;
+        left: 62%;
+        margin-top: 21px;
     }
 
     .right-section .profile .info{
@@ -1823,22 +1934,24 @@ main #map {
 
     .right-section .nav button span{
         font-size: 2rem;
+        margin: 0px;
     }
 
 
     #searchContainer {
-        top: 90px;
-        width: calc(70% - 20px);
-        left: 150px;
-        margin-left: 63px;
+        top: 70px;
+        width: calc(103% - 20px);
+        margin-left: 36px;
+        max-width: 400px;
         background-color: var(--color-white);
         box-shadow: var(--box-shadow);
     }
+    
+    
     main #map {
-        height: 500px;  
-        width: calc(105% - 20px);
-        margin-left: 4px;
-        margin-top:-25px;
+        height: 650px;
+        width: calc(125% - 20px);
+        margin-left: -30px;
     }
     #map {
         margin-left: 0;
@@ -1869,6 +1982,46 @@ main #map {
     .leaflet-routing-alt{
         z-index: 1002;
      }
+
+
+     .leaflet-routing-container  {
+        /* Add your custom styles here */
+        margin-top: 100px; /* Adjust the top margin as needed */
+        margin-right: -10px; /* Adjust the right margin as needed */
+    }
+    .leaflet-routing-alternatives-container {
+        max-height: 320px;
+        overflow-y: auto;
+        width: calc(140% - 28px);
+        max-width: 413px;
+        margin-left: 46px;
+        background-color: var(--color-white);
+    }
+    .leaflet-routing-container.leaflet-bar.leaflet-control {
+        margin-right: 1.5rem;
+        background-color: var(--color-white);
+        top: 400px !important;
+    }
+    .leaflet-routing-container, .leaflet-routing-error {
+        width: 300px;
+        background-color: var(--color-white);
+        padding-top: 4px;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+    }
+
+    .leaflet-routing-container, .leaflet-routing-error {
+        width: 412px !important;
+        background-color: var(--color-white);
+        padding-top: 4px;
+
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+    }
+    #switchButton{
+        margin-bottom: 35px;
+    }
+
 }
 
 
