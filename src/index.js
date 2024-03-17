@@ -350,6 +350,21 @@ app.get("/location", authMiddleware.requireLogin, async (req, res) => {
   }
 });
 
+app.get("/location2", authMiddleware.requireLogin, async (req, res) => {
+  try {
+      const userId = req.session.user._id; // Assuming the user ID is stored in the session
+      const adminData = await Admin1.findById(userId); // Fetch admin user data based on ID
+
+      if (adminData) {
+          res.render("location2", { admin1: adminData });
+      } else {
+          res.status(404).send("User data not found");
+      }
+  } catch (error) {
+      console.error('Error fetching user data:', error);
+      res.status(500).send('Error fetching user data: ' + error.message);
+  }
+});
 
 app.get("/user", authMiddleware.requireLogin, async (req, res) => {
   try {

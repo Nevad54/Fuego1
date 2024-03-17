@@ -850,3 +850,34 @@ tr:nth-child(even) {
 tr:nth-child(odd) {
     background-color: #ffffff;
 }
+
+
+/* Style for the button container */
+.data-summary-map-button {
+    margin-top: 20px; /* Adjust as needed */
+    text-align: center;
+}
+
+/* Style for the button */
+.data-summary-map-button button {
+    background-color: var(--color-danger); /* Change to your desired background color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Style for the icon */
+.data-summary-map-button .material-icons {
+    margin-right: 5px; /* Adjust as needed */
+}
+
+/* Style for the button text */
+.data-summary-map-button .button-text {
+    font-size: 16px; /* Adjust as needed */
+    font-weight: bold;
+}
+
