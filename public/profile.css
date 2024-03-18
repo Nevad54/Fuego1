@@ -686,6 +686,12 @@ main .container {
         align-items: stretch;
 
     }
+
+
+    .edit-profile-btn{
+        z-index: 1000;
+    }
+
 }
 .material-icons-sharp {
     font-size: 24px;
