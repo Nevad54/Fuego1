@@ -252,9 +252,11 @@
                 } else if (payload.topic === 'Fire') {
                     // Show the 'fire' element when 'Fire' payload is received
                     document.getElementById('fire').innerHTML = `<span style="color: red; font-size: larger;">${payload.message}</span>`;
-                    document.getElementById('fire').style.display = 'block'; // Show the 'fire' element
+                    // Show the 'fire' icon when 'Fire' payload is received
+                    document.getElementById('fire-icon').style.display = 'inline'; // or 'block', depending on its original display property
                 }
             });
+            
 
              // Function to toggle dark mode
                 function toggleDarkMode() {

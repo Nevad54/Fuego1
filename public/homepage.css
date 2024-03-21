@@ -500,8 +500,8 @@ main .analyse .sensor-data .percentage{
     gap: 0.6rem;
 }
 
-#fire {
-    display: none; /* Initially hide the element */
+#fire-icon {
+    display: none; /* Initially hide the icon */
 }
 
 @media screen and (max-width: 1200px) {
@@ -557,8 +557,8 @@ main .analyse .sensor-data .percentage{
     main table tbody tr td:first-child{
         display: none;
     }
-    #fire {
-        display: none; /* Initially hide the element */
+    #fire-icon {
+        display: none; /* Initially hide the icon */
     }
 
 }
@@ -732,8 +732,8 @@ main .analyse .sensor-data .percentage{
     .right-section .nav button span{
         font-size: 2rem;
     }
-    #fire {
-        display: none; /* Initially hide the element */
+    #fire-icon {
+        display: none; /* Initially hide the icon */
     }
 }
 .material-icons-sharp {

@@ -727,11 +727,11 @@ map.on('click', function (e) {
                 }
                 const socket = io.connect('https://fuego1.onrender.com');
 
-//socket.on('connect', () => {
+/*socket.on('connect', () => {
     console.log('Connected to Socket.IO');
 });
 
-//socket.on('mqttMessage', (payload) => {
+socket.on('mqttMessage', (payload) => {
             console.log('Received mqttMessage:', payload);
 
             if (payload.topic === 'Fire') {
@@ -740,7 +740,7 @@ map.on('click', function (e) {
             }
         });
 
-        //function displayPopUpOnFdas1Markers(message) {
+        function displayPopUpOnFdas1Markers(message) {
             map.eachLayer(function (layer) {
                 // Check if the layer is a marker with fdas1 icon
                 if (layer instanceof L.Marker && layer.options.icon.options.iconUrl === '../images/fdas1.png') {
@@ -748,7 +748,7 @@ map.on('click', function (e) {
                     layer.bindPopup(message).openPopup();
                 }
             });
-        }
+        }*/
 
 
 
