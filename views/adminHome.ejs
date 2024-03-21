@@ -172,13 +172,11 @@
                                             </div>
                                         </div>
                                         <div class="sensor-data">
-                                            <!-- Icon and percentage wrapped inside a div -->
-                                            <div class="icon-with-percentage">
-                                                <!-- Use fa-3x class to make the icon 3 times larger -->
+                                            <div class="icon-with-percentage" id="fire-icon" style="display: none;">
                                                 <i class="fas fa-exclamation-triangle fa-6x" style="color: red;"></i>
-                                                <div class="percentage">
-                                                    <p id="fire"> </p>
-                                                </div>
+                                            </div>
+                                            <div class="percentage" id="fire-message" style="display: none;">
+                                                <p id="fire-content"></p>
                                             </div>
                                         </div>
                                     </div>
@@ -239,24 +237,26 @@
             });
 
             socket.on('mqttMessage', (payload) => {
-                console.log('Received mqttMessage:', payload);
-                // Update values based on the received MQTT message
-                if (payload.topic === 'Temp') {
-                    document.getElementById('Temperature').innerHTML = `Temperature: ${payload.message}`;
-                } else if (payload.topic === 'Humid') {
-                    document.getElementById('Humidity').innerHTML = `Humidity: ${payload.message}`;
-                } else if (payload.topic === 'esp32/test') {
-                    document.getElementById('mqtt').innerHTML = `System: ${payload.message}`;
-                } else if (payload.topic === 'Smoke') {
-                    document.getElementById('Smoke').innerHTML = `Smoke: ${payload.message}`;
-                } else if (payload.topic === 'Fire') {
-                    // Show the 'fire' element when 'Fire' payload is received
-                    document.getElementById('fire').innerHTML = `<span style="color: red; font-size: larger;">${payload.message}</span>`;
-                    // Show the 'fire' icon when 'Fire' payload is received
-                    document.getElementById('fire-icon').style.display = 'inline'; // or 'block', depending on its original display property
-                }
+            console.log('Received mqttMessage:', payload);
+              // Update values based on the received MQTT message
+              if (payload.topic === 'Temp') {
+                document.getElementById('Temperature').innerHTML = `Temperature: ${payload.message}`;
+              } else if (payload.topic === 'Humid') {
+                document.getElementById('Humidity').innerHTML = `Humidity: ${payload.message}`;
+              } else if (payload.topic === 'esp32/test') {
+                document.getElementById('mqtt').innerHTML = `System: ${payload.message}`;
+              } else if (payload.topic === 'Smoke') {
+                document.getElementById('Smoke').innerHTML = `Smoke: ${payload.message}`;
+            } else  if (payload.topic === 'Fire') {
+                // Show the icon and message
+                document.getElementById('fire-icon').style.display = 'block';
+                document.getElementById('fire-message').style.display = 'block';
+                
+                // Update the message content
+                document.getElementById('fire-content').innerHTML = `<span style="color: red; font-size: larger;">${payload.message}</span>`;
+            }
+              // You can customize the update logic based on your HTML structure
             });
-            
 
              // Function to toggle dark mode
                 function toggleDarkMode() {
