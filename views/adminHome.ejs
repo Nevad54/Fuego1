@@ -239,20 +239,21 @@
             });
 
             socket.on('mqttMessage', (payload) => {
-            console.log('Received mqttMessage:', payload);
-              // Update values based on the received MQTT message
-              if (payload.topic === 'Temp') {
-                document.getElementById('Temperature').innerHTML = `Temperature: ${payload.message}`;
-              } else if (payload.topic === 'Humid') {
-                document.getElementById('Humidity').innerHTML = `Humidity: ${payload.message}`;
-              } else if (payload.topic === 'esp32/test') {
-                document.getElementById('mqtt').innerHTML = `System: ${payload.message}`;
-              } else if (payload.topic === 'Smoke') {
-                document.getElementById('Smoke').innerHTML = `Smoke: ${payload.message}`;
-            } else if (payload.topic === 'Fire') {
-                document.getElementById('fire').innerHTML = `<span style="color: red; font-size: larger;">${payload.message}</span>`;
-            }
-              // You can customize the update logic based on your HTML structure
+                console.log('Received mqttMessage:', payload);
+                // Update values based on the received MQTT message
+                if (payload.topic === 'Temp') {
+                    document.getElementById('Temperature').innerHTML = `Temperature: ${payload.message}`;
+                } else if (payload.topic === 'Humid') {
+                    document.getElementById('Humidity').innerHTML = `Humidity: ${payload.message}`;
+                } else if (payload.topic === 'esp32/test') {
+                    document.getElementById('mqtt').innerHTML = `System: ${payload.message}`;
+                } else if (payload.topic === 'Smoke') {
+                    document.getElementById('Smoke').innerHTML = `Smoke: ${payload.message}`;
+                } else if (payload.topic === 'Fire') {
+                    // Show the 'fire' element when 'Fire' payload is received
+                    document.getElementById('fire').innerHTML = `<span style="color: red; font-size: larger;">${payload.message}</span>`;
+                    document.getElementById('fire').style.display = 'block'; // Show the 'fire' element
+                }
             });
 
              // Function to toggle dark mode
