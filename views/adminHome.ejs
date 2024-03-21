@@ -250,7 +250,7 @@
               } else if (payload.topic === 'Smoke') {
                 document.getElementById('Smoke').innerHTML = `Smoke: ${payload.message}`;
              } else if (payload.topic === 'Fire') {
-                document.getElementById('fire').innerHTML = `Alarm: ${payload.message}`;
+                document.getElementById('fire').innerHTML = ` ${payload.message}`;
               }
               // You can customize the update logic based on your HTML structure
             });
