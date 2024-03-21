@@ -96,7 +96,8 @@ mqttClient.on('connect', () => {
     "Temp",
     "Humid",
     "Time",
-    "Smoke"
+    "Smoke",
+    "Fire"
   ];
   const subscribePromises = topic.map(currentTopic => {
     return new Promise((resolve, reject) => {
@@ -132,7 +133,7 @@ mqttClient.on('connect', () => {
     
           // Emit the payload to all connected clients
           io.emit('mqttMessage', payload);
-        } else if (topic === 'Temp' || topic === 'Humid' || topic === 'esp32/test' || topic === 'Smoke') {
+        } else if (topic === 'Temp' || topic === 'Humid' || topic === 'esp32/test' || topic === 'Smoke' || topic === 'Fire') {
           const payload = { topic, message: message.toString() };
     
           // Emit the payload to all connected clients
