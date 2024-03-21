@@ -172,11 +172,16 @@
                                             </div>
                                         </div>
                                         <div class="sensor-data">
-                                            <div class="icon-with-percentage" id="fire-icon" style="display: none;">
-                                                <i class="fas fa-exclamation-triangle fa-6x" style="color: red;"></i>
-                                            </div>
-                                            <div class="percentage" id="fire-message" style="display: none;">
-                                                <p id="fire-content"></p>
+                                            <!-- Icon and message wrapped inside a div -->
+                                            <div class="icon-with-message" id="fire-data" style="display: none;">
+                                                <!-- Icon -->
+                                                <div class="icon">
+                                                    <i class="fas fa-exclamation-triangle fa-6x" style="color: red;"></i>
+                                                </div>
+                                                <!-- Message -->
+                                                <div class="message">
+                                                    <p id="fire-content"></p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
