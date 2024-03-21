@@ -502,13 +502,16 @@ main .analyse .sensor-data .percentage{
 
 /* Style for the container */
 /* Style for the container */
+/* Style for the container */
 .icon-with-message {
-    text-align: center;/* Center items vertically */
+    display: flex;
+    flex-direction: column; /* Arrange items in a column */
+    align-items: center; /* Center items horizontally */
 }
 
 /* Style for the message */
 .message {
-    /* Add styles as needed */
+    margin-top: 40px; /* Add styles as needed */
 }
 
 /* Style for the icon */
