@@ -727,30 +727,28 @@ map.on('click', function (e) {
                 }
                 const socket = io.connect('https://fuego1.onrender.com');
 
-socket.on('connect', () => {
+//socket.on('connect', () => {
     console.log('Connected to Socket.IO');
 });
 
-// Assuming each marker has a name attribute
-socket.on('mqttMessage', (payload) => {
-    console.log('Received mqttMessage:', payload);
+//socket.on('mqttMessage', (payload) => {
+            console.log('Received mqttMessage:', payload);
 
-    if (payload.topic === 'Fire') {
-        // Display pop-up message on the marker with the name "COE"
-        displayPopUpOnCOEMarker(payload.message);
-    }
-});
+            if (payload.topic === 'Fire') {
+                // Display pop-up message on top of markers with fdas1 icon
+                displayPopUpOnFdas1Markers(payload.message);
+            }
+        });
 
-function displayPopUpOnCOEMarker(message) {
-    map.eachLayer(function (layer) {
-        // Check if the layer is a marker with the name "COE"
-        if (layer instanceof L.Marker && layer.options.name === 'COE') {
-            // Create a pop-up with the received message
-            layer.bindPopup(message).openPopup();
+        //function displayPopUpOnFdas1Markers(message) {
+            map.eachLayer(function (layer) {
+                // Check if the layer is a marker with fdas1 icon
+                if (layer instanceof L.Marker && layer.options.icon.options.iconUrl === '../images/fdas1.png') {
+                    // Create a pop-up with the received message
+                    layer.bindPopup(message).openPopup();
+                }
+            });
         }
-    });
-}
-
 
 
 

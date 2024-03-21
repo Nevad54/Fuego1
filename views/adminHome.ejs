@@ -239,6 +239,8 @@
                 document.getElementById('mqtt').innerHTML = `System: ${payload.message}`;
               } else if (payload.topic === 'Smoke') {
                 document.getElementById('Smoke').innerHTML = `Smoke: ${payload.message}`;
+             } else if (payload.topic === 'Fire') {
+                document.getElementById('Fire').innerHTML = `Alarm: ${payload.message}`;
               }
               // You can customize the update logic based on your HTML structure
             });
