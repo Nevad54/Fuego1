@@ -184,6 +184,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        
                                     </div>
   
                                 </div>
@@ -242,26 +243,26 @@
             });
 
             socket.on('mqttMessage', (payload) => {
-            console.log('Received mqttMessage:', payload);
-              // Update values based on the received MQTT message
-              if (payload.topic === 'Temp') {
-                document.getElementById('Temperature').innerHTML = `Temperature: ${payload.message}`;
-              } else if (payload.topic === 'Humid') {
-                document.getElementById('Humidity').innerHTML = `Humidity: ${payload.message}`;
-              } else if (payload.topic === 'esp32/test') {
-                document.getElementById('mqtt').innerHTML = `System: ${payload.message}`;
-              } else if (payload.topic === 'Smoke') {
-                document.getElementById('Smoke').innerHTML = `Smoke: ${payload.message}`;
-            } else  if (payload.topic === 'Fire') {
-                // Show the icon and message
-                document.getElementById('fire-icon').style.display = 'block';
-                document.getElementById('fire-message').style.display = 'block';
-                
-                // Update the message content
-                document.getElementById('fire-content').innerHTML = `<span style="color: red; font-size: larger;">${payload.message}</span>`;
-            }
-              // You can customize the update logic based on your HTML structure
+                console.log('Received mqttMessage:', payload);
+                // Update values based on the received MQTT message
+                if (payload.topic === 'Temp') {
+                    document.getElementById('Temperature').innerHTML = `Temperature: ${payload.message}`;
+                } else if (payload.topic === 'Humid') {
+                    document.getElementById('Humidity').innerHTML = `Humidity: ${payload.message}`;
+                } else if (payload.topic === 'esp32/test') {
+                    document.getElementById('mqtt').innerHTML = `System: ${payload.message}`;
+                } else if (payload.topic === 'Smoke') {
+                    document.getElementById('Smoke').innerHTML = `Smoke: ${payload.message}`;
+                } else if (payload.topic === 'Fire') {
+                    // Show the icon and message
+                    document.getElementById('fire-data').style.display = 'block';
+                    
+                    // Update the message content
+                    document.getElementById('fire-content').innerHTML = `<span style="color: red; font-size: larger;">${payload.message}</span>`;
+                }
+                // You can customize the update logic based on your HTML structure
             });
+            
 
              // Function to toggle dark mode
                 function toggleDarkMode() {
