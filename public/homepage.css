@@ -507,7 +507,9 @@ main .analyse .sensor-data .percentage{
 }
 
 /* Style for the message */
-
+.message {
+    margin-top: 10px; /* Add styles as needed */
+}
 
 /* Style for the icon */
 .icon {
