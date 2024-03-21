@@ -171,6 +171,16 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="sensor-data">
+                                            <!-- Icon and percentage wrapped inside a div -->
+                                            <div class="icon-with-percentage">
+                                                <!-- Use fa-3x class to make the icon 3 times larger -->
+                                                <i class="fas fa-thermometer-half fa-6x" style="color: orange;"></i>
+                                                <div class="percentage">
+                                                    <p id="fire">Alarm:: </p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
   
                                 </div>
@@ -240,7 +250,7 @@
               } else if (payload.topic === 'Smoke') {
                 document.getElementById('Smoke').innerHTML = `Smoke: ${payload.message}`;
              } else if (payload.topic === 'Fire') {
-                document.getElementById('Fire').innerHTML = `Alarm: ${payload.message}`;
+                document.getElementById('fire').innerHTML = `Alarm: ${payload.message}`;
               }
               // You can customize the update logic based on your HTML structure
             });
