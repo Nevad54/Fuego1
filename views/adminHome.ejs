@@ -175,7 +175,7 @@
                                             <!-- Icon and percentage wrapped inside a div -->
                                             <div class="icon-with-percentage">
                                                 <!-- Use fa-3x class to make the icon 3 times larger -->
-                                                <i class="fas fa-thermometer-half fa-6x" style="color: orange;"></i>
+                                                <i class="fas fa-exclamation-triangle fa-6x" style="color: red;"></i>
                                                 <div class="percentage">
                                                     <p id="fire"> </p>
                                                 </div>
@@ -249,9 +249,9 @@
                 document.getElementById('mqtt').innerHTML = `System: ${payload.message}`;
               } else if (payload.topic === 'Smoke') {
                 document.getElementById('Smoke').innerHTML = `Smoke: ${payload.message}`;
-             } else if (payload.topic === 'Fire') {
-                document.getElementById('fire').innerHTML = ` ${payload.message}`;
-              }
+            } else if (payload.topic === 'Fire') {
+                document.getElementById('fire').innerHTML = `<span style="color: red; font-size: larger;">${payload.message}</span>`;
+            }
               // You can customize the update logic based on your HTML structure
             });
 
