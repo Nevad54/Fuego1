@@ -501,22 +501,39 @@ main .analyse .sensor-data .percentage{
 }
 
 /* Style for the container */
+/* Style for the container */
 .icon-with-message {
     display: flex;
     align-items: center; /* Center items vertically */
 }
 
-/* Style for the icon */
-.icon {
-    margin-right: 5px; /* Adjust margin as needed */
-}
-
 /* Style for the message */
 .message {
     /* Add styles as needed */
-    font-size: 14px; /* Example font size */
-    color: black; /* Example color */
 }
+
+/* Style for the icon */
+.icon {
+    /* Add styles as needed */
+}
+
+/* Blinking animation */
+@keyframes blinking {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.blinking {
+    animation: blinking 1s infinite; /* Apply blinking animation */
+}
+
 
 
 @media screen and (max-width: 1200px) {
