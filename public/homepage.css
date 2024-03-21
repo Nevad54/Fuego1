@@ -508,13 +508,13 @@ main .analyse .sensor-data .percentage{
 
 /* Style for the icon */
 .icon {
-    margin-right: 10px; /* Adjust margin as needed */
+    margin-right: 5px; /* Adjust margin as needed */
 }
 
 /* Style for the message */
 .message {
     /* Add styles as needed */
-    font-size: 16px; /* Example font size */
+    font-size: 14px; /* Example font size */
     color: black; /* Example color */
 }
 
