@@ -1,3 +1,4 @@
+index.js
 // index.js
 const multer = require('multer');
 const express = require("express");
@@ -91,21 +92,36 @@ mqttClient.on('connect', () => {
       console.error(`Error connecting to MQTT: ${err.message}`);
       // Handle MQTT connection error here
   });
-  const topic = [
-    "esp32/test",
-    "Temp",
-    "Humid",
-    "Time",
-    "Smoke",
-    "Fire"
+  const topicConfig = [
+    { name: "esp32/test0" },
+    { name: "Temp0" },
+    { name: "Humid0" },
+    { name: "Time" },
+    { name: "Smoke0" },
+    { name: "esp32/test1" },
+    { name: "Temp1" },
+    { name: "Humid1" },
+    { name: "Smoke1" },
+    { name: "esp32/test2" },
+    { name: "Temp2" },
+    { name: "Humid2" },
+    { name: "Smoke2" }
   ];
-  const subscribePromises = topic.map(currentTopic => {
+  
+  mqttClient.on('connect', () => {
+    console.log(`Connected to MQTT.`);
+  })
+  .on('error', (err) => {
+    console.error(`Error connecting to MQTT: ${err.message}`);
+    // Handle MQTT connection error here
+  });
+  
+  const subscribePromises = topicConfig.map(({ name }) => {
     return new Promise((resolve, reject) => {
-      mqttClient.subscribe(currentTopic, err => {
+      mqttClient.subscribe(name, err => {
         if (err) {
           reject(err);
         } else {
-        //   console.log(`Subscribed to topic: ${currentTopic}`);
           resolve();
         }
       });
@@ -119,31 +135,27 @@ mqttClient.on('connect', () => {
     .catch(err => {
       console.error(`Error subscribing to topics: ${err.message}`);
     });
-    mqttClient.on('message', async (topic, message) => {
-      try {
-        console.log(`Received MQTT message - Topic: ${topic}, Message: ${message.toString()}`);
-
-    
-        if (topic === 'Time') {
-          const timestamp = message.toString();
-          const payload = { topic, timestamp };
-    
-          // Save the timestamp string to the MongoDB collection
-          await handleTimeRoute(timestamp);
-    
-          // Emit the payload to all connected clients
-          io.emit('mqttMessage', payload);
-        } else if (topic === 'Temp' || topic === 'Humid' || topic === 'esp32/test' || topic === 'Smoke' || topic === 'Fire') {
-          const payload = { topic, message: message.toString() };
-    
-          // Emit the payload to all connected clients
-          io.emit('mqttMessage', payload);
-        }
-      } catch (error) {
-        console.error(`Error processing MQTT message for topic '${topic}':`, error);
-
+  
+  mqttClient.on('message', async (topic, message) => {
+    try {
+      console.log(`Received MQTT message - Topic: ${topic}, Message: ${message.toString()}`);
+  
+      // Find the corresponding topic configuration
+      const topicInfo = topicConfig.find(topicInfo => topicInfo.name === topic);
+      if (!topicInfo) return; // Ignore if topic not found in config
+  
+      // Emit the payload to all connected clients
+      io.emit('mqttMessage', { topic, message: message.toString() });
+  
+      // Additional handling based on the received topic if needed
+      if (topic === 'Time') {
+        const timestamp = message.toString();
+        await handleTimeRoute(timestamp);
       }
-    });
+    } catch (error) {
+      console.error(`Error processing MQTT message for topic '${topic}':`, error);
+    }
+  });
     
     const handleTimeRoute = async (timestamp) => {
       let client;  // Declare client outside the try block
@@ -658,42 +670,6 @@ app.post('/profile/save/user', authMiddleware.requireLogin, upload.single('profi
       console.error('Error updating profile:', error);
       res.status(500).send('Error updating profile: ' + error.message);
   }
-});
-
-
-
-
-app.get('/api/humidityData', async (req, res) => {
-  const client = await connectToDatabase();
-  const db = client.db('accounts');
-  const humidityCollection = db.collection('humidity');
-
-  const humidityData = await humidityCollection.find({}).toArray();
-
-  client.close();
-  res.json(humidityData);
-});
-
-app.get('/api/temperatureData', async (req, res) => {
-  const client = await connectToDatabase();
-  const db = client.db('accounts');
-  const temperatureCollection = db.collection('temperature');
-
-  const temperatureData = await temperatureCollection.find({}).toArray();
-
-  client.close();
-  res.json(temperatureData);
-});
-
-app.get('/api/smokeData', async (req, res) => {
-  const client = await connectToDatabase();
-  const db = client.db('accounts');
-  const smokeCollection = db.collection('smoke');
-
-  const smokeData = await smokeCollection.find({}).toArray();
-
-  client.close();
-  res.json(smokeData);
 });
 
 

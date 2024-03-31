@@ -1,3 +1,4 @@
+charts.ejs
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -87,61 +88,43 @@
 
         <!-- Main Section -->
         <main>
-            <h1>Charts</h1>
-            <div style="display: flex; flex-direction: column; align-items: center;">
-                <div class="chart-container">
-                    <canvas id="chart1" width="700" height="200"></canvas>
-                </div>
-                <div class="chart-container">
-                    <canvas id="chart2" width="700" height="200"></canvas>
-                </div>
-                <div class="chart-container">
-                    <canvas id="chart3" width="700" height="200"></canvas>
-                </div>
+            <h1>Temperature, Humidity, and Smoke Charts</h1>
+            <div id="chartsContainer" style="display: flex; flex-direction: column; align-items: center;">
+                <!-- Charts will be dynamically added here -->
             </div>
-                
 
             <script>
-                async function fetchData() {
-                    try {
-                        const temperatureResponse = await fetch('/api/temperatureData');
-                        const humidityResponse = await fetch('/api/humidityData');
-                        const smokeResponse = await fetch ('/api/smokeData');
-                
-                        const temperatureData = await temperatureResponse.json();
-                        const humidityData = await humidityResponse.json();
-                        const smokeData = await smokeResponse.json();
-                
-                        // Convert 'value' property to a numeric type
-                        const parseNumericValue = (data) => {
-                            return data.map(entry => ({ _id: entry._id, value: parseFloat(entry.value) }));
-                        };
-                
-                        return {
-                            temperature: parseNumericValue(temperatureData),
-                            humidity: parseNumericValue(humidityData),
-                            smoke: parseNumericValue(smokeData) // Include smoke data
-                        };
-                    } catch (error) {
-                        console.error('Error fetching data:', error);
-                        throw error;
-                    }
-                }
-                
-                // Create chart function for smoke
-                function createLineChart(ctx, label, color) {
+                const socket = io.connect('https://fuego1.onrender.com');
+                let charts = {}; // Object to store created charts
+            
+                // Function to create a new chart
+                function createChart(containerId, label) {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = 700;
+                    canvas.height = 400;
+                    document.getElementById(containerId).appendChild(canvas);
+                    const ctx = canvas.getContext('2d');
+            
                     return new Chart(ctx, {
                         type: 'line',
                         data: {
-                            labels: [], // Array to hold x-axis labels
-                            datasets: [
-                                {
-                                    label: label,
-                                    borderColor: color,
-                                    data: [],
-                                    fill: false,
-                                },
-                            ],
+                            labels: [],
+                            datasets: [{
+                                label: label + ' Temperature (°C)',
+                                borderColor: 'rgb(255, 99, 132)',
+                                data: [],
+                                fill: false,
+                            }, {
+                                label: label + ' Humidity (%)',
+                                borderColor: 'rgb(75, 192, 192)',
+                                data: [],
+                                fill: false,
+                            }, {
+                                label: label + ' Smoke (%)',
+                                borderColor: 'rgb(210, 92, 192)',
+                                data: [],
+                                fill: false,
+                            }],
                         },
                         options: {
                             responsive: true,
@@ -149,7 +132,7 @@
                             scales: {
                                 x: {
                                     type: 'category',
-                                    labels: [], // Array to hold x-axis labels
+                                    labels: [],
                                 },
                                 y: {
                                     beginAtZero: true,
@@ -158,63 +141,66 @@
                         },
                     });
                 }
-                
-                // Update chart function for smoke
-                async function updateChartData(chart, data, label) {
+            
+                // Function to update chart data
+                function updateChartData(chart, data, label) {
                     try {
                         const timestamp = new Date().toLocaleTimeString();
-                        const numericValue = parseFloat(data.value);
-                
-                        chart.data.labels.push(timestamp); // Add a timestamp as the x-axis label
-                        chart.data.datasets[0].data.push(numericValue); // Assuming value is a property of your data object
-                
-                        // Update x-axis labels
-                        chart.options.scales.x.labels = chart.data.labels;
-                
+                        const numericValue = parseFloat(data);
+            
+                        chart.data.labels.push(timestamp);
+            
+                        if (label.startsWith('Temp')) {
+                            chart.data.datasets[0].data.push(numericValue);
+                        } else if (label.startsWith('Humid')) {
+                            chart.data.datasets[1].data.push(numericValue);
+                        } else if (label.startsWith('Smoke')) {
+                            chart.data.datasets[2].data.push(numericValue);
+                        }
+            
+                        chart.options.scales.x.labels.push(timestamp); // Update x-axis labels
+            
                         chart.update();
                         console.log(`Chart (${label}) updated successfully:`, chart.data);
                     } catch (error) {
                         console.error(`Error updating chart (${label}) data:`, error);
                     }
                 }
-                
-
-
-document.addEventListener('DOMContentLoaded', async () => {
-    console.log('DOM content loaded');
-
-    const chart1Ctx = document.getElementById('chart1').getContext('2d');
-    const chart1 = createLineChart(chart1Ctx, 'Temperature (°C)', 'rgb(255, 99, 132)');
-
-    const chart2Ctx = document.getElementById('chart2').getContext('2d');
-    const chart2 = createLineChart(chart2Ctx, 'Humidity (%)', 'rgb(75, 192, 192)');
-
-    const chart3Ctx = document.getElementById('chart3').getContext('2d');
-    const chart3 = createLineChart(chart3Ctx, 'Smoke (%)', 'rgb(210, 92, 192)');
-    setInterval(async () => {
-        try {
-            console.log('Fetching data...');
-            const data = await fetchData();
-            console.log('Data received:', data);
-
-            if (data.temperature.length > 0 && data.humidity.length > 0 && data.smoke.length > 0) {
-                console.log('Updating chart 1');
-                updateChartData(chart1, data.temperature[0], 'Temperature');
-                console.log('Updating chart 2');
-                updateChartData(chart2, data.humidity[0], 'Humidity');
-                console.log('Updating chart 2');
-                updateChartData(chart3, data.smoke[0], 'Smoke');
-            } else {
-                console.warn('No data received from the API.');
-            }
-        } catch (error) {
-            console.error('Error updating chart data:', error);
-        }
-    }, 1000); // Update every 1000 milliseconds (1 second)
-});
-
-            </script>
             
+                document.addEventListener('DOMContentLoaded', () => {
+                    console.log('DOM content loaded');
+            
+                    // Listening for MQTT messages
+                    socket.on('mqttMessage', (payload) => {
+                        console.log('Received mqttMessage:', payload);
+                        const topic = payload.topic;
+                        const index = extractIndexFromTopic(topic);
+                        const sensorName = 'FDAS-' + (index + 1); // Generate sensor name
+            
+                        // Check if chart exists for this topic, if not create a new chart
+                        if (!charts.hasOwnProperty(index)) {
+                            const containerId = 'chartContainer_' + index;
+                            const newContainer = document.createElement('div');
+                            newContainer.id = containerId;
+                            newContainer.className = 'chart-container';
+                            document.getElementById('chartsContainer').appendChild(newContainer);
+                            charts[index] = createChart(containerId, sensorName);
+                        }
+            
+                        // Update chart data based on the received MQTT message
+                        updateChartData(charts[index], payload.message, topic);
+                    });
+                });
+            
+                // Function to extract index from topic name
+                function extractIndexFromTopic(topic) {
+                    const match = topic.match(/\d+$/); // Match one or more digits at the end of the topic
+                    if (match) {
+                        return parseInt(match[0]); // Parse the matched digits as an integer
+                    }
+                    return NaN; // Return NaN if no digits found at the end of the topic
+                }
+            </script>
         </main>
         <!-- End of Main Content -->
 
