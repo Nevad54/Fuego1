@@ -99,49 +99,51 @@
                 let charts = {}; // Object to store created charts
             
                 // Function to create a new chart
-                function createChart(containerId, label) {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = 700;
-                    canvas.height = 400;
-                    document.getElementById(containerId).appendChild(canvas);
-                    const ctx = canvas.getContext('2d');
-            
-                    return new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: [],
-                            datasets: [{
-                                label: label + ' Temperature (°C)',
-                                borderColor: 'rgb(255, 99, 132)',
-                                data: [],
-                                fill: false,
-                            }, {
-                                label: label + ' Humidity (%)',
-                                borderColor: 'rgb(75, 192, 192)',
-                                data: [],
-                                fill: false,
-                            }, {
-                                label: label + ' Smoke (%)',
-                                borderColor: 'rgb(210, 92, 192)',
-                                data: [],
-                                fill: false,
-                            }],
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            scales: {
-                                x: {
-                                    type: 'category',
-                                    labels: [],
-                                },
-                                y: {
-                                    beginAtZero: true,
-                                },
-                            },
-                        },
-                    });
-                }
+                // Function to create a new chart
+function createChart(containerId, label) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 700;
+    canvas.height = 400;
+    document.getElementById(containerId).appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+
+    return new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: label + ' Temperature (°C)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: [],
+                fill: false,
+            }, {
+                label: label + ' Humidity (%)',
+                borderColor: 'rgb(75, 192, 192)',
+                data: [],
+                fill: false,
+            }, {
+                label: label + ' Smoke (%)',
+                borderColor: 'rgb(210, 92, 192)',
+                data: [],
+                fill: false,
+            }],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    type: 'category',
+                    labels: [],
+                },
+                y: {
+                    beginAtZero: true,
+                },
+            },
+        },
+    });
+}
+
             
                 // Function to update chart data
                 function updateChartData(chart, data, label) {
