@@ -266,19 +266,19 @@
                     }
                 }
         
-                // Handle fire alert dynamically
-                if (payload.topic === 'Fire') {
-                    const fireElement = document.getElementById('fire-data');
-                    if (fireElement) {
-                        // Show the fire alert message
-                        fireElement.style.display = 'block';
-                        // Update the message content
-                        document.getElementById('fire-content').innerHTML = `<span style="color: red; font-size: larger;">${payload.message}</span>`;
-                    } else {
-                        console.error('Fire element not found.');
-                    }
-                }
-            });
+                // Handle fire alert dynamic
+        if (payload.topic.startsWith('Fire')) {
+            const fireElement = document.getElementById('fire-data');
+            if (fireElement) {
+                // Show the fire alert message
+                fireElement.style.display = 'block';
+                // Update the message content
+                document.getElementById('fire-content').innerHTML = `<span style="color: red; font-size: larger;">${payload.message}</span>`;
+            } else {
+                console.error('Fire element not found.');
+            }
+        }
+    });
         
 
 
