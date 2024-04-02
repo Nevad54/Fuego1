@@ -177,14 +177,15 @@
                                         </div>
                                         <div class="sensor-data">
                                             <!-- Icon and message wrapped inside a div -->
-                                            <div class="icon-with-message" id="fire-data<%= index %>" style="display: none;">
+                                            <div class="icon-with-message" id="fire-data" style="display: none;">
+                                                
                                                 <!-- Icon -->
                                                 <div class="icon">
                                                     <i class="fas fa-exclamation-triangle fa-6x blinking" style="color: red;"></i>
                                                 </div>
                                                 <!-- Message -->
                                                 <div class="message">
-                                                    <p id="fire-content<%= index %>"></p>
+                                                    <p id="Fire<%= index %>"></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -241,44 +242,41 @@
             });
              }
 
-            const socket = io.connect('https://fuego1.onrender.com');
-            console.log('Connecting to Socket.IO');
-
-            socket.on('connect', () => {
-            console.log('Connected to Socket.IO');
-            });
-
-            socket.on('mqttMessage', (payload) => {
-                console.log('Received mqttMessage:', payload);
-                
-                // Update values based on the received MQTT message
-                const index = parseInt(payload.topic.substr(-1)); // Extract the index from the topic
-                if (!isNaN(index)) {
-                    const dataType = payload.topic.substring(0, payload.topic.length - 1); // Extract the data type (e.g., Temp, Humid, Smoke)
-                    const element = document.getElementById(`${dataType}${index}`);
-                    if (element) {
-                        // Concatenate the label with the received value
-                        const label = dataType === 'Temperature' ? 'Temp: ' : dataType === 'Humid' ? 'Humidity: ' : 'Smoke: ';
-                        element.innerHTML = label + payload.message;
-                    } else {
-                        console.error(`Element ${dataType}${index} not found.`);
-                    }
-                }
-        
-                // Handle fire alert dynamic
-        // Handle fire alert dynamically
-        if (payload.topic.startsWith('Fire')) {
-            const fireElement = document.getElementById('fire-data');
-            if (fireElement) {
-                // Show the fire alert message
-                fireElement.style.display = 'block';
-                // Update the message content
-                document.getElementById('fire-content').innerHTML = `<span style="color: red; font-size: larger;">${payload.message}</span>`;
-            } else {
-                console.error('Fire element not found.');
-            }
-        }
-    });
+             const socket = io.connect('https://fuego1.onrender.com');
+             console.log('Connecting to Socket.IO');
+             
+             socket.on('connect', () => {
+                 console.log('Connected to Socket.IO');
+             });
+             
+             socket.on('mqttMessage', (payload) => {
+                 console.log('Received mqttMessage:', payload);
+             
+                 // Update values based on the received MQTT message
+                 const index = parseInt(payload.topic.substr(-1)); // Extract the index from the topic
+                 if (!isNaN(index)) {
+                     const dataType = payload.topic.substring(0, payload.topic.length - 1); // Extract the data type (e.g., Temp, Humid, Smoke)
+                     let label = '';
+                     if (dataType === 'Temperature') {
+                         label = 'Temp: ';
+                     } else if (dataType === 'Humid') {
+                         label = 'Humidity: ';
+                     } else if (dataType === 'Smoke') {
+                         label = 'Smoke: ';
+                     } else if (payload.topic === 'Fire') {
+                         label = 'Fire: ';
+                     }
+             
+                     const element = document.getElementById(`${dataType}${index}`);
+                     if (element) {
+                         // Concatenate the label with the received value
+                         element.innerHTML = label + payload.message;
+                     } else {
+                         console.error(`Element ${dataType}${index} not found.`);
+                     }
+                 }
+             });
+             
         
 
 
