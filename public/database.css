@@ -777,7 +777,7 @@ main .recent-orders a{
 }
 /* Styling for table card */
 .table-card {
-    background-color: #ffffff;
+    background-color:var(--color-white);
     border: 1px solid #e0e0e0;
     border-radius: 0.5rem;
     padding: 1rem;
@@ -848,12 +848,12 @@ td {
 
 /* Styling for even rows */
 tr:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color:var(--color-white);
 }
 
 /* Styling for odd rows */
 tr:nth-child(odd) {
-    background-color: #ffffff;
+    background-color: var(--color-white);
 }
 
 
@@ -866,7 +866,7 @@ tr:nth-child(odd) {
 /* Style for the button */
 .data-summary-map-button button {
     background-color: var(--color-danger); /* Change to your desired background color */
-    color: white;
+    color:var(--color-white);
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
