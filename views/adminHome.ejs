@@ -257,8 +257,8 @@
                  if (!isNaN(index)) {
                      const dataType = payload.topic.substring(0, payload.topic.length - 1); // Extract the data type (e.g., Temp, Humid, Smoke)
                      let label = '';
-                     if (dataType === 'Temperature') {
-                         label = 'Temp: ';
+                     if (dataType === 'Temp') {
+                         label = 'Temperature: ';
                      } else if (dataType === 'Humid') {
                          label = 'Humidity: ';
                      } else if (dataType === 'Smoke') {
