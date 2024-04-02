@@ -255,7 +255,7 @@
                 const index = parseInt(payload.topic.substr(-1)); // Extract the index from the topic
                 if (!isNaN(index)) {
                     const dataType = payload.topic.substring(0, payload.topic.length - 1); // Extract the data type (e.g., Temp, Humid, Smoke)
-                    const element = document.getElementById('${dataType}${index}');
+                    const element = document.getElementById(`${dataType}${index}`);
                     if (element) {
                         // Concatenate the label with the received value
                         const label = dataType === 'Temperature' ? 'Temp: ' : dataType === 'Humid' ? 'Humidity: ' : 'Smoke: ';
