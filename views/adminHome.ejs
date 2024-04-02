@@ -68,13 +68,12 @@
                     <h3>Database</h3>
                 </a>
                         
-                  <!--  <a href="/user">
+                    <a href="/user">
                         <span class="material-symbols-outlined">
                             manage_accounts
                         </span>
                         <h3>User</h3>
                     </a>
-                -->
                     
                 <a href="/location">
                     <span class="material-icons-sharp">pin_drop</span>
@@ -137,7 +136,8 @@
                                                 <!-- Use fa-3x class to make the icon 3 times larger -->
                                                 <i class="material-icons-sharp" style="font-size: 6rem; color: red;">location_on</i>
                                                 <div class="percentage">
-                                                    <p id="mqtt"><%= fdasSensor.title %></p>
+                                                    <!-- Dynamically generate the MQTT topic name based on the index -->
+                                                    <p id="esp32/test<%= index %>"><%= fdasSensor.title %></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -147,7 +147,8 @@
                                                 <!-- Use fa-3x class to make the icon 3 times larger -->
                                                 <i class="fas fa-thermometer-half fa-6x" style="color: orange;"></i>
                                                 <div class="percentage">
-                                                    <p id="Temperature">Temperature: </p>
+                                                    <!-- Dynamically generate the MQTT topic name based on the index -->
+                                                    <p id="Temp<%= index %>">Temperature: </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -157,7 +158,8 @@
                                                 <!-- Use fa-3x class to make the icon 3 times larger -->
                                                 <i class="fas fa-tint fa-6x" style="color: blue;"></i>
                                                 <div class="percentage">
-                                                    <p id="Humidity">Humidity: </p>
+                                                    <!-- Dynamically generate the MQTT topic name based on the index -->
+                                                    <p id="Humid<%= index %>">Humidity: </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -167,32 +169,17 @@
                                                 <!-- Use fa-3x class to make the icon 3 times larger -->
                                                 <i class="fas fa-smog fa-6x" style="color: rgb(104, 100, 104);"></i>
                                                 <div class="percentage">
-                                                    <p id="Smoke">Smoke: </p>
+                                                    <!-- Dynamically generate the MQTT topic name based on the index -->
+                                                    <p id="Smoke<%= index %>">Smoke: </p>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="sensor-data">
-                                            <!-- Icon and message wrapped inside a div -->
-                                            <div class="icon-with-message" id="fire-data" style="display: none;">
-                                                
-                                                <!-- Icon -->
-                                                <div class="icon">
-                                                    <i class="fas fa-exclamation-triangle fa-6x blinking" style="color: red;"></i>
-                                                </div>
-                                                <!-- Message -->
-                                                <div class="message">
-                                                    <p id="fire-content"></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        
-                                        
                                     </div>
-  
                                 </div>
                             </div>
                         <% }); %>
+                    </div>
+                </main>
                     </div>
                 </main>
                 
@@ -238,47 +225,47 @@
             });
              }
 
-            const socket = io.connect('https://fuego1.onrender.com');
-            console.log('Connecting to Socket.IO');
+             const socket = io.connect('http://192.168.1.15:5000');
+console.log('Connecting to Socket.IO');
 
-            socket.on('connect', () => {
-            console.log('Connected to Socket.IO');
-            });
+socket.on('connect', () => {
+    console.log('Connected to Socket.IO');
+});
 
-            socket.on('mqttMessage', (payload) => {
-                console.log('Received mqttMessage:', payload);
-                // Update values based on the received MQTT message
-                if (payload.topic === 'Temp') {
-                    document.getElementById('Temperature').innerHTML = `Temperature: ${payload.message}`;
-                } else if (payload.topic === 'Humid') {
-                    document.getElementById('Humidity').innerHTML = `Humidity: ${payload.message}`;
-                } else if (payload.topic === 'esp32/test') {
-                    document.getElementById('mqtt').innerHTML = `System: ${payload.message}`;
-                } else if (payload.topic === 'Smoke') {
-                    document.getElementById('Smoke').innerHTML = `Smoke: ${payload.message}`;
-                } else if (payload.topic === 'Fire') {
-                    // Show the icon and message
-                    document.getElementById('fire-data').style.display = 'block';
-                    
-                    // Update the message content
-                    document.getElementById('fire-content').innerHTML = `<span style="color: red; font-size: larger;">${payload.message}</span>`;
-                }
-                // You can customize the update logic based on your HTML structure
-            });
-            
+socket.on('mqttMessage', (payload) => {
+    console.log('Received mqttMessage:', payload);
+    // Update values based on the received MQTT message
+    const index = parseInt(payload.topic.substr(-1)); // Extract the index from the topic
+    if (!isNaN(index)) {
+        const dataType = payload.topic.substring(0, payload.topic.length - 1); // Extract the data type (e.g., Temp, Humid, Smoke)
+        const element = document.getElementById('${dataType}${index}');
+        if (element) {
+            // Concatenate the label with the received value
+            const label = dataType === 'Temperature' ? 'Temp: ' : dataType === 'Humid' ? 'Humidity: ' : 'Smoke: ';
+            element.innerHTML = label + payload.message;
+        } else {
+            console.error('Element ${dataType}${index} not found.');
+        }
+    }
+});
 
-             // Function to toggle dark mode
-                function toggleDarkMode() {
-                    const body = document.body;
-                    body.classList.toggle('dark-mode');
 
-                    // Update dark mode button icon
-                    const darkModeIcons = document.querySelectorAll('.dark-mode span.material-icons-sharp');
-                    darkModeIcons.forEach(icon => icon.classList.toggle('active'));
-                }
 
-                // Event listener for dark mode button click
-                document.querySelector('.dark-mode').addEventListener('click', toggleDarkMode);
+
+
+
+// Function to toggle dark mode
+function toggleDarkMode() {
+    const body = document.body;
+    body.classList.toggle('dark-mode');
+
+    // Update dark mode button icon
+    const darkModeIcons = document.querySelectorAll('.dark-mode span.material-icons-sharp');
+    darkModeIcons.forEach(icon => icon.classList.toggle('active'));
+}
+
+// Event listener for dark mode button click
+document.querySelector('.dark-mode').addEventListener('click', toggleDarkMode);
           </script>
         <!-- Right Section -->
         <div class="right-section">
