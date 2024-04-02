@@ -834,7 +834,7 @@ table td {
 /* Styling for table headers */
 th {
     background-color: var(--color-white);
-    color: #333;
+    color:  var(--color-white);
     font-weight: bold;
     padding: 0.8rem;
     border: 1px solid #ddd;
