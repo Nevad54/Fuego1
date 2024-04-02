@@ -94,8 +94,8 @@ mqttClient.on('connect', () => {
   });
   const topicConfig = [
     { name: "esp32/test0" },
-    { name: "Fire" },
-    { name: "Fire2" },
+    { name: "Fire0" },
+    { name: "Fire1" },
     { name: "Temp0" },
     { name: "Humid0" },
     { name: "Time" },
