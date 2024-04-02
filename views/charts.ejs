@@ -99,51 +99,49 @@
                 let charts = {}; // Object to store created charts
             
                 // Function to create a new chart
-                // Function to create a new chart
-function createChart(containerId, label) {
-    const canvas = document.createElement('canvas');
-    canvas.width = 700;
-    canvas.height = 400;
-    document.getElementById(containerId).appendChild(canvas);
-    const ctx = canvas.getContext('2d');
-
-    return new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: [],
-            datasets: [{
-                label: label + ' Temperature (°C)',
-                borderColor: 'rgb(255, 99, 132)',
-                data: [],
-                fill: false,
-            }, {
-                label: label + ' Humidity (%)',
-                borderColor: 'rgb(75, 192, 192)',
-                data: [],
-                fill: false,
-            }, {
-                label: label + ' Smoke (%)',
-                borderColor: 'rgb(210, 92, 192)',
-                data: [],
-                fill: false,
-            }],
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                x: {
-                    type: 'category',
-                    labels: [],
-                },
-                y: {
-                    beginAtZero: true,
-                },
-            },
-        },
-    });
-}
-
+                function createChart(containerId, label) {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = 700;
+                    canvas.height = 400;
+                    document.getElementById(containerId).appendChild(canvas);
+                    const ctx = canvas.getContext('2d');
+            
+                    return new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: [],
+                            datasets: [{
+                                label: label + ' Temperature (°C)',
+                                borderColor: 'rgb(255, 99, 132)',
+                                data: [],
+                                fill: false,
+                            }, {
+                                label: label + ' Humidity (%)',
+                                borderColor: 'rgb(75, 192, 192)',
+                                data: [],
+                                fill: false,
+                            }, {
+                                label: label + ' Smoke (%)',
+                                borderColor: 'rgb(210, 92, 192)',
+                                data: [],
+                                fill: false,
+                            }],
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                x: {
+                                    type: 'category',
+                                    labels: [],
+                                },
+                                y: {
+                                    beginAtZero: true,
+                                },
+                            },
+                        },
+                    });
+                }
             
                 // Function to update chart data
                 function updateChartData(chart, data, label) {
@@ -177,8 +175,8 @@ function createChart(containerId, label) {
                     socket.on('mqttMessage', (payload) => {
                         console.log('Received mqttMessage:', payload);
                         const topic = payload.topic;
-                        const index = extractIndexFromTopic(topic);
-            
+                        const index = extractIndexFromTopic(topic) + 1; // Increment index by 1
+                                
                         // Check if chart exists for this topic, if not create a new chart
                         if (!charts.hasOwnProperty(index)) {
                             const containerId = 'chartContainer_' + index;
@@ -186,7 +184,8 @@ function createChart(containerId, label) {
                             newContainer.id = containerId;
                             newContainer.className = 'chart-container';
                             document.getElementById('chartsContainer').appendChild(newContainer);
-                            charts[index] = createChart(containerId, 'Sensor ' + index);
+                            charts[index] = createChart(containerId, 'FDAS-' + index); // Use 'FDAS-' + index as label
+                    
                         }
             
                         // Update chart data based on the received MQTT message
