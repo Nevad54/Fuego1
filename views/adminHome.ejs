@@ -258,7 +258,7 @@
                     const element = document.getElementById(`${dataType}${index}`);
                     if (element) {
                         // Concatenate the label with the received value
-                        const label = dataType === 'Temperature' ? 'Temp: ' : dataType === 'Humid' ? 'Humidity: ' : 'Smoke: ';
+                        const label = dataType === 'Temp' ? 'Temperature: ' : dataType === 'Humid' ? 'Humidity: ' : 'Smoke: ';
                         element.innerHTML = label + payload.message;
                     } else {
                         console.error(`Element ${dataType}${index} not found.`);
