@@ -1,4 +1,4 @@
-
+index.js
 // index.js
 const multer = require('multer');
 const express = require("express");
@@ -86,10 +86,10 @@ io.on('connection', (socket) => {
 
 // Connect to MQTT
 mqttClient.on('connect', () => {
-  console.log(`Connected to MQTT.`);
+  console.log('Connected to MQTT.');
 })
   .on('error', (err) => {
-      console.error(`Error connecting to MQTT: ${err.message}`);
+      console.error('Error connecting to MQTT: ${err.message}');
       // Handle MQTT connection error here
   });
   const topicConfig = [
@@ -97,6 +97,7 @@ mqttClient.on('connect', () => {
     { name: "Temp0" },
     { name: "Humid0" },
     { name: "Time" },
+    { name: "Name" },
     { name: "Smoke0" },
     { name: "esp32/test1" },
     { name: "Temp1" },
@@ -108,13 +109,6 @@ mqttClient.on('connect', () => {
     { name: "Smoke2" }
   ];
   
-  mqttClient.on('connect', () => {
-    console.log(`Connected to MQTT.`);
-  })
-  .on('error', (err) => {
-    console.error(`Error connecting to MQTT: ${err.message}`);
-    // Handle MQTT connection error here
-  });
   
   const subscribePromises = topicConfig.map(({ name }) => {
     return new Promise((resolve, reject) => {
@@ -133,53 +127,80 @@ mqttClient.on('connect', () => {
       console.log('All subscriptions completed successfully.');
     })
     .catch(err => {
-      console.error(`Error subscribing to topics: ${err.message}`);
+      console.error('Error subscribing to topics: ${err.message}');
     });
   
-  mqttClient.on('message', async (topic, message) => {
-    try {
-      console.log(`Received MQTT message - Topic: ${topic}, Message: ${message.toString()}`);
-  
-      // Find the corresponding topic configuration
-      const topicInfo = topicConfig.find(topicInfo => topicInfo.name === topic);
-      if (!topicInfo) return; // Ignore if topic not found in config
-  
-      // Emit the payload to all connected clients
-      io.emit('mqttMessage', { topic, message: message.toString() });
-  
-      // Additional handling based on the received topic if needed
-      if (topic === 'Time') {
-        const timestamp = message.toString();
-        await handleTimeRoute(timestamp);
-      }
-    } catch (error) {
-      console.error(`Error processing MQTT message for topic '${topic}':`, error);
-    }
-  });
-    
-    const handleTimeRoute = async (timestamp) => {
-      let client;  // Declare client outside the try block
-    
+    mqttClient.on('message', async (topic, message) => {
       try {
-        client = await connectToDatabase();
-    
+          console.log('Received MQTT message - Topic: ${topic}, Message: ${message.toString()}');
+  
+          // Find the corresponding topic configuration
+          const topicInfo = topicConfig.find(topicInfo => topicInfo.name === topic);
+          if (!topicInfo) return; // Ignore if topic not found in config
+  
+          // Emit the payload to all connected clients
+          io.emit('mqttMessage', { topic, message: message.toString() });
+  
+          // Additional handling based on the received topic if needed
+          if (topic === 'Time') {
+              const timestamp = message.toString();
+              await handleTimeRoute(timestamp);
+          } else if (topic === 'Name') {
+              const title = message.toString();
+              await handleNameRoute(title);
+          }
+      } catch (error) {
+          console.error('Error processing MQTT message for topic ${topic}:', error);
+      }
+  });
+  
+  let latestTimestamp = null;
+
+const handleTimeRoute = async (timestamp) => {
+    try {
+        latestTimestamp = timestamp; // Store the latest timestamp
+        let client = await connectToDatabase();
+
         const db = client.db('accounts');
         const timeCollection = db.collection('time');
-    
-        // Specify the write concern as 'majority'
-        const writeConcern = { w: 'majority' };
-    
-        const result = await timeCollection.insertOne({ timestamp }, { writeConcern });
-    
+
+        const result = await timeCollection.insertOne({ timestamp });
+
         console.log('Timestamp added to the "time" collection successfully:', result);
-      } catch (error) {
+    } catch (error) {
         console.error('Error handling Time data:', error);
-      } finally {
+    } finally {
         if (client) {
-          client.close();
+            client.close();
         }
-      }
-    };
+    }
+};
+
+const handleNameRoute = async (title) => {
+    try {
+        let client = await connectToDatabase();
+
+        const db = client.db('accounts');
+        const timeCollection = db.collection('time');
+
+        if (latestTimestamp !== null) {
+            const result = await timeCollection.updateOne(
+                { timestamp: latestTimestamp },
+                { $set: { title: title } }
+            );
+
+            console.log('Title added to the "time" collection successfully:', result);
+        } else {
+            console.error('Error: Timestamp not available when handling Title data');
+        }
+    } catch (error) {
+        console.error('Error handling Title data:', error);
+    } finally {
+        if (client) {
+            client.close();
+        }
+    }
+};
     
     
     async function saveTimestampToDatabase(timestamp) {

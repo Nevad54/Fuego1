@@ -95,10 +95,12 @@
     <div>
 
         <details>
-            <summary>Tiggered Alarm History</summary>
+            <summary>Triggered Alarm History</summary>
             <table id="timeTable">
                 <thead>
                     <tr>
+                        <th>FDAS</th>
+                        <th>Timestamp</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -107,42 +109,49 @@
             </table>
         </details>
 
-       
-        
         <script>
             // Function to fetch and display data for a specific type
             function fetchAndDisplayData() {
-        fetch(`https://fuego1.onrender.com/time`)
-            .then(response => response.json())
-            .then(data => {
-                console.log(`Retrieved Time Data:`, data);
-                displayData(data);
-            })
-            .catch(error => {
-                handleFetchError(error, `Failed to load time data from the database.`);
-            });
-    }
+                fetch('https://fuego1.onrender.com/time')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Retrieved Time Data:', data);
+                        displayData(data);
+                    })
+                    .catch(error => {
+                        console.error('There was a problem with the fetch operation:', error.message);
+                        // Handle the error here
+                    });
+            }
 
-    // Function to display data in a table
-    function displayData(data) {
-        const table = document.querySelector(`#timeTable tbody`);
-        table.innerHTML = ''; // Clear existing data
+            // Function to display data in a table
+            function displayData(data) {
+                const table = document.querySelector(#timeTable tbody);
+                table.innerHTML = ''; // Clear existing data
 
-        data.forEach(item => {
-            console.log('Item:', item); // Log the item to the console for debugging
+                data.forEach(item => {
+                    console.log('Item:', item); // Log the item to the console for debugging
 
-            const row = table.insertRow();
-            const titleCell = row.insertCell(0);
-            const timestampCell = row.insertCell(1);
+                    const row = table.insertRow();
+                    const fdasCell = row.insertCell(0);
+                    const timestampCell = row.insertCell(1);
 
-            titleCell.textContent = item.title || '';
-            timestampCell.textContent = item.timestamp || '';
-        });
-    }
+                    // Populate FDAS column with title from the database
+                    fdasCell.textContent = item.title || '';
 
-    // Fetch and display data for the 'time' collection
-    fetchAndDisplayData();
-</script>
+                    // Populate Timestamp column with timestamp from the database
+                    timestampCell.textContent = item.timestamp || '';
+                });
+            }
+
+            // Fetch and display data for the 'time' collection
+            fetchAndDisplayData();
+        </script>
     </div>
 </main>
 <!-- End of Main Content -->
