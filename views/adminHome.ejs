@@ -261,7 +261,7 @@
                         const label = dataType === 'Temperature' ? 'Temp: ' : dataType === 'Humid' ? 'Humidity: ' : 'Smoke: ';
                         element.innerHTML = label + payload.message;
                     } else {
-                        console.error('Element ${dataType}${index} not found.');
+                        console.error(`Element ${dataType}${index} not found.`);
                     }
                 }
             });
