@@ -246,29 +246,24 @@
             console.log('Connecting to Socket.IO');
 
             socket.on('connect', () => {
-            console.log('Connected to Socket.IO');
+                console.log('Connected to Socket.IO');
             });
-
+            
             socket.on('mqttMessage', (payload) => {
                 console.log('Received mqttMessage:', payload);
-                
                 // Update values based on the received MQTT message
-                if (payload.topic === 'Temp') {
-                    document.getElementById('Temperature').innerHTML = `Temperature: ${payload.message}`;
-                } else if (payload.topic === 'Humid') {
-                    document.getElementById('Humidity').innerHTML = `Humidity: ${payload.message}`;
-                } else if (payload.topic === 'esp32/test') {
-                    document.getElementById('mqtt').innerHTML = `System: ${payload.message}`;
-                } else if (payload.topic === 'Smoke') {
-                    document.getElementById('Smoke').innerHTML = `Smoke: ${payload.message}`;
-                } else if (payload.topic === 'Fire') {
-                    // Show the icon and message
-                    document.getElementById('fire-data').style.display = 'block';
-                    
-                    // Update the message content
-                    document.getElementById('fire-content').innerHTML = `<span style="color: red; font-size: larger;">${payload.message}</span>`;
+                const index = parseInt(payload.topic.substr(-1)); // Extract the index from the topic
+                if (!isNaN(index)) {
+                    const dataType = payload.topic.substring(0, payload.topic.length - 1); // Extract the data type (e.g., Temp, Humid, Smoke)
+                    const element = document.getElementById('${dataType}${index}');
+                    if (element) {
+                        // Concatenate the label with the received value
+                        const label = dataType === 'Temperature' ? 'Temp: ' : dataType === 'Humid' ? 'Humidity: ' : 'Smoke: ';
+                        element.innerHTML = label + payload.message;
+                    } else {
+                        console.error('Element ${dataType}${index} not found.');
+                    }
                 }
-                // You can customize the update logic based on your HTML structure
             });
             
 
