@@ -123,7 +123,7 @@
         
         
                 function fetchDataAndAddMarkers(endpoint, customIcon) {
-            fetch(`https://fuego1.onrender.com/${endpoint}`)
+            fetch(`http://192.168.136.189:5000/${endpoint}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
