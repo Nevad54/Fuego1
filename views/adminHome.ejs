@@ -47,26 +47,34 @@
                     <h3>Dashboard</h3>
                 </a>
               
-               
-                <a href="/charts">
-                    <span class="material-icons-sharp">
-                        insights
-                    </span>
-                    <h3>Charts</h3>
+                <a href="/location">
+                    <span class="material-icons-sharp">pin_drop</span>
+                    <h3>Geographic Data</h3>
                 </a>
+                
                 <a href="/alert">
                     <span class="material-symbols-outlined">
                         notifications
                         </span>
-                    <h3>Alerts</h3>
+                    <h3>Fire History</h3>
+                
+                    <a href="/database">
+                        <span class="material-symbols-outlined">
+                            database
+                        </span>
+                        <h3>Database</h3>
+                    </a>
+                    
+                <a href="/charts">
+                    <span class="material-icons-sharp">
+                        insights
+                    </span>
+                    <h3>Data History</h3>
+                </a>
+                
                     
                 </a>
-                <a href="/database">
-                    <span class="material-symbols-outlined">
-                        database
-                    </span>
-                    <h3>Database</h3>
-                </a>
+                
                         
                   <!--  <a href="/user">
                         <span class="material-symbols-outlined">
@@ -76,10 +84,7 @@
                     </a>
                 -->
                     
-                <a href="/location">
-                    <span class="material-icons-sharp">pin_drop</span>
-                    <h3>Maps</h3>
-                </a>
+                
                 <a href="/userList">
                     <span class="material-symbols-outlined"> admin_panel_settings </span>
                     <h3>Admin Panel</h3>
@@ -116,13 +121,12 @@
                 <!-- ... your existing sidebar content ... -->
         
                 <main>
-                    <h1>Monitoring</h1>
+                    <h1 style="font-size: 36px; font-weight: bold; margin-right: 20px; white-space: nowrap;">FDAS STATUS</h1>
                     
                     <!-- Display FDAS areas dynamically based on fetched data -->
                     <div class="fdas-list">
                         <% fdasData.forEach((fdasSensor, index) => { %>
                             <div class="box-border">
-                                <p><%= fdasSensor.title %></p>
                             </div>
                             <div class="analyse">
                                 <div class="fire">
@@ -138,7 +142,7 @@
                                                 <i class="material-icons-sharp" style="font-size: 6rem; color: red;">location_on</i>
                                                 <div class="percentage">
                                                     <!-- Dynamically generate the MQTT topic name based on the index -->
-                                                    <p id="esp32/test<%= index %>"><%= fdasSensor.title %></p>
+                                                    <p id="esp32/test<%= index %>">Not Active</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -149,7 +153,7 @@
                                                 <i class="fas fa-thermometer-half fa-6x" style="color: orange;"></i>
                                                 <div class="percentage">
                                                     <!-- Dynamically generate the MQTT topic name based on the index -->
-                                                    <p id="Temp<%= index %>">Temperature: </p>
+                                                    <p id="Temp<%= index %>">No Reading </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -160,7 +164,7 @@
                                                 <i class="fas fa-tint fa-6x" style="color: blue;"></i>
                                                 <div class="percentage">
                                                     <!-- Dynamically generate the MQTT topic name based on the index -->
-                                                    <p id="Humid<%= index %>">Humidity: </p>
+                                                    <p id="Humid<%= index %>">No Reading </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -171,24 +175,23 @@
                                                 <i class="fas fa-smog fa-6x" style="color: rgb(104, 100, 104);"></i>
                                                 <div class="percentage">
                                                     <!-- Dynamically generate the MQTT topic name based on the index -->
-                                                    <p id="Smoke<%= index %>">Smoke: </p>
+                                                    <p id="Smoke<%= index %>">No Reading </p>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="sensor-data">
+                                        <div class="sensor-data" onclick="redirectToFDAS('<%= fdasSensor.latitude %>', '<%= fdasSensor.longitude %>')">
                                             <!-- Icon and message wrapped inside a div -->
-                                            <div class="icon-with-message" id="fire-data" style="display: none;">
-                                                
+                                            <div class="icon-with-message" id="fire-data<%= index %>" style="display: none;">
                                                 <!-- Icon -->
-                                                <div class="icon">
-                                                    <i class="fas fa-exclamation-triangle fa-6x blinking" style="color: red;"></i>
-                                                </div>
+                                                <i class="fas fa-exclamation-triangle fa-6x blinking" style="color: red;"></i>
                                                 <!-- Message -->
                                                 <div class="message">
-                                                    <p id="fire-content"></p>
+                                                    <!-- Display FDAS information -->
+                                                    <p id="Fire<%= index %>"></p>
                                                 </div>
                                             </div>
                                         </div>
+                                        
                                         
                                         
                                         
@@ -218,7 +221,10 @@
         
         <!-- End of Main Content -->
         <script>
-            
+            function redirectToFDAS(latitude, longitude) {
+    window.location.href = `/location?latitude=${latitude}&longitude=${longitude}`;
+}
+
             function associateFDAS() {
     // Extract selected user and FDAS IDs
     const userId = document.getElementById('user').value;
@@ -242,43 +248,57 @@
             });
              }
 
-            const socket = io.connect('https://fuego1.onrender.com');
-            console.log('Connecting to Socket.IO');
+             const socket = io.connect('https://fuego1.onrender.com');
+console.log('Connecting to Socket.IO');
 
-            socket.on('connect', () => {
-                console.log('Connected to Socket.IO');
-            });
-            
-            socket.on('mqttMessage', (payload) => {
-                console.log('Received mqttMessage:', payload);
-                // Update values based on the received MQTT message
-                const index = parseInt(payload.topic.substr(-1)); // Extract the index from the topic
-                if (!isNaN(index)) {
-                    const dataType = payload.topic.substring(0, payload.topic.length - 1); // Extract the data type (e.g., Temp, Humid, Smoke)
-                    const element = document.getElementById(`${dataType}${index}`);
-                    if (element) {
-                        // Concatenate the label with the received value
-                        const label = dataType === 'Temp' ? 'Temperature: ' : dataType === 'Humid' ? 'Humidity: ' : 'Smoke: ';
-                        element.innerHTML = label + payload.message;
-                    } else {
-                        console.error(`Element ${dataType}${index} not found.`);
-                    }
+socket.on('mqttMessage', (payload) => {
+    console.log('Received mqttMessage:', payload);
+    // Update values based on the received MQTT message
+    const index = parseInt(payload.topic.substr(-1)); // Extract the index from the topic
+    if (!isNaN(index)) {
+        const dataType = payload.topic.substring(0, payload.topic.length - 1); // Extract the data type (e.g., Temp, Humid, Smoke)
+        const element = document.getElementById(`${dataType}${index}`);
+        if (element) {
+            // Concatenate the label with the received value
+            const label = dataType === 'Temp' ? 'Temperature: ' : dataType === 'Humid' ? 'Humidity: ' : dataType === 'Smoke' ? 'Smoke: ' : ' ';
+            element.innerHTML = label + payload.message;
+
+            // Check if the MQTT message is related to fire
+            if (dataType === 'Fire' && payload.message === 'Alarm is Triggered') {
+                const fireDataElement = document.getElementById(`fire-data${index}`);
+                if (fireDataElement) {
+                    fireDataElement.style.display = 'block'; // Make the fire data icon visible
+                    // Add event listener to fire-data icon for redirection
+                    fireDataElement.addEventListener('click', () => {
+                        // Redirect to location.ejs
+                        window.location.href = '/location';
+                    });
+                } else {
+                    console.error(`Element fire-data${index} not found.`);
                 }
-            });
-            
+            }
+        } else {
+            console.error(`Element ${dataType}${index} not found.`);
+        }
+    }
+});
 
-             // Function to toggle dark mode
-                function toggleDarkMode() {
-                    const body = document.body;
-                    body.classList.toggle('dark-mode');
 
-                    // Update dark mode button icon
-                    const darkModeIcons = document.querySelectorAll('.dark-mode span.material-icons-sharp');
-                    darkModeIcons.forEach(icon => icon.classList.toggle('active'));
-                }
 
-                // Event listener for dark mode button click
-                document.querySelector('.dark-mode').addEventListener('click', toggleDarkMode);
+
+
+// Function to toggle dark mode
+function toggleDarkMode() {
+    const body = document.body;
+    body.classList.toggle('dark-mode');
+
+    // Update dark mode button icon
+    const darkModeIcons = document.querySelectorAll('.dark-mode span.material-icons-sharp');
+    darkModeIcons.forEach(icon => icon.classList.toggle('active'));
+}
+
+// Event listener for dark mode button click
+document.querySelector('.dark-mode').addEventListener('click', toggleDarkMode);
           </script>
         <!-- Right Section -->
         <div class="right-section">

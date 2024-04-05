@@ -178,6 +178,129 @@ const handleTimeRoute = async (timestamp) => {
     }
 };
 
+mqttClient.on('message', async (topic, message) => {
+  try {
+    console.log(`Received MQTT message - Topic: ${topic}, Message: ${message.toString()}`);
+
+    let collectionName;
+
+    // Determine the collection name based on the topic
+    if (topic.startsWith('Temp0')) {
+      collectionName = 'FDAS-1-TemperatureData';
+    } else if (topic.startsWith('Humid0')) {
+      collectionName = 'FDAS-1-HumidityData';
+    } else if (topic.startsWith('Smoke0')) {
+      collectionName = 'FDAS-1-SmokeData';
+    } else if (topic.startsWith('Temp1')) {
+      collectionName = 'FDAS-2-TemperatureData';
+    } else if (topic.startsWith('Humid1')) {
+      collectionName = 'FDAS-2-HumidityData';
+    } else if (topic.startsWith('Smoke1')) {
+      collectionName = 'FDAS-2-SmokeData';
+    } else if (topic.startsWith('Temp2')) {
+      collectionName = 'FDAS-3-TemperatureData';
+    } else if (topic.startsWith('Humid2')) {
+      collectionName = 'FDAS-3-HumidityData';
+    } else if (topic.startsWith('Smoke2')) {
+      collectionName = 'FDAS-3-SmokeData';
+    }
+
+    // Extract month and year from the current date
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() + 1; // Months are zero-indexed
+    const currentYear = currentDate.getFullYear();
+
+    // Create the document with the required fields
+    const document = {
+      collectionName: collectionName, // Save the collection name instead of the topic
+      value: message.toString(), // Directly assign the string value of the MQTT message
+      timestamp: new Date(),
+      month: currentMonth,
+      year: currentYear
+    };
+
+    // Save the parsed data into the appropriate MongoDB collection
+    await saveDataToDatabase(collectionName, document);
+
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+});
+
+
+
+// Function to generate a unique ID (you can use any preferred method)
+
+
+
+app.get("/temperature-humidity-smoke-data", async (req, res) => {
+  try {
+    // Connect to the database
+    const client = await connectToDatabase();
+    const db = client.db('accounts');
+
+    // Specify the fields to include in the projection
+    const projection = { month: 1, year: 1, topic: 1, "value.value": 1 }; // Include month, year, and nested value field
+
+    // Fetch temperature and humidity data from all collections
+    const promises = [
+      db.collection('FDAS-1-TemperatureData').find({}, projection).toArray(),
+      db.collection('FDAS-2-TemperatureData').find({}, projection).toArray(),
+      db.collection('FDAS-3-TemperatureData').find({}, projection).toArray(),
+      db.collection('FDAS-1-HumidityData').find({}, projection).toArray(),
+      db.collection('FDAS-2-HumidityData').find({}, projection).toArray(),
+      db.collection('FDAS-3-HumidityData').find({}, projection).toArray(),
+      db.collection('FDAS-1-SmokeData').find({}, projection).toArray(),
+      db.collection('FDAS-2-SmokeData').find({}, projection).toArray(),
+      db.collection('FDAS-3-SmokeData').find({}, projection).toArray()
+    ];
+
+    const [tempData1, tempData2, tempData3, humidData1, humidData2, humidData3,smokeData1, smokeData2, smokeData3] = await Promise.all(promises);
+
+    // Merge temperature and humidity data from all collections
+    const temperatureData = [...tempData1, ...tempData2, ...tempData3];
+    const humidityData = [...humidData1, ...humidData2, ...humidData3];
+    const smokeData = [...smokeData1, ...smokeData2, ...smokeData3];
+
+    // Combine temperature and humidity data into a single array
+    const combinedData = [...temperatureData, ...humidityData, ...smokeData];
+
+    // Close the database connection
+    client.close();
+
+    // Send combined temperature and humidity data as JSON response
+    res.json(combinedData);
+  } catch (error) {
+    console.error('Error fetching temperature and humidity data:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+async function saveDataToDatabase(collectionName, data) {
+  let client; // Define the client variable outside the try block
+  try {
+    // Connect to the database
+    client = await connectToDatabase();
+    const db = client.db('accounts');
+    const collection = db.collection(collectionName);
+
+    // If the data is just a number, wrap it in an object
+    const document = data; // Change 'value' to whatever key you want
+
+    // Insert the data into the specified collection
+    const result = await collection.insertOne(document);
+    console.log(`Data saved to ${collectionName} collection successfully:`, result);
+  } catch (error) {
+    console.error(`Error saving data to ${collectionName} collection:`, error);
+  } finally {
+    if (client) {
+      client.close();
+    }
+  }
+}
+
+
 const handleNameRoute = async (title) => {
     try {
         let client = await connectToDatabase();
@@ -354,7 +477,34 @@ app.get('/time', async (req, res) => {
 });
 
 
+app.get('/getFDASCoordinates', async (req, res) => {
+  try {
+      // Fetch and send the data from the database
+      const client = await connectToDatabase();
+      const db = client.db('accounts');
 
+      // Retrieve the fdasId from the query parameters
+      const fdasId = req.query.fdasId;
+
+      // Perform a database query to retrieve the FDAS coordinates based on fdasId
+      const fdas = await db.collection('fdas').findOne({ _id: ObjectId(fdasId) });
+
+      if (fdas) {
+          // If FDAS is found, extract latitude and longitude
+          const { latitude, longitude } = fdas;
+
+          // Send success message along with the coordinates as JSON response
+          res.json({ success: true, message: 'Coordinates retrieved successfully', latitude, longitude });
+      } else {
+          // If FDAS is not found, send a 404 error response
+          res.status(404).json({ success: false, error: 'FDAS not found' });
+      }
+  } catch (error) {
+      // Handle errors
+      console.error('Error retrieving FDAS coordinates from database:', error);
+      res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
 app.get("/", (req, res) => {
   res.render("login");
 });
@@ -535,21 +685,16 @@ app.get("/adminHome", authMiddleware.requireLogin, async (req, res) => {
 
     // Fetch FDAS data from the 'fdas' collection
     const fdasCollection = db.collection('fdas');
-    const fdasData = await fdasCollection.find({}, { projection: { title: 1, _id: 1 } }).toArray();
+    const fdasData = await fdasCollection.find({}, { projection: { _id: 1, title: 1, latitude: 1, longitude: 1 } }).toArray();
 
-    console.log('fdasData:', JSON.stringify(fdasData, null, 2));
-
+    console.log('fdasData:', fdasData);
 
     // Check if there's a confirmation message
     const confirmationMessage = req.query.confirmationMessage;
 
     // Ensure both users and fdasData are defined before rendering the view
     if (users.length > 0 && fdasData.length > 0) {
-      res.render("adminHome", {     user: req.session.user, 
-        admin1: req.session.user, 
-        users: users, 
-        fdasData: fdasData, 
-        confirmationMessage: confirmationMessage  });
+      res.render("adminHome", { user: req.session.user, admin1: req.session.user, users: users, fdasData: fdasData, confirmationMessage: confirmationMessage }); // Pass fdasData to the template
     } else if (users.length === 0) {
       res.status(404).send("Users not found");
     } else {

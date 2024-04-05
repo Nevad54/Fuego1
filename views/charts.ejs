@@ -4,12 +4,39 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Charts for Temperature and Humidity</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.1.0/mqtt.min.js"></script>
   <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
   <link rel="stylesheet" href="/chart.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <style>
+    /* CSS for temperature data table */
+    .data-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.data-table td,
+.data-table th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+.data-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.data-table th {
+  background-color: #dddddd;
+  color: black;
+}
+
+  </style>
 </head>
 <body>
     <div class="container">
@@ -89,13 +116,43 @@
 
         <!-- Main Section -->
         <main>
-            <h1>Dynamic Temperature, Humidity, and Smoke Charts</h1>
+            <h1>Temperature, Humidity, and Smoke Charts</h1>
             <div id="chartsContainer" style="display: flex; flex-direction: column; align-items: center;">
                 <!-- Charts will be dynamically added here -->
             </div>
+           <!-- Update the select options container to have a common label for both temperature and humidity -->
+           <div id="select-options-data">
+            <label for="select-topic-data">Select Topic:</label>
+            <select id="select-topic-data"></select>
+            <label for="select-month-data">Select Month:</label>
+            <select id="select-month-data"></select>
+            <label for="select-year-data">Select Year:</label>
+            <select id="select-year-data"></select>
+            <button onclick="updateData()">Show Data</button>
+        </div>
+
+        <table id="data-table-body" class="data-table">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Month</th>
+                    <th>Year</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data will be displayed here -->
+            </tbody>
+        </table>
+        
+        <!-- Buttons for exporting data -->
+        <div class="button-container">
+            <button class="action-button" onclick="exportDataToExcel()">Export to Excel</button>
+            <button class="action-button" onclick="saveDataToPDF()">Save to PDF</button>
+            <button class="action-button" onclick="printData()">Print Data</button>
+        </div>
 
             <script>
-                const socket = io.connect('https://fuego1.onrender.com');
+                const socket = io.connect('http://192.168.1.15:5000');
                 let charts = {}; // Object to store created charts
             
                 // Function to create a new chart
@@ -142,8 +199,6 @@
                         },
                     });
                 }
-            
-                // Function to update chart data
                 function updateChartData(chart, data, label) {
                     try {
                         const timestamp = new Date().toLocaleTimeString();
@@ -162,21 +217,20 @@
                         chart.options.scales.x.labels.push(timestamp); // Update x-axis labels
             
                         chart.update();
-                        console.log('Chart (${label}) updated successfully:', chart.data);
+                        console.log(`Chart (${label}) updated successfully:`, chart.data);
                     } catch (error) {
-                        console.error('Error updating chart (${label}) data:', error);
+                        console.error(`Error updating chart (${label}) data:`, error);
                     }
                 }
-            
                 document.addEventListener('DOMContentLoaded', () => {
                     console.log('DOM content loaded');
-            
-                    // Listening for MQTT messages
-                    socket.on('mqttMessage', (payload) => {
+                // Listening for MQTT messages
+                socket.on('mqttMessage', (payload) => {
                         console.log('Received mqttMessage:', payload);
                         const topic = payload.topic;
-                        const index = extractIndexFromTopic(topic) + 1; // Increment index by 1
-                                
+                        const index = extractIndexFromTopic(topic);
+                        const sensorName = 'FDAS-' + (index + 1); // Generate sensor name
+            
                         // Check if chart exists for this topic, if not create a new chart
                         if (!charts.hasOwnProperty(index)) {
                             const containerId = 'chartContainer_' + index;
@@ -184,8 +238,7 @@
                             newContainer.id = containerId;
                             newContainer.className = 'chart-container';
                             document.getElementById('chartsContainer').appendChild(newContainer);
-                            charts[index] = createChart(containerId, 'FDAS-' + index); // Use 'FDAS-' + index as label
-                    
+                            charts[index] = createChart(containerId, sensorName);
                         }
             
                         // Update chart data based on the received MQTT message
@@ -201,6 +254,165 @@
                     }
                     return NaN; // Return NaN if no digits found at the end of the topic
                 }
+
+                fetch('/temperature-humidity-smoke-data')
+    .then(response => response.json())
+    .then(data => {
+        const uniqueMonths = [...new Set(data.map(entry => entry.month))];
+        const uniqueYears = [...new Set(data.map(entry => entry.year))];
+        const uniqueTopics = [...new Set(data.map(entry => entry.collectionName))]; // Assuming 'topic' is the field representing the collection name
+
+        // Populate select dropdown for months
+        const selectMonth = document.getElementById('select-month-data');
+        uniqueMonths.forEach(month => {
+            const option = document.createElement('option');
+            option.value = month;
+            option.textContent = month;
+            selectMonth.appendChild(option);
+        });
+
+        // Populate select dropdown for years
+        const selectYear = document.getElementById('select-year-data');
+        uniqueYears.forEach(year => {
+            const option = document.createElement('option');
+            option.value = year;
+            option.textContent = year;
+            selectYear.appendChild(option);
+        });
+
+        // Populate select dropdown for topics
+        const selectTopic = document.getElementById('select-topic-data');
+        // Add "All temperature", "All humidity", and "All smoke" options
+        const allTemperatureOption = document.createElement('option');
+        allTemperatureOption.value = 'All Temperature';
+        allTemperatureOption.textContent = 'All Temperature';
+        selectTopic.appendChild(allTemperatureOption);
+
+        const allHumidityOption = document.createElement('option');
+        allHumidityOption.value = 'All Humidity';
+        allHumidityOption.textContent = 'All Humidity';
+        selectTopic.appendChild(allHumidityOption);
+
+        const allSmokeOption = document.createElement('option');
+        allSmokeOption.value = 'All Smoke';
+        allSmokeOption.textContent = 'All Smoke';
+        selectTopic.appendChild(allSmokeOption);
+
+        uniqueTopics.forEach(topic => {
+            const option = document.createElement('option');
+            option.value = topic;
+            option.textContent = topic;
+            selectTopic.appendChild(option);
+        });
+    })
+    .catch(error => {
+        console.error('Error fetching temperature and humidity data:', error);
+    });
+
+// Function to update both temperature and humidity data based on selected options
+function updateData() {
+    const selectedMonth = document.getElementById('select-month-data').value;
+    const selectedYear = document.getElementById('select-year-data').value;
+    const selectedTopic = document.getElementById('select-topic-data').value;
+
+    fetch('/temperature-humidity-smoke-data')
+        .then(response => response.json())
+        .then(data => {
+            // Clear existing data
+            const dataTableBody = document.getElementById('data-table-body');
+            dataTableBody.innerHTML = '';
+
+            // Filter data based on selected month, year, and topic
+            let filteredData = data.filter(entry => entry.month == selectedMonth && entry.year == selectedYear);
+            
+            // If "All temperature" is selected, filter data for temperature
+            if (selectedTopic === 'All Temperature') {
+                filteredData = filteredData.filter(entry => entry.collectionName.endsWith('TemperatureData'));
+            }
+            // If "All humidity" is selected, filter data for humidity
+            else if (selectedTopic === 'All Humidity') {
+                filteredData = filteredData.filter(entry => entry.collectionName.endsWith('HumidityData'));
+            }
+            // If "All smoke" is selected, filter data for smoke
+            else if (selectedTopic === 'All Smoke') {
+                filteredData = filteredData.filter(entry => entry.collectionName.endsWith('SmokeData'));
+            }
+            // Otherwise, filter data based on the selected topic
+            else {
+                filteredData = filteredData.filter(entry => entry.collectionName === selectedTopic);
+            }
+
+            // Populate data table
+            filteredData.forEach(entry => {
+                const entryElement = document.createElement('tr');
+                entryElement.innerHTML = `
+                    <td>${entry.value}</td>
+                    <td>${entry.month}&nbsp;</td>
+                    <td>${entry.year}&nbsp;</td>
+                `;
+                dataTableBody.appendChild(entryElement);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+}
+
+
+
+
+function exportDataToExcel() {
+    const dataTableBody = document.getElementById('data-table-body');
+    const tableHtml = dataTableBody.outerHTML;
+    const filename = 'data.xlsx';
+    
+    const blob = new Blob([tableHtml], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+function printData() {
+    const dataTableBody = document.getElementById('data-table-body');
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write('<html><head><title>Data</title></head><body>');
+    printWindow.document.write('<h2>Data</h2>');
+    // Add inline CSS styles for border formatting
+    printWindow.document.write('<table style="border-collapse: collapse; width: 100%;">');
+    // Iterate through each row of the table body and add them to the print window
+    for (let row of dataTableBody.rows) {
+        printWindow.document.write('<tr>');
+        // Iterate through each cell of the row and add them to the print window with border formatting
+        for (let cell of row.cells) {
+            printWindow.document.write(`<td style="border: 1px solid #dddddd; padding: 8px;">${cell.innerHTML}</td>`);
+        }
+        printWindow.document.write('</tr>');
+    }
+    printWindow.document.write('</table>');
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print();
+}
+function saveDataToPDF() {
+    const doc = new jsPDF(); // Create a new instance of jsPDF
+
+    // Convert the data table to a PDF using the autoTable plugin
+    const dataTableBody = document.getElementById('data-table-body');
+
+    // Add a new page for the data
+    doc.addPage();
+    doc.text('Sensor Data', 10, 10);
+    doc.autoTable({ html: dataTableBody });
+
+    // Save the PDF
+    doc.save('sensor_data.pdf');
+}
+
+            
+                    
             </script>
         </main>
         <!-- End of Main Content -->
@@ -253,3 +465,4 @@
     <script src="../js/control.js"></script>
 </body>
 </html>
+
