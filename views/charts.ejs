@@ -373,7 +373,7 @@ function updateData() {
 function exportDataToExcel() {
     const dataTableBody = document.getElementById('data-table-body');
     const tableHtml = dataTableBody.outerHTML;
-    const filename = 'data.xlsx';
+    const filename = 'AlarmData.xlsx';
     
     const blob = new Blob([tableHtml], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' });
     const link = document.createElement('a');
@@ -388,7 +388,7 @@ function printData() {
     const dataTableBody = document.getElementById('data-table-body');
     const printWindow = window.open('', '_blank');
     printWindow.document.write('<html><head><title>Data</title></head><body>');
-    printWindow.document.write('<h2>Data</h2>');
+    printWindow.document.write('<h2>Alarm Data Records</h2>');
     // Add inline CSS styles for border formatting
     printWindow.document.write('<table style="border-collapse: collapse; width: 100%;">');
     // Iterate through each row of the table body and add them to the print window
