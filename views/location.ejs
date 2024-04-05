@@ -64,13 +64,12 @@
                     
                 </a>
                            
-                      <!--  <a href="/user">
+                    <a href="/user">
                         <span class="material-symbols-outlined">
                             manage_accounts
                         </span>
                         <h3>User</h3>
                     </a>
-                -->
                     
                 <a href="/location" class="active">
                     <span class="material-icons-sharp">pin_drop</span>
@@ -105,15 +104,38 @@
                 <label for="searchInput">Search:</label>
                 <input type="text" id="searchInput" placeholder="">
                 <button onclick="searchIcon()">Search</button>
-                <button onclick="stopDisplayingTooltips()">Clear</button>
+                <button onclick="stopDisplayingTooltips()">Back</button>
                 <!-- Add Back button -->
             </div>
            
             <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.min.js"></script>
             <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
             <script src="https://unpkg.com/esri-leaflet"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.1.0/mqtt.min.js"></script>
             <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+            <script>
+              
+              document.addEventListener('DOMContentLoaded', function() {
+    // Extract latitude and longitude from URL query string
+    const urlParams = new URLSearchParams(window.location.search);
+    const latitude = parseFloat(urlParams.get('latitude'));
+    const longitude = parseFloat(urlParams.get('longitude'));
+
+    // Check if latitude and longitude are valid numbers
+    if (!isNaN(latitude) && !isNaN(longitude)) {
+        // Set the initial view of the map using the provided coordinates
+        map.setView([latitude, longitude], 14);
+        
+        // Create route to the provided coordinates and fetch nearby hydrants
+        createRoute({ lat: latitude, lng: longitude });
+    } else {
+        // Provide default coordinates if none are provided in the URL
+        map.setView([18.059999, 120.543470], 14);
+    }
+});
+            </script>
+            
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
                     // Add event listener for clicks on the Leaflet Routing container

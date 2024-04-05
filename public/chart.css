@@ -18,7 +18,17 @@
     --padding-1: 1.2rem;
     --box-shadow: 0 2rem 3rem var(--color-light);
 }
+.button-container {
+    display: flex;
+    gap: 10px;
+}
 
+.action-button {
+    border: 1px solid #000; /* Border styling */
+    padding: 8px 16px; /* Padding for better button appearance */
+    background-color: #fff; /* Button background color */
+    cursor: pointer; /* Cursor style on hover */
+}
 .dark-mode-variables {
     --color-background: #181a1e;
     --color-white: #202528;
