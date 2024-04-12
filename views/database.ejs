@@ -224,7 +224,7 @@
 
             // Function to fetch and display data for a specific type
             function fetchAndDisplayData(type) {
-                fetch(`http://192.168.136.189:5000/${type}`)
+                fetch(`https://fuego1.onrender.com/${type}`)
                     .then(response => response.json())
                     .then(data => {
                         console.log(`Retrieved ${type} Data:`, data);

@@ -388,7 +388,7 @@ if (customSwitchButtonContainer) {
         
         
                 function fetchDataAndAddMarkers(endpoint, customIcon) {
-            fetch(`http://192.168.136.189:5000/${endpoint}`)
+            fetch(`https://fuego1.onrender.com/${endpoint}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -461,7 +461,7 @@ if (customSwitchButtonContainer) {
         }
         
         function sendDataToServer(endpoint, data, callback) {
-            fetch(`http://192.168.136.189:5000/${endpoint}`, {
+            fetch(`https://fuego1.onrender.com/${endpoint}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -561,7 +561,7 @@ map.on('click', function (e) {
     var radius = 500; // Adjust the radius as needed
 
     // Fetch nearby hydrants within the specified radius
-    fetch('http://192.168.136.189:5000/hydrants')
+    fetch('https://fuego1.onrender.com/hydrants')
         .then(response => response.json())
         .then(data => {
             if (Array.isArray(data)) {
@@ -753,7 +753,7 @@ map.on('click', function (e) {
                         }
                     });
                 }
-                const socket = io.connect('http://192.168.136.189:5000');
+                const socket = io.connect('https://fuego1.onrender.com');
 
 /*socket.on('connect', () => {
     console.log('Connected to Socket.IO');
