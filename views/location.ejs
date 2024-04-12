@@ -104,24 +104,26 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.1.0/mqtt.min.js"></script>
             <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
             <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    // Extract latitude and longitude from URL query string
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const latitude = parseFloat(urlParams.get('latitude'));
-                    const longitude = parseFloat(urlParams.get('longitude'));
-                
-                    // Check if latitude and longitude are valid numbers
-                    if (!isNaN(latitude) && !isNaN(longitude)) {
-                        // Set the initial view of the map using the provided coordinates
-                        map.setView([latitude, longitude], 14);
-                        
-                        // You can perform additional actions here, such as adding markers, drawing routes, etc.
-                    } else {
-                        // Provide default coordinates if none are provided in the URL
-                        map.setView([18.059999, 120.543470], 14);
-                    }
-                });
-                </script>
+              
+              document.addEventListener('DOMContentLoaded', function() {
+    // Extract latitude and longitude from URL query string
+    const urlParams = new URLSearchParams(window.location.search);
+    const latitude = parseFloat(urlParams.get('latitude'));
+    const longitude = parseFloat(urlParams.get('longitude'));
+
+    // Check if latitude and longitude are valid numbers
+    if (!isNaN(latitude) && !isNaN(longitude)) {
+        // Set the initial view of the map using the provided coordinates
+        map.setView([latitude, longitude], 14);
+        
+        // Create route to the provided coordinates and fetch nearby hydrants
+        createRoute({ lat: latitude, lng: longitude });
+    } else {
+        // Provide default coordinates if none are provided in the URL
+        map.setView([18.059999, 120.543470], 14);
+    }
+});
+            </script>
             
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
