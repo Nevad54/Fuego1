@@ -114,3 +114,41 @@ document.getElementById('searchInput').addEventListener('keypress', function (e)
         searchIcon();
     }
 });
+document.addEventListener('DOMContentLoaded', () => {
+    const profilePhoto = document.getElementById('profile-photo');
+    const dropdownMenu = document.getElementById('dropdown-menu');
+
+    // Function to close the dropdown menu
+    function closeDropdownMenu() {
+        if (dropdownMenu.classList.contains('show')) {
+            dropdownMenu.classList.remove('show');
+        }
+    }
+
+    // Toggle dropdown menu visibility when profile photo is clicked
+    profilePhoto.addEventListener('click', function(event) {
+        dropdownMenu.classList.toggle('show');
+        event.stopPropagation(); // Prevent the click event from propagating to the window
+    });
+
+    // Close the dropdown menu if the user clicks outside of it
+    document.addEventListener('click', function(event) {
+        const isClickInsideProfilePhoto = profilePhoto.contains(event.target);
+        const isClickInsideDropdownMenu = dropdownMenu.contains(event.target);
+        
+        if (!isClickInsideProfilePhoto && !isClickInsideDropdownMenu) {
+            closeDropdownMenu();
+        }
+    });
+
+    // Close the dropdown menu if the user taps outside of it (for touch devices)
+    document.addEventListener('touchstart', function(event) {
+        const isTouchInsideProfilePhoto = profilePhoto.contains(event.target);
+        const isTouchInsideDropdownMenu = dropdownMenu.contains(event.target);
+        
+        if (!isTouchInsideProfilePhoto && !isTouchInsideDropdownMenu) {
+            closeDropdownMenu();
+        }
+    });
+});
+

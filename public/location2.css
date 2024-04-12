@@ -178,8 +178,7 @@ aside .sidebar a span{
 }
 
 aside .sidebar a:last-child{
-    position: absolute;
-    bottom: 2rem;
+   
     width: 100%;
 }
 
@@ -687,10 +686,7 @@ main #map {
         width: 5.6rem;
     }
 
-    aside .sidebar a:last-child{
-        position: relative;
-        margin-top: 1.8rem;
-    }
+   
 
     main .analyse{
         grid-template-columns: 1fr;
@@ -808,11 +804,6 @@ main #map {
 
     aside .sidebar a{
         width: 5.6rem;
-    }
-
-    aside .sidebar a:last-child{
-        position: relative;
-        margin-top: 1.8rem;
     }
 
     main .analyse{
@@ -940,11 +931,6 @@ main #map {
     aside .sidebar a{
         width: 100%;
         height: 3.4rem;
-    }
-
-    aside .sidebar a:last-child{
-        position: absolute;
-        bottom: 5rem;
     }
 
     aside .toggle .close{
@@ -1144,10 +1130,7 @@ main #map {
         height: 3.4rem;
     }
 
-    aside .sidebar a:last-child{
-        position: absolute;
-        bottom: 5rem;
-    }
+  
 
     aside .toggle .close{
         display: inline-block;
@@ -1325,10 +1308,7 @@ main #map {
         height: 3.4rem;
     }
 
-    aside .sidebar a:last-child{
-        position: absolute;
-        bottom: 5rem;
-    }
+  
 
     aside .toggle .close{
         display: inline-block;
@@ -1547,10 +1527,7 @@ main #map {
         height: 3.4rem;
     }
 
-    aside .sidebar a:last-child{
-        position: absolute;
-        bottom: 5rem;
-    }
+   
 
     aside .toggle .close{
         display: inline-block;
@@ -1765,10 +1742,7 @@ main #map {
         height: 3.4rem;
     }
 
-    aside .sidebar a:last-child{
-        position: absolute;
-        bottom: 5rem;
-    }
+   
 
     aside .toggle .close{
         display: inline-block;
@@ -1984,4 +1958,73 @@ main #map {
 #successMessage {
     background-color: green;
     color: white;
+}
+
+/* CSS for dropdown menu */
+.dropdown-menu {
+    display: none; /* Initially hide the dropdown menu */
+    position: absolute;
+    top: 60px; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+    background-color: var(--color-background); /* Set background color */
+    border: 1px solid #ccc;
+    border-radius: 8px; /* Add border radius for rounded corners */
+    padding: 8px 0; /* Adjust vertical and horizontal padding */
+    z-index: 1000; /* Ensure dropdown is above other elements */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add box shadow */
+    min-width: 150px; /* Set minimum width for the dropdown */
+}
+
+/* Display dropdown menu when profile is hovered */
+.profile:hover .dropdown-menu {
+    display: block;
+}
+
+/* Style for dropdown menu items */
+.dropdown-menu a {
+    display: block;
+    padding: 12px 16px; /* Increase padding for better spacing */
+    color: var(--color-dark-variant); /* Set text color */
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s; /* Add transition for smoother hover effect */
+}
+
+/* Hover effect for dropdown menu items */
+.dropdown-menu a:hover {
+    background-color: var(--color-light); /* Change background color on hover */
+    color: var(--color-primary); /* Change text color on hover */
+}
+
+.profile-photo {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #ccc; /* Circle outline */
+    border-radius: 50%; /* Makes it circular */
+    overflow: hidden;
+    position: relative;
+}
+
+.profile-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.arrow-circle {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    width: 15px;
+    height: 15px; 
+    border-radius: 50%;
+    background-color: var(--color-background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.arrow-down {
+    font-size: 20px; /* Adjust the size of the arrow */
+    color: var(--color-dark-variant);/* Change color as needed */
 }

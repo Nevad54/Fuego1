@@ -21,6 +21,7 @@
 .button-container {
     display: flex;
     gap: 10px;
+    justify-content: flex-end;
 }
 
 .action-button {
@@ -186,8 +187,7 @@ aside {
             }
 
             aside .sidebar a:last-child {
-                position: absolute;
-                bottom: 2rem;
+              
                 width: 100%;
             }
 
@@ -756,3 +756,201 @@ main .recent-orders a {
     margin-bottom: 10px;
     border-radius: 10px;
 }
+/* Style the select dropdown */
+
+  
+  /* Style the select dropdown options */
+  .select-options-container select option {
+    padding: 10px 20px;
+  }
+  
+  /* Style the button */
+  .show-data-button {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Hover effect for the button */
+  .show-data-button:hover {
+    background-color: #4c7ec5; /* Slightly darker shade of primary color */
+  }
+  
+/* CSS for dropdown menu */
+.dropdown-menu {
+    display: none; /* Initially hide the dropdown menu */
+    position: absolute;
+    top: 55px; /* Adjust as needed */
+    right: 20px; /* Adjust as needed */
+    background-color: var(--color-background);
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 1000; /* Ensure dropdown is above other elements */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add box shadow */
+}
+
+.profile:hover .dropdown-menu {
+    display: block; /* Display dropdown menu when profile is hovered */
+}
+
+/* Additional styles for dropdown menu items */
+.dropdown-menu a {
+    display: block;
+    padding: 8px 12px;
+    color: #333;
+    text-decoration: none;
+}
+
+.dropdown-menu a:hover {
+    background-color: var(--color-background);
+}
+
+  
+.profile-photo {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #ccc; /* Circle outline */
+    border-radius: 50%; /* Makes it circular */
+    overflow: hidden;
+    position: relative;
+}
+
+.profile-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.arrow-circle {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    width: 15px;
+    height: 15px; 
+    border-radius: 50%;
+    background-color: var(--color-background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.arrow-down {
+    font-size: 20px; /* Adjust the size of the arrow */
+    color: var(--color-dark-variant);/* Change color as needed */
+}
+/* Example CSS for styling the data container section */
+.data-container {
+    background-color: var(--color-background);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .select-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .select-box {
+    width: 200px;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .action-button {
+    background-color:var(--color-danger);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    align-self: flex-end;
+    transition: background-color 0.3s;
+  }
+  
+  .action-button:hover {
+    background-color:var(--color-info-dark);
+  }
+  
+/* CSS for temperature data table */
+.data-table {
+    border-collapse: separate; /* Set border-collapse to separate */
+    width: 100%;
+}
+
+.data-table td,
+.data-table th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+.data-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.data-table th {
+    background-color: #dddddd;
+    color: black;
+}
+
+  .button-container {
+    margin-top: 20px;
+  }
+  
+  .button-container button {
+    margin-right: 10px;
+  }
+
+  /* Styles for the "Show Data" button container */
+/* Styles for the parent container */
+.data-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align items to the start (left) */
+    background-color: var(--color-background);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Styles for the "Show Data" button container */
+.show-data-container {
+    margin-top: 20px;
+    align-self: flex-end; /* Align container to the end (right) */
+}
+
+/* Styles for the "Show Data" button */
+.show-data-container .action-button {
+    background-color: var(--color-danger); /* Use your desired color here */
+    color: var(--color-background);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.show-data-container .action-button:hover {
+    background-color: var(--color-info-dark); /* Use your desired color here */
+}
+.data-table-container {
+    flex: 1; /* Take up remaining space */
+    width: calc(100% - 20px); /* Adjust width to be slightly less than the container width */
+    overflow-x: auto; /* Add horizontal scroll if content overflows */
+    margin-top: 20px;
+}
+
+
+  
