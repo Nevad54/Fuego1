@@ -145,10 +145,16 @@
             
                 // Function to create a new chart
                 function createChart(containerId, label) {
+                    const container = document.getElementById(containerId);
+                    if (!container) {
+                        console.error(`Container with id '${containerId}' not found.`);
+                        return null; // Return null to handle the error gracefully
+                    }
+                
                     const canvas = document.createElement('canvas');
                     canvas.width = 700;
                     canvas.height = 400;
-                    document.getElementById(containerId).appendChild(canvas);
+                    container.appendChild(canvas);
                     const ctx = canvas.getContext('2d');
             
                     return new Chart(ctx, {
