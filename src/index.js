@@ -688,21 +688,16 @@ app.get("/adminHome", authMiddleware.requireLogin, async (req, res) => {
 
     // Fetch FDAS data from the 'fdas' collection
     const fdasCollection = db.collection('fdas');
-    const fdasData = await fdasCollection.find({}, { projection: { title: 1, _id: 1 } }).toArray();
+    const fdasData = await fdasCollection.find({}, { projection: { _id: 1, title: 1, latitude: 1, longitude: 1 } }).toArray();
 
-    console.log('fdasData:', JSON.stringify(fdasData, null, 2));
-
+    console.log('fdasData:', fdasData);
 
     // Check if there's a confirmation message
     const confirmationMessage = req.query.confirmationMessage;
 
     // Ensure both users and fdasData are defined before rendering the view
     if (users.length > 0 && fdasData.length > 0) {
-      res.render("adminHome", {     user: req.session.user, 
-        admin1: req.session.user, 
-        users: users, 
-        fdasData: fdasData, 
-        confirmationMessage: confirmationMessage  });
+      res.render("adminHome", { user: req.session.user, admin1: req.session.user, users: users, fdasData: fdasData, confirmationMessage: confirmationMessage }); // Pass fdasData to the template
     } else if (users.length === 0) {
       res.status(404).send("Users not found");
     } else {
