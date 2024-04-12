@@ -1,4 +1,3 @@
-
 // index.js
 const multer = require('multer');
 const express = require("express");
@@ -51,7 +50,7 @@ const httpServer = http.createServer(app);
 const mqttClient = mqtt.connect(mqttOptions);
 const port = 5000;
 const io = require('socket.io')(httpServer);
-const WebURL = '192.168.136.189';
+const WebURL = 'fuego1.onrender.com';
 
 
 const mongoHost = 'mongodb+srv://systembfp8:iwantaccess@bfp.ezea3nm.mongodb.net/?retryWrites=true&w=majority/accounts';
@@ -59,7 +58,7 @@ const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Types; 
 // Start HTTP server
 httpServer.listen(port, () => {
-  console.log(`Server listening at http://${WebURL}:${port}.`);
+  console.log(`Server listening at https://${WebURL}:${port}.`);
 })
   .on('error', (err) => {
       console.error(`Error starting HTTP server: ${err.message}`);
@@ -67,6 +66,7 @@ httpServer.listen(port, () => {
   });
 
 
+// Connect to MQTT
 io.on('connection', (socket) => {
   console.log('A client connected');
 
@@ -505,6 +505,7 @@ app.get('/getFDASCoordinates', async (req, res) => {
       res.status(500).json({ success: false, error: 'Internal server error' });
   }
 });
+
 app.get("/", (req, res) => {
   res.render("login");
 });
@@ -536,6 +537,7 @@ app.get("/location", authMiddleware.requireLogin, async (req, res) => {
   }
 });
 
+
 app.get("/location2", authMiddleware.requireLogin, async (req, res) => {
   try {
       const userId = req.session.user._id; // Assuming the user ID is stored in the session
@@ -551,6 +553,7 @@ app.get("/location2", authMiddleware.requireLogin, async (req, res) => {
       res.status(500).send('Error fetching user data: ' + error.message);
   }
 });
+
 
 app.get("/user", authMiddleware.requireLogin, async (req, res) => {
   try {
@@ -685,16 +688,21 @@ app.get("/adminHome", authMiddleware.requireLogin, async (req, res) => {
 
     // Fetch FDAS data from the 'fdas' collection
     const fdasCollection = db.collection('fdas');
-    const fdasData = await fdasCollection.find({}, { projection: { _id: 1, title: 1, latitude: 1, longitude: 1 } }).toArray();
+    const fdasData = await fdasCollection.find({}, { projection: { title: 1, _id: 1 } }).toArray();
 
-    console.log('fdasData:', fdasData);
+    console.log('fdasData:', JSON.stringify(fdasData, null, 2));
+
 
     // Check if there's a confirmation message
     const confirmationMessage = req.query.confirmationMessage;
 
     // Ensure both users and fdasData are defined before rendering the view
     if (users.length > 0 && fdasData.length > 0) {
-      res.render("adminHome", { user: req.session.user, admin1: req.session.user, users: users, fdasData: fdasData, confirmationMessage: confirmationMessage }); // Pass fdasData to the template
+      res.render("adminHome", {     user: req.session.user, 
+        admin1: req.session.user, 
+        users: users, 
+        fdasData: fdasData, 
+        confirmationMessage: confirmationMessage  });
     } else if (users.length === 0) {
       res.status(404).send("Users not found");
     } else {
@@ -841,6 +849,42 @@ app.post('/profile/save/user', authMiddleware.requireLogin, upload.single('profi
 });
 
 
+
+
+app.get('/api/humidityData', async (req, res) => {
+  const client = await connectToDatabase();
+  const db = client.db('accounts');
+  const humidityCollection = db.collection('humidity');
+
+  const humidityData = await humidityCollection.find({}).toArray();
+
+  client.close();
+  res.json(humidityData);
+});
+
+app.get('/api/temperatureData', async (req, res) => {
+  const client = await connectToDatabase();
+  const db = client.db('accounts');
+  const temperatureCollection = db.collection('temperature');
+
+  const temperatureData = await temperatureCollection.find({}).toArray();
+
+  client.close();
+  res.json(temperatureData);
+});
+
+app.get('/api/smokeData', async (req, res) => {
+  const client = await connectToDatabase();
+  const db = client.db('accounts');
+  const smokeCollection = db.collection('smoke');
+
+  const smokeData = await smokeCollection.find({}).toArray();
+
+  client.close();
+  res.json(smokeData);
+});
+
+
 app.post('/associateFDAS', async (req, res) => {
   try {
     const { userId, fdasId } = req.body;
@@ -911,7 +955,7 @@ app.post('/register', [
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     // Save user data to the database
-    await User.create({ email, username, password: hashedPassword });
+    await User.create({ email, username, password: hashedPassword, FDASID: null });
 
     // Redirect to login or another appropriate page after successful register
     return res.redirect('/login');
@@ -920,7 +964,6 @@ app.post('/register', [
     return res.status(500).send('Error during register: ' + error.message);
   }
 });
-
 app.post("/login", async (req, res) => {
   try {
     const { userOrEmail, password } = req.body;
@@ -1179,7 +1222,25 @@ app.post('/removeAssociatedFDAS/:id', async (req, res) => {
 });
 
 
+app.post('/search', (req, res) => {
+  // Retrieve search query from request body
+  const { query } = req.body;
+
+  // Perform search operation in your database
+  db.search(query)
+      .then(results => {
+          // Send back the search results as JSON response
+          res.json({ success: true, results });
+      })
+      .catch(error => {
+          // Handle errors
+          console.error('Error searching in database:', error);
+          res.status(500).json({ success: false, error: 'Internal server error' });
+      });
+});
+
+
 // Listen on port
-// app.listen(port, () => {
-//     console.log(`Server listening on port ${port}`)
-// });
+ //app.listen(port, () => {
+   // console.log(`Server listening on port ${port}`)
+ //});
