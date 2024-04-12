@@ -2,9 +2,12 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="/location.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -35,24 +38,24 @@
             </div>
 
             <div class="sidebar">
-                <a href="/adminHome">
+                <a href="/adminHome" >
                     <span class="material-icons-sharp">
                         dashboard
                     </span>
                     <h3>Dashboard</h3>
                 </a>
               
-                <a href="/location"class="active">
+                <a href="/location" class="active">
                     <span class="material-icons-sharp">pin_drop</span>
                     <h3>Geographic Data</h3>
                 </a>
                 
                 <a href="/alert">
-                    <span class="material-symbols-outlined">
-                        notifications
-                        </span>
+                    <span class="material-icons-sharp">
+                        whatshot
+                    </span>
                     <h3>Fire History</h3>
-                
+                </a>
                     <a href="/database">
                         <span class="material-symbols-outlined">
                             database
@@ -60,15 +63,13 @@
                         <h3>Database</h3>
                     </a>
                     
-                <a href="/charts">
-                    <span class="material-icons-sharp">
-                        insights
+                    <a href="/charts">
+                    <span class="material-symbols-outlined">
+                        history
                     </span>
                     <h3>Data History</h3>
                 </a>
                 
-                    
-                </a>
                 
                         
                   <!--  <a href="/user">
@@ -80,25 +81,7 @@
                 -->
                     
                 
-                <a href="/userList">
-                    <span class="material-symbols-outlined"> admin_panel_settings </span>
-                    <h3>Admin Panel</h3>
-                </a>
-
-
-                
-                <a href="/AboutUs">
-                    <span class="material-symbols-outlined">
-                        help
-                    </span>
-                    <h3>About Us</h3>
-                </a>
-                <a href="/logout">
-                    <span class="material-icons-sharp">
-                        logout
-                    </span>
-                    <h3>Logout</h3>
-                </a>
+              
             </div>
         </aside>
         <!-- End of Sidebar Section -->
@@ -808,15 +791,29 @@ socket.on('mqttMessage', (payload) => {
                 </div>
 
                 <div class="profile">
-                    <div class="profile-photo">
-                        <a href="/user"> <!-- Navigate back to user profile -->
-                            <% if (admin1.profilePicture) { %>
-                                <img src="<%= admin1.profilePicture.replace(/\\/g, '/') %>" alt="Profile Picture">
-                            <% } else { %>
-                                <!-- Placeholder image or default image when no profile picture exists -->
-                                <img src="/images/profile-icon.jpg" width="40" class="rounded-circle">
-                            <% } %>
-                        </a>
+                    <div class="dropdown">
+                        <div class="profile-photo-container">
+                            <div class="profile-photo">
+                                <% if (admin1.profilePicture) { %>
+                                    <img src="<%= admin1.profilePicture.replace(/\\/g, '/') %>" alt="Profile Picture">
+                                <% } else { %>
+                                    <!-- Placeholder image or default image when no profile picture exists -->
+                                    <img src="/images/profile-icon.jpg" width="40" class="rounded-circle">
+                                <% } %>
+                                
+                            </div>
+                            <div class="arrow-circle">
+                                <!-- Arrow icon -->
+                                <i class="material-icons arrow-down">keyboard_arrow_down</i>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu">
+                            <!-- Dropdown menu items -->
+                            <a href="/user">Profile</a>
+                            <a href="/AboutUs">AboutUs</a>
+                            <a href="/userList">Admin Panel</a>
+                            <a href="/logout">Logout</a>
+                        </div>
                     </div>
                 </div>
 

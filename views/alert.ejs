@@ -6,6 +6,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="/database.css">
     <title>BFP- Batac- City</title>
@@ -29,7 +33,7 @@
             </div>
 
             <div class="sidebar">
-                <a href="/adminHome">
+                <a href="/adminHome" >
                     <span class="material-icons-sharp">
                         dashboard
                     </span>
@@ -41,12 +45,12 @@
                     <h3>Geographic Data</h3>
                 </a>
                 
-                <a href="/alert"class="active">
-                    <span class="material-symbols-outlined">
-                        notifications
-                        </span>
+                <a href="/alert" class="active">
+                    <span class="material-icons-sharp">
+                        whatshot
+                    </span>
                     <h3>Fire History</h3>
-                
+                </a>
                     <a href="/database">
                         <span class="material-symbols-outlined">
                             database
@@ -54,15 +58,15 @@
                         <h3>Database</h3>
                     </a>
                     
-                <a href="/charts">
-                    <span class="material-icons-sharp">
-                        insights
+                    <a href="/charts">
+                    <span class="material-symbols-outlined">
+                        history
                     </span>
                     <h3>Data History</h3>
                 </a>
                 
                     
-                </a>
+                
                 
                         
                   <!--  <a href="/user">
@@ -74,25 +78,7 @@
                 -->
                     
                 
-                <a href="/userList">
-                    <span class="material-symbols-outlined"> admin_panel_settings </span>
-                    <h3>Admin Panel</h3>
-                </a>
-
-
-                
-                <a href="/AboutUs">
-                    <span class="material-symbols-outlined">
-                        help
-                    </span>
-                    <h3>About Us</h3>
-                </a>
-                <a href="/logout">
-                    <span class="material-icons-sharp">
-                        logout
-                    </span>
-                    <h3>Logout</h3>
-                </a>
+              
             </div>
         </aside>
         <!-- End of Sidebar Section -->
@@ -100,22 +86,28 @@
 <!-- Main Content -->
 <main>
     <div>
-
         <details>
             <summary>Triggered Alarm History</summary>
-            <table id="timeTable">
-                <thead>
-                    <tr>
-                        <th>FDAS</th>
-                        <th>Timestamp</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Data for 'conventional' will be displayed here -->
-                </tbody>
-            </table>
+            <div class="data-table-container">
+                <table id="timeTable" class="data-table">
+                    <thead>
+                        <tr>
+                            <th>FDAS</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data for 'conventional' will be displayed here -->
+                    </tbody>
+                </table>
+            </div>
         </details>
-
+        <div class="button1-container">
+            <button class="abutton" onclick="exportDataToExcel('time')">Export to Excel</button>
+            <button class="abutton" onclick="saveDataToPDF('time')">Save to PDF</button>
+            <button class="abutton" onclick="printData('time')">Print Data</button>
+        </div>
+        
         <script>
             // Function to fetch and display data for a specific type
             function fetchAndDisplayData() {
@@ -139,7 +131,9 @@
             // Function to display data in a table
             function displayData(data) {
                 const table = document.querySelector('#timeTable tbody');
-                table.innerHTML = ''; // Clear existing data
+
+                // Clear existing data
+                table.innerHTML = '';
 
                 data.forEach(item => {
                     console.log('Item:', item); // Log the item to the console for debugging
@@ -158,6 +152,73 @@
 
             // Fetch and display data for the 'time' collection
             fetchAndDisplayData();
+
+            // Function to export data to Excel
+            function exportDataToExcel(type) {
+                const currentDate = new Date().toISOString().slice(0, 10); // Get current date in YYYY-MM-DD format
+                const table = document.querySelector(`#${type}Table`);
+                const visibleRows = Array.from(table.querySelectorAll('tbody tr')).filter(row => row.style.display !== 'none');
+                const data = visibleRows.map(row => Array.from(row.querySelectorAll('td')).map(cell => cell.textContent));
+            
+                const csvContent = data.map(row => row.join(',')).join('\n');
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const filename = `Triggered_alarm_history_${currentDate}.csv`;
+                if (navigator.msSaveBlob) { // IE 10+
+                    navigator.msSaveBlob(blob, filename);
+                } else {
+                    const link = document.createElement('a');
+                    if (link.download !== undefined) { // feature detection
+                        const url = URL.createObjectURL(blob);
+                        link.setAttribute('href', url);
+                        link.setAttribute('download', filename);
+                        link.style.visibility = 'hidden';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }
+                }
+            }
+            
+            function printData(type) {
+                const currentDate = new Date().toISOString().slice(0, 10); // Get current date in YYYY-MM-DD format
+                const table = document.querySelector(`#${type}Table`);
+                const visibleRows = Array.from(table.querySelectorAll('tbody tr')).filter(row => row.style.display !== 'none');
+            
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write('<html><head><title>Data</title></head><body>');
+                printWindow.document.write(`<h2>Triggered Alarm History - ${currentDate}</h2>`);
+                printWindow.document.write('<table style="border-collapse: collapse; width: 100%;">');
+            
+                visibleRows.forEach(row => {
+                    printWindow.document.write('<tr>');
+                    Array.from(row.cells).forEach(cell => {
+                        printWindow.document.write(`<td style="border: 1px solid #dddddd; padding: 8px;">${cell.textContent}</td>`);
+                    });
+                    printWindow.document.write('</tr>');
+                });
+            
+                printWindow.document.write('</table>');
+                printWindow.document.write('</body></html>');
+                printWindow.document.close();
+                printWindow.print();
+            }
+            
+            function saveDataToPDF(type) {
+                const currentDate = new Date().toISOString().slice(0, 10); // Get current date in YYYY-MM-DD format
+                const doc = new jsPDF(); // Create a new instance of jsPDF
+                const table = document.querySelector(`#${type}Table`);
+                const visibleRows = Array.from(table.querySelectorAll('tbody tr')).filter(row => row.style.display !== 'none');
+            
+                doc.text(`Triggered Alarm History - ${currentDate}`, 10, 10);
+                doc.autoTable({
+                    head: [['FDAS', 'Timestamp']],
+                    body: visibleRows.map(row => Array.from(row.querySelectorAll('td')).map(cell => cell.textContent))
+                });
+            
+                doc.save(`Triggered_alarm_history_${currentDate}.pdf`);
+            }
+            
+            
         </script>
     </div>
 </main>
@@ -180,21 +241,30 @@
                         dark_mode
                     </span>
                 </div>
-
                 <div class="profile">
-                    <div class="info">
-                        <p>Hey, <b><%= admin1.username %></b></p>
-                        <small class="text-muted">Admin</small>
-                    </div>
-                    <div class="profile-photo">
-                        <a href="/user"> <!-- Navigate back to user profile -->
-                            <% if (admin1.profilePicture) { %>
-                                <img src="<%= admin1.profilePicture.replace(/\\/g, '/') %>" alt="Profile Picture">
-                            <% } else { %>
-                                <!-- Placeholder image or default image when no profile picture exists -->
-                                <img src="/images/profile-icon.jpg" width="40" class="rounded-circle">
-                            <% } %>
-                        </a>
+                    <div class="dropdown">
+                        <div class="profile-photo-container">
+                            <div class="profile-photo">
+                                <% if (admin1.profilePicture) { %>
+                                    <img src="<%= admin1.profilePicture.replace(/\\/g, '/') %>" alt="Profile Picture">
+                                <% } else { %>
+                                    <!-- Placeholder image or default image when no profile picture exists -->
+                                    <img src="/images/profile-icon.jpg" width="40" class="rounded-circle">
+                                <% } %>
+                                
+                            </div>
+                            <div class="arrow-circle">
+                                <!-- Arrow icon -->
+                                <i class="material-icons arrow-down">keyboard_arrow_down</i>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu">
+                            <!-- Dropdown menu items -->
+                            <a href="/user">Profile</a>
+                            <a href="/AboutUs">AboutUs</a>
+                            <a href="/userList">Admin Panel</a>
+                            <a href="/logout">Logout</a>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -31,7 +31,7 @@
             </div>
 
             <div class="sidebar">
-                <a href="/adminHome">
+                <a href="/adminHome" >
                     <span class="material-icons-sharp">
                         dashboard
                     </span>
@@ -44,28 +44,26 @@
                 </a>
                 
                 <a href="/alert">
-                    <span class="material-symbols-outlined">
-                        notifications
-                        </span>
+                    <span class="material-icons-sharp">
+                        whatshot
+                    </span>
                     <h3>Fire History</h3>
-                
-                    <a href="/database"class="active">
+                </a>
+                    <a href="/database" class="active">
                         <span class="material-symbols-outlined">
                             database
                         </span>
                         <h3>Database</h3>
                     </a>
                     
-                <a href="/charts">
-                    <span class="material-icons-sharp">
-                        insights
+                    <a href="/charts">
+                    <span class="material-symbols-outlined">
+                        history
                     </span>
                     <h3>Data History</h3>
                 </a>
                 
-                    
-                </a>
-                
+           
                         
                   <!--  <a href="/user">
                         <span class="material-symbols-outlined">
@@ -76,25 +74,7 @@
                 -->
                     
                 
-                <a href="/userList">
-                    <span class="material-symbols-outlined"> admin_panel_settings </span>
-                    <h3>Admin Panel</h3>
-                </a>
-
-
-                
-                <a href="/AboutUs">
-                    <span class="material-symbols-outlined">
-                        help
-                    </span>
-                    <h3>About Us</h3>
-                </a>
-                <a href="/logout">
-                    <span class="material-icons-sharp">
-                        logout
-                    </span>
-                    <h3>Logout</h3>
-                </a>
+              
             </div>
         </aside>
         <!-- End of Sidebar Section -->
@@ -107,83 +87,151 @@
 
         <details>
             <summary>Conventional Locations</summary>
-            <table id="conventionalTable">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Latitude</th>
-                        <th>Longitude</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Data for 'conventional' will be displayed here -->
-                </tbody>
-            </table>
+            <div class="summary-container">
+                <table id="conventionalTable">
+                    <div class="search-container">
+                        <div class="search-section">
+                            <input type="text" id="conventionalSearch" placeholder="Search...">
+                            <button onclick="search('conventional')" class="search-button">Search</button>
+                        </div>
+                        <div class="button-container">
+                            <button class="action-button" onclick="exportDataToExcel('conventional')">Export to Excel</button>
+                            <button class="action-button" onclick="saveDataToPDF('conventional')">Save to PDF</button>
+                            <button class="action-button" onclick="printData('conventional')">Print Data</button>
+                        </div>
+                    </div>
+                    
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data for 'conventional' will be displayed here -->
+                    </tbody>
+                </table>
+                
+            </div>
         </details>
-
         <details>
             <summary>Sprinkler Locations</summary>
-            <table id="sprinklerTable">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Latitude</th>
-                        <th>Longitude</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Data for 'sprinkler' will be displayed here -->
-                </tbody>
-            </table>
+            <div class="summary-container">
+                <table id="sprinklerTable">
+                    <div class="search-container">
+                        <div class="search-section">
+                            <input type="text" id="sprinklerSearch" placeholder="Search...">
+                            <button onclick="search('sprinkler')" class="search-button">Search</button>
+                        </div>
+                        <div class="button-container">
+                            <button class="action-button" onclick="exportDataToExcel('sprinkler')">Export to Excel</button>
+                            <button class="action-button" onclick="saveDataToPDF('sprinkler')">Save to PDF</button>
+                            <button class="action-button" onclick="printData('sprinkler')">Print Data</button>
+                        </div>
+                    </div>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data for 'conventional' will be displayed here -->
+                    </tbody>
+                </table>
+               
+            </div>
         </details>
-
         <details>
             <summary>Hydrant Locations</summary>
-            <table id="hydrantsTable">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Latitude</th>
-                        <th>Longitude</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Data for 'hydrants' will be displayed here -->
-                </tbody>
-            </table>
+            <div class="summary-container">
+                <table id="hydrantsTable">
+                    <div class="search-container">
+                        <div class="search-section">
+                            <input type="text" id="hydrantsSearch" placeholder="Search...">
+                            <button onclick="search('hydrants')" class="search-button">Search</button>
+                        </div>
+                        <div class="button-container">
+                            <button class="action-button" onclick="exportDataToExcel('hydrants')">Export to Excel</button>
+                            <button class="action-button" onclick="saveDataToPDF('hydrants')">Save to PDF</button>
+                            <button class="action-button" onclick="printData('hydrants')">Print Data</button>
+                        </div>
+                    </div>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data for 'conventional' will be displayed here -->
+                    </tbody>
+                </table>
+                
+            </div>
         </details>
-
         <details>
             <summary>Extinguisher Locations</summary>
-            <table id="extinguisherTable">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Latitude</th>
-                        <th>Longitude</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Data for 'extinguisher' will be displayed here -->
-                </tbody>
-            </table>
+            <div class="summary-container">
+                <table id="extinguisherTable">
+                    <div class="search-container">
+                        <div class="search-section">
+                            <input type="text" id="extinguisherSearch" placeholder="Search...">
+                            <button onclick="search('extinguisher')" class="search-button">Search</button>
+                        </div>
+                        <div class="button-container">
+                            <button class="action-button" onclick="exportDataToExcel('extinguisher')">Export to Excel</button>
+                            <button class="action-button" onclick="saveDataToPDF('extinguisher')">Save to PDF</button>
+                            <button class="action-button" onclick="printData('extinguisher')">Print Data</button>
+                        </div>
+                    </div>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data for 'conventional' will be displayed here -->
+                    </tbody>
+                </table>
+                
+            </div>
         </details>
-
         <details>
             <summary>FDAS Locations</summary>
-            <table id="fdasTable">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Latitude</th>
-                        <th>Longitude</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Data for 'fdas' will be displayed here -->
-                </tbody>
-            </table>
+            <div class="summary-container">
+                <table id="fdasTable">
+                    <div class="search-container">
+                        <div class="search-section">
+                            <input type="text" id="fdasSearch" placeholder="Search...">
+                            <button onclick="search('fdas')" class="search-button">Search</button>
+                        </div>
+                        <div class="button-container">
+                            <button class="action-button" onclick="exportDataToExcel('fdas')">Export to Excel</button>
+                            <button class="action-button" onclick="saveDataToPDF('fdas')">Save to PDF</button>
+                            <button class="action-button" onclick="printData('fdas')">Print Data</button>
+                        </div>
+                    </div>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data for 'conventional' will be displayed here -->
+                    </tbody>
+                </table>
+                
+            </div>
         </details>
+       
 
         <script>
 
@@ -258,7 +306,103 @@
             fetchAndDisplayData('hydrants');
             fetchAndDisplayData('extinguisher');
             fetchAndDisplayData('fdas');
+
+
+
+
+            function search(type) {
+                // Get the search input value
+                const searchInput = document.getElementById(`${type}Search`).value.toLowerCase();
+    
+                // Get the table body
+                const tableBody = document.querySelector(`#${type}Table tbody`);
+    
+                // Get all rows in the table
+                const rows = tableBody.querySelectorAll('tr');
+    
+                // Loop through each row
+                rows.forEach(row => {
+                    // Get the title cell value (assuming it's in the first cell of each row)
+                    const title = row.cells[0].textContent.toLowerCase();
+    
+                    // Check if the title includes the search input value
+                    if (title.includes(searchInput)) {
+                        // Show the row
+                        row.style.display = '';
+                    } else {
+                        // Hide the row
+                        row.style.display = 'none';
+                    }
+                });
+            }
+
+
+
+            function exportDataToExcel(type) {
+                const table = document.querySelector(`#${type}Table`);
+                const visibleRows = Array.from(table.querySelectorAll('tbody tr')).filter(row => row.style.display !== 'none');
+                const data = visibleRows.map(row => Array.from(row.querySelectorAll('td')).map(cell => cell.textContent));
+                
+                // Convert the data to HTML table format
+                const tableHtml = `<table>${visibleRows.map(row => row.outerHTML).join('')}</table>`;
+                
+                const filename = `${type}_Data.xlsx`;
+                
+                const blob = new Blob([tableHtml], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.setAttribute('download', filename);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+            
+            function printData(type) {
+                const table = document.querySelector(`#${type}Table`);
+                const visibleRows = Array.from(table.querySelectorAll('tbody tr')).filter(row => row.style.display !== 'none');
+            
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write('<html><head><title>Data</title></head><body>');
+                printWindow.document.write('<h2>Location Data Summary</h2>');
+                printWindow.document.write('<table style="border-collapse: collapse; width: 100%;">');
+                
+                // Iterate through each visible row of the table body and add them to the print window
+                visibleRows.forEach(row => {
+                    printWindow.document.write('<tr>');
+                    // Iterate through each cell of the row and add them to the print window with border formatting
+                    Array.from(row.cells).forEach(cell => {
+                        printWindow.document.write(`<td style="border: 1px solid #dddddd; padding: 8px;">${cell.innerHTML}</td>`);
+                    });
+                    printWindow.document.write('</tr>');
+                });
+            
+                printWindow.document.write('</table>');
+                printWindow.document.write('</body></html>');
+                printWindow.document.close();
+                printWindow.print();
+            }
+            
+            function saveDataToPDF(type) {
+                const doc = new jsPDF(); // Create a new instance of jsPDF
+                const table = document.querySelector(`#${type}Table`);
+                const visibleRows = Array.from(table.querySelectorAll('tbody tr')).filter(row => row.style.display !== 'none');
+            
+                // Add a new page for the data
+                doc.addPage();
+                doc.text(`${type} Data`, 10, 10);
+                
+                // Convert the visible rows of the table to PDF using the autoTable plugin
+                doc.autoTable({ html: table });
+            
+                // Save the PDF
+                doc.save(`${type}_data.pdf`);
+            }
+            
+            
+            
+        
         </script>
+
     </div>
 </main>
 <!-- End of Main Content -->
@@ -280,21 +424,30 @@
                         dark_mode
                     </span>
                 </div>
-
                 <div class="profile">
-                    <div class="info">
-                        <p>Hey, <b><%= admin1.username %></b></p>
-                        <small class="text-muted">Admin</small>
-                    </div>
-                    <div class="profile-photo">
-                        <a href="/user"> <!-- Navigate back to user profile -->
-                            <% if (admin1.profilePicture) { %>
-                                <img src="<%= admin1.profilePicture.replace(/\\/g, '/') %>" alt="Profile Picture">
-                            <% } else { %>
-                                <!-- Placeholder image or default image when no profile picture exists -->
-                                <img src="/images/profile-icon.jpg" width="40" class="rounded-circle">
-                            <% } %>
-                        </a>
+                    <div class="dropdown">
+                        <div class="profile-photo-container">
+                            <div class="profile-photo">
+                                <% if (admin1.profilePicture) { %>
+                                    <img src="<%= admin1.profilePicture.replace(/\\/g, '/') %>" alt="Profile Picture">
+                                <% } else { %>
+                                    <!-- Placeholder image or default image when no profile picture exists -->
+                                    <img src="/images/profile-icon.jpg" width="40" class="rounded-circle">
+                                <% } %>
+                                
+                            </div>
+                            <div class="arrow-circle">
+                                <!-- Arrow icon -->
+                                <i class="material-icons arrow-down">keyboard_arrow_down</i>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu">
+                            <!-- Dropdown menu items -->
+                            <a href="/user">Profile</a>
+                            <a href="/AboutUs">AboutUs</a>
+                            <a href="/userList">Admin Panel</a>
+                            <a href="/logout">Logout</a>
+                        </div>
                     </div>
                 </div>
             </div>

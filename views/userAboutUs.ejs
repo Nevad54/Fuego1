@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
-	<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,400;0,500;0,600;0,800;1,900&display=swap" rel="stylesheet">
-
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="/AboutUs.css">
+    <link rel="stylesheet" href="/profile.css">
     <title>BFP- Batac- City</title>
+
+    <style>
+      
+    </style>
 </head>
 
 <body>
@@ -33,23 +33,22 @@
             </div>
 
             <div class="sidebar">
-                <a href="/userHome">
+                <a href="/userHome" >
                     <span class="material-icons-sharp">
                         dashboard
                     </span>
                     <h3>Dashboard</h3>
                 </a>
-              
-               
-             <!--  <a href="/userUser">
+             
+                 <!--  <a href="/userUser">
                         <span class="material-symbols-outlined">
                             manage_accounts
                         </span>
                         <h3>User</h3>
                     </a>
                 -->
-              
-                <a href="/userAboutUs" class="active">
+             
+                <a href="/userAboutUs">
                     <span class="material-symbols-outlined">
                         help
                     </span>
@@ -64,270 +63,96 @@
             </div>
         </aside>
         <!-- End of Sidebar Section -->
-
-         <!-- Main Content -->
-         <main>
-           
-
-
-            <div class="about-1">
-                <h1>About Us</h1>
-                <hr style="border: 0;clear:both;display:block;width: 100%;background-color:black;height: 4px;">
-                <p>We are a collective of minds ignited by a shared
-                passion – protecting lives and property from the perils
-                of fire. We stand at the intersection of innovation and
-                responsibility, weaving a web of safety through an 
-                intelligent fire prevention system fueled by the
-                Internet of Things (IoT). </p>
+      
+       <!-- Main Content -->
+       <main class="profile-container">
+        <div class="cover-photo">
+            <h2>User Profile</h2>
+        </div>
+        <div class="container">
+            <div class="profile-picture-container text-center">
+                <!-- Profile Image -->
+                <% if (user.profilePicture) { %>
+                    <img src="<%= user.profilePicture.replace(/\\/g, '/') %>" alt="Profile Picture">
+                <% } else { %>
+                    <!-- Placeholder image or default image when no profile picture exists -->
+                    <img src="/images/profile-icon.jpg" width="40" class="rounded-circle">
+                <% } %>
             </div>
-            
-
-
-    <div class="row">
-
-        <div class="col-md-6">
-            <section id="about">
-                <div class="about-1">
-                    <h2>Mission</h2>
-                    <hr style="border: 0;clear:both;display:block;width: 100%;background-color:black;height: 1px;">
-                    <p>
-                        Our mission is to contribute to the safety and well-being of individuals and communities by developing an innovative IoT-enhanced fire safety system. We strive to create a solution that not only detects and prevents fires efficiently but also integrates seamlessly into our modern, interconnected world. Our commitment is to employ our technical skills to make a meaningful impact on society.
-                    </p>
+    
+            <!-- Profile Details Section -->
+            <div class="profile-details">
+                <h3><%= user.username %></h3>
+                <p>Email: <%= user.email %></p>
+                <p>Phone Number: <%= user.phone %></p>
+                <div class="social-icons">
+                    <!-- Facebook icon -->
+                    <i class="fab fa-facebook-f" onclick="toggleInput('facebook')"></i>
+                    <!-- Instagram icon -->
+                    <i class="fab fa-instagram" onclick="toggleInput('instagram')"></i>
                 </div>
-            </section>
-        </div>
-
-        <div class="col-md-6">
-            <section id="about">
-                <div class="about-1">
-                    <h2>Vision</h2>
-                    <hr style="border: 0;clear:both;display:block;width: 100%;background-color:black;height: 1px;">
-                    <p>
-                        Our vision is to be pioneers in the field of fire safety technology. We envision a future where our IoT-enhanced system, equipped with cloud monitoring and location profiling, plays a pivotal role in reducing the devastating effects of fires. Through our work, we hope to set new standards for intelligent and responsive fire safety systems, creating a safer environment for everyone.
-                    </p>
-                </div>
-            </section>
-        </div>
-
-
-    </div>
-
-    <br>
-    <br>
-    <br>
-
-
-    <!-- meet the team -->
-
-    <div class="about-1">
-        <h1>Meet the Team</h1>
-        <hr style="border: 0;clear:both;display:block;width: 100%;background-color:black;height: 4px;">
-    </div>
-
-    <div class="team-content">
-        <div class="box">
-            <img src="../images/.jpg">
-            <h3>CHYRA M. ACOSTA</h3>
-
-            <div class="icons">
-                <a href="#"><i class="ri-twitter-fill"></i></a>
-                <a href="#"><i class="ri-facebook-box-fill"></i></a>
-                <a href="#"><i class="ri-instagram-fill"></i></a>
             </div>
-        </div>
-
-        <div class="box">
-            <img src="../images/.jpg">
-            <h3>RHYAN JHAMES L. AGCAOILI</h3>
-
-            <div class="icons">
-                <a href="#"><i class="ri-twitter-fill"></i></a>
-                <a href="#"><i class="ri-facebook-box-fill"></i></a>
-                <a href="#"><i class="ri-instagram-fill"></i></a>
-            </div>
-        </div>
-
-        <div class="box">
-            <img src="../images/steffi.jpg">
-            <h3>STEFFI RAE G. ERICE</h3>
- 
-            <div class="icons">
-                <a href="#"><i class="ri-twitter-fill"></i></a>
-                <a href="#"><i class="ri-facebook-box-fill"></i></a>
-                <a href="#"><i class="ri-instagram-fill"></i></a>
-            </div>
-        </div>
-
-        <div class="box">
-            <img src="../images/.jpg">
-            <h3>ELDWIN JANLORD PASION</h3>
-
-            <div class="icons">
-                <a href="#"><i class="ri-twitter-fill"></i></a>
-                <a href="#"><i class="ri-facebook-box-fill"></i></a>
-                <a href="#"><i class="ri-instagram-fill"></i></a>
-            </div>
-        </div>
-
-        <div class="box">
-            <img src="../images/.jpg">
-            <h3>CARL DAVEN V. QUIMUYOG</h3>
-
-            <div class="icons">
-                <a href="#"><i class="ri-twitter-fill"></i></a>
-                <a href="#"><i class="ri-facebook-box-fill"></i></a>
-                <a href="#"><i class="ri-instagram-fill"></i></a>
-            </div>
-        </div>
-
-        <div class="box">
-            <img src="../images/ed.jpg">
-            <h3>EDRILLE MAE Q. SINAMPAGA</h3>
-
-            <div class="icons">
-                <a href="#"><i class="ri-twitter-fill"></i></a>
-                <a href="#"><i class="ri-facebook-box-fill"></i></a>
-                <a href="#"><i class="ri-instagram-fill"></i></a>
-            </div>
-        </div>
-
-    </div>
-        
-
-
-      <!-- contact us -->
-      <div class="row">
-        <div class="about-1">
-        <h1>Contact Us</h1>
-            <hr style="border: 0;clear:both;display:block;width: 100%;background-color:black;height: 4px;">
-            <p>We value collaboration and are open to discussions, inquiries, and partnerships with fellow students, industry professionals, and researchers who share our enthusiasm for technology-driven solutions. If you have any questions, suggestions, or would like to explore collaboration opportunities, please feel free to reach out to us.</p>
-        </div>
-        </div>
-
-        
- 
-        <div class="container1">
-            <main class="row1">
-                
-                <!--  *******   Left Section (Column) Starts   *******  -->
     
-                <section class="col left">
-                    
-                    <!--  *******   Title Starts   *******  -->
+            <!-- Edit Profile Button -->
+            <button id="editProfileBtn" onclick="openEditProfilePopup()">Edit Profile</button>
     
-                    <div class="contactTitle">
-                        <h2>Get In Touch</h2>
-                        <p>Feel free to reach out and connect with us!</p>
+            <!-- Edit Profile Form (Initially hidden) -->
+            <div id="editProfilePopup" class="edit-profile-form hidden">
+                <h3>Edit Profile</h3>
+                <form action="/profile/save/user" method="POST" enctype="multipart/form-data">
+                    <!-- Other form fields (username, email, etc.) -->
+                    <div class="form-group">
+                        <label for="profilePicture">Profile Picture:</label>
+                        <input type="file" id="profilePicture" name="profilePicture">
+    
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="text" id="username" name="username" value="<%= user.username %>" required>
+                        </div>
+    
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" value="<%= user.email %>" required>
+                        </div>
+    
+                        <div class="form-group">
+                            <label for="phone">Phone Number:</label>
+                            <input type="tel" id="phone" name="phone" value="<%= user.phone %>" required>
+                        </div>
+    
+                        <label for="facebook">Facebook:</label>
+                        <div class="input-with-icon">
+                            <img src="/images/facebook-svgrepo-com.svg" class="social-logo" alt="facebook-icon" onclick="toggleInput('facebook')">
+                            <input type="text" id="facebook" name="facebook" placeholder="Facebook Profile URL">
+                        </div>
+    
+                        <label for="instagram">Instagram:</label>
+                        <div class="input-with-icon">
+                            <img src="/images/instagram-svgrepo-com.svg" class="social-logo" alt="instagram-icon" onclick="toggleInput('instagram')">
+                            <input type="text" id="instagram" name="instagram" placeholder="Instagram Profile URL">
+                        </div>
+    
+                        <div class="social-icons">
+                            <!-- Replace these with your social media icons -->
+                            <i class="fab fa-facebook-f"></i> <!-- Font Awesome Facebook icon -->
+                            <i class="fab fa-instagram"></i> <!-- Font Awesome Instagram icon -->
+                            <!-- Add more icons for other social media platforms -->
+                        </div>
                     </div>
+                    <button type="submit">Save Changes</button>
+                </form>
+            </div>
     
-                    <!--  *******   Title Ends   *******  -->
-    
-                    <!--  *******   Contact Info Starts   *******  -->
-                    
-                    <div class="contactInfo">
-                        
-                        <div class="iconGroup">
-                            <div class="icon">
-                                <i class="fa-solid fa-phone"></i>
-                            </div>
-                            <div class="details">
-                                <span>Phone</span>
-                                <span>+63 915 123 1789</span>
-                            </div>
-                        </div>
-    
-                        <div class="iconGroup">
-                            <div class="icon">
-                                <i class="fa-solid fa-envelope"></i>
-                            </div>
-                            <div class="details">
-                                <span>Email</span>
-                                <span>sinampagaedrillemae@gmail.com</span>
-                            </div>
-                        </div>
-    
-                        <div class="iconGroup">
-                            <div class="icon">
-                                <i class="fa-solid fa-location-dot"></i>
-                            </div>
-                            <div class="details">
-                                <span>Location</span>
-                                <span>Batac City, Ilocos Norte</span>
-                            </div>
-                        </div>
-    
-                    </div>
-    
-                    <!--  *******   Contact Info Ends   *******  -->
-    
-                    <!--  *******   Social Media Starts   *******  -->
-    
-                    <div class="socialMedia">
-                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
-                    </div>
-    
-                    <!--  *******   Social Media Ends   *******  -->
-    
-                </section>
-    
-                <!--  *******   Left Section (Column) Ends   *******  -->
-    
-                <!--  *******   Right Section (Column) Starts   *******  -->
-
-                <section class="col right">
-                    
-                    <!--  *******   Form Starts   *******  -->
-    
-                    <form class="messageForm">
-                        
-                        <div class="inputGroup halfWidth">
-                            <input type="text" name="" required="required">
-                            <label>Your Name</label>
-                        </div>
-    
-                        <div class="inputGroup halfWidth">
-                            <input type="email" name="" required="required">
-                            <label>Email</label>
-                        </div>
-    
-                        <div class="inputGroup fullWidth">
-                            <input type="text" name="" required="required">
-                            <label>Subject</label>
-                        </div>
-    
-                        <div class="inputGroup fullWidth">
-                            <textarea required="required"></textarea>
-                            <label>Say Something</label>
-                        </div>
-    
-                        <div class="inputGroup fullWidth">
-                            <button>Send Message</button>
-                        </div>
-    
-                    </form>
-    
-                    <!--  *******   Form Ends   *******  -->
-                </section>
-    
-            
-    
-                <!--  *******   Right Section (Column) Ends   *******  -->
-    
-            </main>
+            <!-- Social Links Placeholder -->
+            <ul class="social-list">
+                <!-- Social links -->
+            </ul>
         </div>
+    </main>
+    
+<!-- End of Main Content -->
 
-
-
-            
-       </main>
-       
-        <!-- End of Main Content -->
-       
-       
-           <!-- Right Section -->
+        <!-- Right Section -->
         <div class="right-section">
             <div class="nav">
                 <button id="menu-btn">
@@ -350,13 +175,15 @@
                         <small class="text-muted">User</small>
                     </div>
                     <div class="profile-photo">
-                        <a href="/userUser"> <!-- Navigate back to user profile -->
+                        <a href="/userUser"> <!-- Add this anchor tag -->
                             <% if (user.profilePicture) { %>
                                 <img src="<%= user.profilePicture.replace(/\\/g, '/') %>" alt="Profile Picture">
+
                             <% } else { %>
                                 <!-- Placeholder image or default image when no profile picture exists -->
                                 <img src="/images/profile-icon.jpg" width="40" class="rounded-circle">
                             <% } %>
+
                         </a>
                     </div>
                 </div>
@@ -364,6 +191,7 @@
             </div>
             <!-- End of Nav -->
 
+          
             <div class="user-profile">
                 <div class="logo">
                     <img src="../images/logo.png">
@@ -372,13 +200,12 @@
                 </div>
             </div>
 
-          
-
+            
         </div>
 
 
     </div>
-        <script src="../js/control.js"></script>
-    </body>
-    
-    </html>
+    <script src="../js/control.js"></script>
+</body>
+
+</html>

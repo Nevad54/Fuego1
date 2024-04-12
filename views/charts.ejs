@@ -10,33 +10,18 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.1.0/mqtt.min.js"></script>
   <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <link rel="stylesheet" href="/homepage.css">
+  
   <link rel="stylesheet" href="/chart.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-  <style>
-    /* CSS for temperature data table */
-    .data-table {
-  border-collapse: collapse;
-  width: 100%;
-}
 
-.data-table td,
-.data-table th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px; 
-}
 
-.data-table tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-.data-table th {
-  background-color: #dddddd;
-  color: black;
-}
-
-  </style>
+  
 </head>
 <body>
     <div class="container">
@@ -55,7 +40,7 @@
             </div>
 
             <div class="sidebar">
-                <a href="/adminHome">
+                <a href="/adminHome" >
                     <span class="material-icons-sharp">
                         dashboard
                     </span>
@@ -68,11 +53,11 @@
                 </a>
                 
                 <a href="/alert">
-                    <span class="material-symbols-outlined">
-                        notifications
-                        </span>
+                    <span class="material-icons-sharp">
+                        whatshot
+                    </span>
                     <h3>Fire History</h3>
-                
+                </a>
                     <a href="/database">
                         <span class="material-symbols-outlined">
                             database
@@ -80,15 +65,17 @@
                         <h3>Database</h3>
                     </a>
                     
-                <a href="/charts"class="active">
-                    <span class="material-icons-sharp">
-                        insights
+                <a href="/charts" class="active">
+                    <span class="material-symbols-outlined">
+                        history
                     </span>
                     <h3>Data History</h3>
                 </a>
+                    
+              
                 
                     
-                </a>
+                
                 
                         
                   <!--  <a href="/user">
@@ -100,25 +87,7 @@
                 -->
                     
                 
-                <a href="/userList">
-                    <span class="material-symbols-outlined"> admin_panel_settings </span>
-                    <h3>Admin Panel</h3>
-                </a>
-
-
-                
-                <a href="/AboutUs">
-                    <span class="material-symbols-outlined">
-                        help
-                    </span>
-                    <h3>About Us</h3>
-                </a>
-                <a href="/logout">
-                    <span class="material-icons-sharp">
-                        logout
-                    </span>
-                    <h3>Logout</h3>
-                </a>
+              
             </div>
         </aside>
         <!-- End of Sidebar Section -->
@@ -126,39 +95,49 @@
         <!-- Main Section -->
         <main>
             <h1>Temperature, Humidity, and Smoke Charts</h1>
-            <div id="chartsContainer" style="display: flex; flex-direction: column; align-items: center;">
-                <!-- Charts will be dynamically added here -->
-            </div>
-           <!-- Update the select options container to have a common label for both temperature and humidity -->
-           <div id="select-options-data">
-            <label for="select-topic-data">Select Topic:</label>
-            <select id="select-topic-data"></select>
-            <label for="select-month-data">Select Month:</label>
-            <select id="select-month-data"></select>
-            <label for="select-year-data">Select Year:</label>
-            <select id="select-year-data"></select>
-            <button onclick="updateData()">Show Data</button>
-        </div>
 
-        <table id="data-table-body" class="data-table">
-            <thead>
-                <tr>
-                    <th>Data</th>
-                    <th>Month</th>
-                    <th>Year</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Data will be displayed here -->
-            </tbody>
-        </table>
-        
-        <!-- Buttons for exporting data -->
-        <div class="button-container">
-            <button class="action-button" onclick="exportDataToExcel()">Export to Excel</button>
-            <button class="action-button" onclick="saveDataToPDF()">Save to PDF</button>
-            <button class="action-button" onclick="printData()">Print Data</button>
-        </div>
+            <div class="data-container">
+                <!-- Select options for filtering data -->
+                <div class="select-options">
+                    <label for="select-topic-data" class="select-label">Select Topic:</label>
+                    <select id="select-topic-data" class="select-box"></select>
+                    
+                    <label for="select-month-data" class="select-label">Select Month:</label>
+                    <select id="select-month-data" class="select-box"></select>
+                    
+                    <label for="select-year-data" class="select-label">Select Year:</label>
+                    <select id="select-year-data" class="select-box"></select>
+                    
+                   
+                </div>
+                <div class="show-data-container">
+                    <button onclick="updateData()" class="action-button">Show Data</button>
+                </div>
+            
+                <!-- Data table -->
+                <div class="data-table-container">
+                    <table id="data-table-body" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Month</th>
+                                <th>Year</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data will be displayed here -->
+                        </tbody>
+                    </table>
+            
+                    <!-- Buttons for exporting and printing data -->
+                    <div class="button-container">
+                        <button class="action-button" onclick="exportDataToExcel()">Export to Excel</button>
+                        <button class="action-button" onclick="saveDataToPDF()">Save to PDF</button>
+                        <button class="action-button" onclick="printData()">Print Data</button>
+                    </div>
+                </div>
+            </div>
+            
 
             <script>
                 const socket = io.connect('https://fuego1.onrender.com');
@@ -443,32 +422,36 @@ function saveDataToPDF() {
                     </span>
                 </div>
 
-                <div class="profile">
-                    <div class="info">
-                        <p>Hey, <b><%= admin1.username %></b></p>
-                        <small class="text-muted">Admin</small>
-                    </div>
+               <div class="profile">
+            <div class="dropdown">
+                <div class="profile-photo-container">
                     <div class="profile-photo">
-                        <a href="/user"> <!-- Navigate back to user profile -->
-                            <% if (admin1.profilePicture) { %>
-                                <img src="<%= admin1.profilePicture.replace(/\\/g, '/') %>" alt="Profile Picture">
-                            <% } else { %>
-                                <!-- Placeholder image or default image when no profile picture exists -->
-                                <img src="/images/profile-icon.jpg" width="40" class="rounded-circle">
-                            <% } %>
-                        </a>
+                        <% if (admin1.profilePicture) { %>
+                            <img src="<%= admin1.profilePicture.replace(/\\/g, '/') %>" alt="Profile Picture">
+                        <% } else { %>
+                            <!-- Placeholder image or default image when no profile picture exists -->
+                            <img src="/images/profile-icon.jpg" width="40" class="rounded-circle">
+                        <% } %>
+                        
+                    </div>
+                    <div class="arrow-circle">
+                        <!-- Arrow icon -->
+                        <i class="material-icons arrow-down">keyboard_arrow_down</i>
                     </div>
                 </div>
+                <div class="dropdown-menu" id="dropdown-menu">
+                    <!-- Dropdown menu items -->
+                    <a href="/user">Profile</a>
+                    <a href="/AboutUs">AboutUs</a>
+                    <a href="/userList">Admin Panel</a>
+                    <a href="/logout">Logout</a>
+                </div>
+            </div>
+        </div>
             </div>
             <!-- End of Nav -->
 
-            <div class="user-profile">
-                <div class="logo">
-                    <img src="../images/logo.png">
-                    <h2>BFP Batac-City</h2>
-                    <p></p>
-                </div>
-            </div>
+           
         </div>
     </div>
     <script src="../js/control.js"></script>

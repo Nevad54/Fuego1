@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="/profile.css">
     <title>BFP- Batac- City</title>
 
@@ -33,7 +40,7 @@
             </div>
 
             <div class="sidebar">
-                <a href="/adminHome" class="active">
+                <a href="/adminHome" >
                     <span class="material-icons-sharp">
                         dashboard
                     </span>
@@ -78,25 +85,7 @@
                 -->
                     
                 
-                <a href="/userList">
-                    <span class="material-symbols-outlined"> admin_panel_settings </span>
-                    <h3>Admin Panel</h3>
-                </a>
-
-
-                
-                <a href="/AboutUs">
-                    <span class="material-symbols-outlined">
-                        help
-                    </span>
-                    <h3>About Us</h3>
-                </a>
-                <a href="/logout">
-                    <span class="material-icons-sharp">
-                        logout
-                    </span>
-                    <h3>Logout</h3>
-                </a>
+              
             </div>
         </aside>
         <!-- End of Sidebar Section -->
@@ -183,19 +172,29 @@
                 </div>
 
                 <div class="profile">
-                    <div class="info">
-                        <p>Hey, <b><%= admin1.username %></b></p>
-                        <small class="text-muted">Admin</small>
-                    </div>
-                    <div class="profile-photo">
-                        <a href="/user"> <!-- Navigate back to user profile -->
-                            <% if (admin1.profilePicture) { %>
-                                <img src="<%= admin1.profilePicture.replace(/\\/g, '/') %>" alt="Profile Picture">
-                            <% } else { %>
-                                <!-- Placeholder image or default image when no profile picture exists -->
-                                <img src="/images/profile-icon.jpg" width="40" class="rounded-circle">
-                            <% } %>
-                        </a>
+                    <div class="dropdown">
+                        <div class="profile-photo-container">
+                            <div class="profile-photo">
+                                <% if (admin1.profilePicture) { %>
+                                    <img src="<%= admin1.profilePicture.replace(/\\/g, '/') %>" alt="Profile Picture">
+                                <% } else { %>
+                                    <!-- Placeholder image or default image when no profile picture exists -->
+                                    <img src="/images/profile-icon.jpg" width="40" class="rounded-circle">
+                                <% } %>
+                                
+                            </div>
+                            <div class="arrow-circle">
+                                <!-- Arrow icon -->
+                                <i class="material-icons arrow-down">keyboard_arrow_down</i>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu">
+                            <!-- Dropdown menu items -->
+                            <a href="/user">Profile</a>
+                            <a href="/AboutUs">AboutUs</a>
+                            <a href="/userList">Admin Panel</a>
+                            <a href="/logout">Logout</a>
+                        </div>
                     </div>
                 </div>
 
