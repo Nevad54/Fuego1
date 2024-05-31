@@ -351,18 +351,44 @@
                     }
 
 
-                    function updateSOSNum() {
-                        var newSOSNum = document.getElementById("sosNum").value;
-                        var message = { "sosNum": newSOSNum };
-                        client.publish("esp32/settings", JSON.stringify(message));
-                    }
-                
-                    // Function to publish SOS time delay update
-                    function updateSOSTime() {
-                        var newSOSTime = parseInt(document.getElementById("sosTime").value);
-                        var message = { "sosTime": newSOSTime };
-                        client.publish("esp32/settings", JSON.stringify(message));
-                    }
+              // Function to open the SOS number modal
+                function openSOSNumModal() {
+                    document.getElementById("sosNumModal").style.display = "block";
+                }
+
+                // Function to close the SOS number modal
+                function closeSOSNumModal() {
+                    document.getElementById("sosNumModal").style.display = "none";
+                }
+
+                // Function to update the SOS number using MQTT
+                function updateSOSNum() {
+                    const newSOSNum = document.getElementById("sosNum").value;
+                    const message = { "sosNum": newSOSNum };
+                    client.publish("esp32/settings", JSON.stringify(message));
+                    closeSOSNumModal();
+                    displaySuccessMessage("SOS number updated successfully!");
+                }
+
+                // Function to open the SOS time modal
+                function openSOSTimeModal() {
+                    document.getElementById("sosTimeModal").style.display = "block";
+                }
+
+                // Function to close the SOS time modal
+                function closeSOSTimeModal() {
+                    document.getElementById("sosTimeModal").style.display = "none";
+                }
+
+                // Function to update the SOS time delay using MQTT
+                function updateSOSTime() {
+                    const newSOSTime = document.getElementById("sosTime").value;
+                    const message = { "sosTime": newSOSTime };
+                    client.publish("esp32/settings", JSON.stringify(message));
+                    closeSOSTimeModal();
+                    displaySuccessMessage("SOS time delay updated successfully!");
+                }
+
 
                     // Function to display error message
                     function displayErrorMessage(message) {
