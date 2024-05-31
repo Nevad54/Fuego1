@@ -145,64 +145,63 @@
                     <button onclick="openSOSTimeModal()">Edit SOS Time Delay</button>
                 </div>
 
-               <!-- Add this HTML for the SOS number modal -->
-                    <div id="sosNumModal" class="modal">
-                        <div class="modal-content">
+                <!-- Add this HTML for the SOS number modal -->
+                <div id="sosNumModal" class="modal">
+                    <div class="modal-content">
                         <span class="close" onclick="closeSOSNumModal()">&times;</span>
                         <h2>Update SOS Number</h2>
                         <input type="text" id="sosNum" placeholder="Enter SOS Number">
                         <button onclick="updateSOSNum()">Update</button>
-                        </div>
                     </div>
-                    
-                    <!-- Add this HTML for the SOS time modal -->
-                    <div id="sosTimeModal" class="modal">
-                        <div class="modal-content">
+                </div>
+
+                <!-- Add this HTML for the SOS time modal -->
+                <div id="sosTimeModal" class="modal">
+                    <div class="modal-content">
                         <span class="close" onclick="closeSOSTimeModal()">&times;</span>
                         <h2>Update SOS Time Delay</h2>
                         <input type="number" id="sosTime" placeholder="Enter SOS Time Delay">
                         <button onclick="updateSOSTime()">Update</button>
-                        </div>
                     </div>
-                    
-                    <!-- Add this CSS for the modals -->
-                    <style>
-                        .modal {
-                        display: none; /* Hidden by default */
-                        position: fixed; /* Stay in place */
-                        z-index: 1; /* Sit on top */
+                </div>
+
+                <!-- Add this CSS for the modals -->
+                <style>
+                    .modal {
+                        display: none;
+                        position: fixed;
+                        z-index: 1;
                         left: 0;
                         top: 0;
-                        width: 100%; /* Full width */
-                        height: 100%; /* Full height */
-                        overflow: auto; /* Enable scroll if needed */
-                        background-color: rgb(0,0,0); /* Fallback color */
-                        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-                        }
-                    
-                        .modal-content {
+                        width: 100%;
+                        height: 100%;
+                        overflow: auto;
+                        background-color: rgb(0, 0, 0);
+                        background-color: rgba(0, 0, 0, 0.4);
+                    }
+
+                    .modal-content {
                         background-color: #fefefe;
-                        margin: 15% auto; /* 15% from the top and centered */
+                        margin: 15% auto;
                         padding: 20px;
                         border: 1px solid #888;
-                        width: 80%; /* Could be more or less, depending on screen size */
-                        }
-                    
-                        /* The Close Button */
-                        .close {
+                        width: 80%;
+                    }
+
+                    .close {
                         color: #aaa;
                         float: right;
                         font-size: 28px;
                         font-weight: bold;
-                        }
-                    
-                        .close:hover,
-                        .close:focus {
+                    }
+
+                    .close:hover,
+                    .close:focus {
                         color: black;
                         text-decoration: none;
                         cursor: pointer;
-                        }
-                    </style>
+                    }
+                </style>
             
                 <script>
 
@@ -352,66 +351,69 @@
                     }
 
 
-                  // Modal control functions
-                    function openSOSNumModal() {
-                        document.getElementById('sosNumModal').style.display = 'block';
-                    }
+                 // JavaScript for handling the SOS number modal
+                 function openSOSNumModal() {
+                    document.getElementById("sosNumModal").style.display = "block";
+                }
 
-                    function closeSOSNumModal() {
-                        document.getElementById('sosNumModal').style.display = 'none';
-                    }
+                function closeSOSNumModal() {
+                    document.getElementById("sosNumModal").style.display = "none";
+                }
 
-                    function openSOSTimeModal() {
-                        document.getElementById('sosTimeModal').style.display = 'block';
-                    }
-
-                    function closeSOSTimeModal() {
-                        document.getElementById('sosTimeModal').style.display = 'none';
-                    }
-
-                    // Update SOS Number
-                    function updateSOSNum() {
-                        const sosNum = document.getElementById('sosNum').value;
-                        fetch('/setsosnum', {
-                          method: 'POST',
-                          headers: {
-                            'Content-Type': 'application/json'
-                          },
-                          body: JSON.stringify({ sosNum })
-                        })
+                function updateSOSNum() {
+                    const sosNum = document.getElementById("sosNum").value;
+                    fetch("/updateSOSNum", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ sosNum })
+                    })
                         .then(response => {
-                          if (response.ok) {
-                            console.log('SOS Number updated successfully!');
-                          } else {
-                            console.error('Failed to update SOS Number');
-                          }
+                            if (response.ok) {
+                                closeSOSNumModal();
+                                displaySuccessMessage("SOS number updated successfully!");
+                            } else {
+                                displayErrorMessage("Failed to update SOS number");
+                                throw new Error('Failed to update SOS number');
+                            }
                         })
                         .catch(error => {
-                          console.error('Error updating SOS Number:', error);
+                            console.error("Error updating SOS number:", error);
                         });
-                      }
+                }
 
-                    // Update SOS Time
-                    function updateSOSTime() {
-                        const sosTime = document.getElementById('sosTime').value;
-                        fetch('/setsostime', {
-                          method: 'POST',
-                          headers: {
-                            'Content-Type': 'application/json'
-                          },
-                          body: JSON.stringify({ sosTime })
-                        })
+                // JavaScript for handling the SOS time modal
+                function openSOSTimeModal() {
+                    document.getElementById("sosTimeModal").style.display = "block";
+                }
+
+                function closeSOSTimeModal() {
+                    document.getElementById("sosTimeModal").style.display = "none";
+                }
+
+                function updateSOSTime() {
+                    const sosTime = document.getElementById("sosTime").value;
+                    fetch("/updateSOSTime", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ sosTime })
+                    })
                         .then(response => {
-                          if (response.ok) {
-                            console.log('SOS Time Delay updated successfully!');
-                          } else {
-                            console.error('Failed to update SOS Time Delay');
-                          }
+                            if (response.ok) {
+                                closeSOSTimeModal();
+                                displaySuccessMessage("SOS time delay updated successfully!");
+                            } else {
+                                displayErrorMessage("Failed to update SOS time delay");
+                                throw new Error('Failed to update SOS time delay');
+                            }
                         })
                         .catch(error => {
-                          console.error('Error updating SOS Time Delay:', error);
+                            console.error("Error updating SOS time delay:", error);
                         });
-                      }
+                }
 
                     // Function to display error message
                     function displayErrorMessage(message) {
