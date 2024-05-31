@@ -351,69 +351,18 @@
                     }
 
 
-                 // JavaScript for handling the SOS number modal
-                 function openSOSNumModal() {
-                    document.getElementById("sosNumModal").style.display = "block";
-                }
-
-                function closeSOSNumModal() {
-                    document.getElementById("sosNumModal").style.display = "none";
-                }
-
-                function updateSOSNum() {
-                    const sosNum = document.getElementById("sosNum").value;
-                    fetch("/updateSOSNum", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({ sosNum })
-                    })
-                        .then(response => {
-                            if (response.ok) {
-                                closeSOSNumModal();
-                                displaySuccessMessage("SOS number updated successfully!");
-                            } else {
-                                displayErrorMessage("Failed to update SOS number");
-                                throw new Error('Failed to update SOS number');
-                            }
-                        })
-                        .catch(error => {
-                            console.error("Error updating SOS number:", error);
-                        });
-                }
-
-                // JavaScript for handling the SOS time modal
-                function openSOSTimeModal() {
-                    document.getElementById("sosTimeModal").style.display = "block";
-                }
-
-                function closeSOSTimeModal() {
-                    document.getElementById("sosTimeModal").style.display = "none";
-                }
-
-                function updateSOSTime() {
-                    const sosTime = document.getElementById("sosTime").value;
-                    fetch("/updateSOSTime", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({ sosTime })
-                    })
-                        .then(response => {
-                            if (response.ok) {
-                                closeSOSTimeModal();
-                                displaySuccessMessage("SOS time delay updated successfully!");
-                            } else {
-                                displayErrorMessage("Failed to update SOS time delay");
-                                throw new Error('Failed to update SOS time delay');
-                            }
-                        })
-                        .catch(error => {
-                            console.error("Error updating SOS time delay:", error);
-                        });
-                }
+                    function updateSOSNum() {
+                        var newSOSNum = document.getElementById("sosNum").value;
+                        var message = { "sosNum": newSOSNum };
+                        client.publish("esp32/settings", JSON.stringify(message));
+                    }
+                
+                    // Function to publish SOS time delay update
+                    function updateSOSTime() {
+                        var newSOSTime = parseInt(document.getElementById("sosTime").value);
+                        var message = { "sosTime": newSOSTime };
+                        client.publish("esp32/settings", JSON.stringify(message));
+                    }
 
                     // Function to display error message
                     function displayErrorMessage(message) {
