@@ -1077,6 +1077,40 @@ app.get("/userList", authMiddleware.requireLogin, async (req, res) => {
   }
 });
 
+// Define the route for updating the SOS number
+app.post("/updateSOSNum", authMiddleware.requireLogin, async (req, res) => {
+  try {
+    const { sosNum } = req.body; // Extract the SOS number from the request body
+
+    // Handle the logic to update the SOS number in the database or wherever it's stored
+    // Example:
+    // const updatedUser = await User.findOneAndUpdate({ _id: req.session.user._id }, { $set: { sosNum: sosNum } }, { new: true });
+
+    // Respond with a success message
+    res.status(200).json({ status: "success", message: "SOS number updated successfully" });
+  } catch (error) {
+    console.error('Error updating SOS number:', error);
+    res.status(500).json({ status: "error", message: "Failed to update SOS number" });
+  }
+});
+
+// Define the route for updating the SOS time delay
+app.post("/updateSOSTime", authMiddleware.requireLogin, async (req, res) => {
+  try {
+    const { sosTime } = req.body; // Extract the SOS time delay from the request body
+
+    // Handle the logic to update the SOS time delay in the database or wherever it's stored
+    // Example:
+    // const updatedUser = await User.findOneAndUpdate({ _id: req.session.user._id }, { $set: { sosTime: sosTime } }, { new: true });
+
+    // Respond with a success message
+    res.status(200).json({ status: "success", message: "SOS time delay updated successfully" });
+  } catch (error) {
+    console.error('Error updating SOS time delay:', error);
+    res.status(500).json({ status: "error", message: "Failed to update SOS time delay" });
+  }
+});
+
 
 
 
