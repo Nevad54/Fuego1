@@ -141,8 +141,9 @@
                 </tbody>
                 </table>
                 <div class="button-container">
-                    <button onclick="updateSOSNumber()">Update SOS Number</button>
-                    <button onclick="updateSOSTimeModal()">Edit SOS Time Delay</button>
+                    <button onclick="openSOSNumModal()">Edit SOS Number</button>
+                    <button onclick="openSOSTimeModal()">Edit SOS Time Delay</button>
+                  
                 </div>
              
 
@@ -151,7 +152,7 @@
                         <span class="close" onclick="closeSOSNumModal()">&times;</span>
                         <h2>Update SOS Number</h2>
                         <input type="text" id="sosNumInput" placeholder="Enter SOS Number">
-                        <button onclick="updateSOSNum()">Update</button>
+                        <button onclick="updateSOSNumber()">Update</button>
                     </div>
                 </div>
             
