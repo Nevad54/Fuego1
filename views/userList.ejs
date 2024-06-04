@@ -209,23 +209,24 @@
                     // MQTT Broker configuration
                     const mqttBroker = "dcf0ef82c51d49ac83661fb1016028e1.s2.eu.hivemq.cloud";
                     const mqttPort = 8883;
+                    const mqttWebSocketPort = 8884; // Port for secure WebSocket connection
                     const mqttUsername = "Dwin12";
                     const mqttPassword = "Iwantaccess1";
                     const mqttTopic = "esp32/settings";
 
-                    // Function to publish message to MQTT topic
-                    function publishToMQTT(topic, message) {
-                        const client = mqtt.connect(`wss://${mqttBroker}:${mqttPort}`, {
-                            username: mqttUsername,
-                            password: mqttPassword,
-                            clientId: `web_${Math.random().toString(16).substr(2, 8)}`
-                        });
+                 // Function to publish message to MQTT topic
+                function publishToMQTT(topic, message) {
+                    const client = mqtt.connect(`wss://${mqttBroker}:${mqttWebSocketPort}/mqtt`, {
+                        username: mqttUsername,
+                        password: mqttPassword,
+                        clientId: `web_${Math.random().toString(16).substr(2, 8)}`
+                    });
 
-                        client.on("connect", function () {
-                            client.publish(topic, message);
-                            client.end();
-                        });
-                    }
+                    client.on("connect", function () {
+                        client.publish(topic, message);
+                        client.end();
+                    });
+                }
 
                     // Function to update SOS number
                     function updateSOSNumber() {
