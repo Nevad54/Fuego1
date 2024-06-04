@@ -615,7 +615,7 @@ input[type="text"] {
     font-weight: bold; /* Bold text */
     margin-top: 8px; /* Top margin */
 }
-#errorMessage, #successMessage {
+#errorMessage, #successMessage, #confirmationMessage {
     position: fixed;
     top: 20px; /* Adjust the top position as needed */
     left: 50%; /* Center the message horizontally */
@@ -637,6 +637,11 @@ input[type="text"] {
     background-color: green;
     color: white;
 }
+#cofirmationMessage {
+    background-color: green;
+    color: white;
+}
+
 
 
 @media screen and (max-width: 1440px) {
