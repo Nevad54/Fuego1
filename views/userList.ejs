@@ -524,6 +524,32 @@
                         document.querySelector('.confirmation-message').style.display = 'none';
                     }, 3000); // Adjust the delay as needed (in milliseconds)
 
+            
+
+                    function updateSOSInfo() {
+                        var sosNumInput = document.getElementById("sosNumInput").value;
+                        var sosTimeInput = document.getElementById("sosTimeInput").value;
+                    
+                        // Your code to update the SOS number and SOS time delay
+                        // Example: Assume `sosNumberUpdated` and `sosTimeUpdated` are booleans indicating whether the updates were successful
+                    
+                        var confirmationMessage = "";
+                    
+                        if (sosNumberUpdated) {
+                            confirmationMessage += "SOS number updated successfully! ";
+                        } else {
+                            confirmationMessage += "Failed to update SOS number. ";
+                        }
+                    
+                        if (sosTimeUpdated) {
+                            confirmationMessage += "SOS time delay updated successfully!";
+                        } else {
+                            confirmationMessage += "Failed to update SOS time delay.";
+                        }
+                    
+                        document.getElementById("confirmationMessage").innerText = confirmationMessage;
+                    }
+                    
                     
                 </script>
                
@@ -578,6 +604,7 @@
                     <button class="update-button"  onclick="updateSOSTime()">Update</button>
                 </div>
             </div>
+       
 
         </div>
     </div>
