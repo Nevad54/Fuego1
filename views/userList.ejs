@@ -206,6 +206,63 @@
             
                 <script>
 
+                    // MQTT Broker configuration
+                    const mqttBroker = "dcf0ef82c51d49ac83661fb1016028e1.s2.eu.hivemq.cloud";
+                    const mqttPort = 8883;
+                    const mqttUsername = "Dwin12";
+                    const mqttPassword = "Iwantaccess1";
+                    const mqttTopic = "esp32/settings";
+
+                    // Function to publish message to MQTT topic
+                    function publishToMQTT(topic, message) {
+                        const client = mqtt.connect(`wss://${mqttBroker}:${mqttPort}`, {
+                            username: mqttUsername,
+                            password: mqttPassword,
+                            clientId: `web_${Math.random().toString(16).substr(2, 8)}`
+                        });
+
+                        client.on("connect", function () {
+                            client.publish(topic, message);
+                            client.end();
+                        });
+                    }
+
+                    // Function to update SOS number
+                    function updateSOSNumber() {
+                        // Access mqttTopic here
+                        const sosNum = document.getElementById("sosNumInput").value;
+                        const message = JSON.stringify({ "SOS_NUM": sosNum });
+                        publishToMQTT(mqttTopic, message);
+                    }
+
+                    // Function to update SOS time delay
+                    function updateSOSTime() {
+                        const sosTime = document.getElementById("sosTimeInput").value;
+                        const message = JSON.stringify({ "SOS_Time": sosTime });
+                        publishToMQTT(mqttTopic, message);
+                    }
+
+                    // Function to open the SOS number modal
+                    function openSOSNumModal() {
+                        document.getElementById("sosNumModal").style.display = "block";
+                    }
+
+                    // Function to close the SOS number modal
+                    function closeSOSNumModal() {
+                        document.getElementById("sosNumModal").style.display = "none";
+                    }
+
+                    // Function to open the SOS time modal
+                    function openSOSTimeModal() {
+                        document.getElementById("sosTimeModal").style.display = "block";
+                    }
+
+                    // Function to close the SOS time modal
+                    function closeSOSTimeModal() {
+                        document.getElementById("sosTimeModal").style.display = "none";
+                    }
+
+
                     
                     // Add a click event listener to the register button
                     function redirectToRegister() {
@@ -385,62 +442,7 @@
 
 
 
-                  // MQTT Broker configuration
-                const mqttBroker = "dcf0ef82c51d49ac83661fb1016028e1.s2.eu.hivemq.cloud";
-                const mqttPort = 8883;
-                const mqttUsername = "Dwin12";
-                const mqttPassword = "Iwantaccess1";
-                const mqttTopic = "esp32/settings";
-
-                // Function to publish message to MQTT topic
-                function publishToMQTT(topic, message) {
-                    const client = mqtt.connect(`wss://${mqttBroker}:${mqttPort}`, {
-                        username: mqttUsername,
-                        password: mqttPassword,
-                        clientId: `web_${Math.random().toString(16).substr(2, 8)}`
-                    });
-
-                    client.on("connect", function () {
-                        client.publish(topic, message);
-                        client.end();
-                    });
-                }
-                // Function to update SOS number
-                function updateSOSNumber() {
-                    // Access mqttTopic here
-                    const sosNum = document.getElementById("sosNumInput").value;
-                    const message = JSON.stringify({ "SOS_NUM": sosNum });
-                    publishToMQTT(mqttTopic, message);
-                }
-                 // Function to update SOS time delay
-                 function updateSOSTime() {
-                    const sosTime = document.getElementById("sosTimeInput").value;
-                    const message = JSON.stringify({ "SOS_Time": sosTime });
-                    publishToMQTT(mqttTopic, message);
-                }
-
-                // Function to open the SOS number modal
-                function openSOSNumModal() {
-                    document.getElementById("sosNumModal").style.display = "block";
-                }
-
-                // Function to close the SOS number modal
-                function closeSOSNumModal() {
-                    document.getElementById("sosNumModal").style.display = "none";
-                }
-
-                // Function to open the SOS time modal
-                function openSOSTimeModal() {
-                    document.getElementById("sosTimeModal").style.display = "block";
-                }
-
-                // Function to close the SOS time modal
-                function closeSOSTimeModal() {
-                    document.getElementById("sosTimeModal").style.display = "none";
-                }
-
              
-
                
 
                 </script>
