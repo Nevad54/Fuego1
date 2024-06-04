@@ -405,6 +405,19 @@
                         client.end();
                     });
                 }
+                // Function to update SOS number
+                function updateSOSNumber() {
+                    // Access mqttTopic here
+                    const sosNum = document.getElementById("sosNumInput").value;
+                    const message = JSON.stringify({ "SOS_NUM": sosNum });
+                    publishToMQTT(mqttTopic, message);
+                }
+                 // Function to update SOS time delay
+                 function updateSOSTime() {
+                    const sosTime = document.getElementById("sosTimeInput").value;
+                    const message = JSON.stringify({ "SOS_Time": sosTime });
+                    publishToMQTT(mqttTopic, message);
+                }
 
                 // Function to open the SOS number modal
                 function openSOSNumModal() {
@@ -426,19 +439,9 @@
                     document.getElementById("sosTimeModal").style.display = "none";
                 }
 
-                // Function to update SOS number
-                function updateSOSNumber() {
-                    const sosNum = document.getElementById("sosNumInput").value;
-                    const message = JSON.stringify({ "SOS_NUM": sosNum });
-                    publishToMQTT(mqttTopic, message);
-                }
+             
 
-                // Function to update SOS time delay
-                function updateSOSTime() {
-                    const sosTime = document.getElementById("sosTimeInput").value;
-                    const message = JSON.stringify({ "SOS_Time": sosTime });
-                    publishToMQTT(mqttTopic, message);
-                }
+               
 
                 </script>
             </main>
