@@ -140,31 +140,7 @@
                     <% } %>
                 </tbody>
                 </table>
-                <div class="button-container">
-                    <button onclick="openSOSNumModal()">Edit SOS Number</button>
-                    <button onclick="openSOSTimeModal()">Edit SOS Time Delay</button>
-                  
-                </div>
-             
-
-                <div id="sosNumModal" class="modal">
-                    <div class="modal-content">
-                        <span class="close" onclick="closeSOSNumModal()">&times;</span>
-                        <h2>Update SOS Number</h2>
-                        <input type="text" id="sosNumInput" placeholder="Enter SOS Number">
-                        <button onclick="updateSOSNumber()">Update</button>
-                    </div>
-                </div>
-            
-                <!-- Add this HTML for the SOS time modal -->
-                <div id="sosTimeModal" class="modal">
-                    <div class="modal-content">
-                        <span class="close" onclick="closeSOSTimeModal()">&times;</span>
-                        <h2>Update SOS Time Delay</h2>
-                        <input type="number" id="sosTimeInput" placeholder="Enter SOS Time Delay">
-                        <button onclick="updateSOSTime()">Update</button>
-                    </div>
-                </div>
+              
             
                 <!-- Add this CSS for the modals -->
                 <style>
@@ -565,6 +541,29 @@
             </div>
             <div class="logreg-link">
                 <button onclick="redirectToRegister()" class="register-button">Register User</button>
+                <button onclick="openSOSNumModal()" > Edit SOS Number</button>
+                <button onclick="openSOSTimeModal()">Edit SOS Time Delay</button>
+            </div>
+           
+         
+
+            <div id="sosNumModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeSOSNumModal()">&times;</span>
+                    <h2>Update SOS Number</h2>
+                    <input type="text" id="sosNumInput" placeholder="Enter SOS Number">
+                    <button onclick="updateSOSNumber()">Update</button>
+                </div>
+            </div>
+        
+            <!-- Add this HTML for the SOS time modal -->
+            <div id="sosTimeModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeSOSTimeModal()">&times;</span>
+                    <h2>Update SOS Time Delay</h2>
+                    <input type="number" id="sosTimeInput" placeholder="Enter SOS Time Delay">
+                    <button onclick="updateSOSTime()">Update</button>
+                </div>
             </div>
         </div>
     </div>
