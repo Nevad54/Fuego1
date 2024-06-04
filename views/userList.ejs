@@ -97,13 +97,13 @@
             <div class="table-container">
                 <main>
                     <div class="message-container">
-                        <div class="message" id="errorMessage" style="display: none;"></div>
-                        <div class="message" id="successMessage" style="display: none;"></div>
+                        <div id="errorMessage" class="message" style="display: none;"></div>
+                        <div id="successMessage" class="message" style="display: none;"></div>
+                        <div id="sosNumConfirmationMessage" class="message" style="display: none;"></div>
+                        <div id="sosTimeConfirmationMessage" class="message" style="display: none;"></div>
                     </div>
-
-                    <div id="sosNumConfirmationMessage" class="message" style="display: none;"></div>
-                    <div id="sosTimeConfirmationMessage" class="message" style="display: none;"></div>
-
+                    
+                    
                     <h2 class="table-title"> <h2>Account Manager</h2>
                 </h2>
                 <table>
@@ -254,36 +254,6 @@
                     function closeSOSTimeModal() {
                         document.getElementById("sosTimeModal").style.display = "none";
                     }
-                    // Function to display confirmation message for SOS number
-                    function displaySOSNumConfirmationMessage(message) {
-                        var sosNumConfirmationMessageElement = document.getElementById("sosNumConfirmationMessage");
-                        sosNumConfirmationMessageElement.innerText = message;
-                        sosNumConfirmationMessageElement.style.display = "block"; // Display the SOS number confirmation message
-                        setTimeout(function() {
-                            sosNumConfirmationMessageElement.style.display = "none"; // Hide the SOS number confirmation message after 5 seconds
-                        }, 5000);
-                    }
-
-                    // Function to display confirmation message for SOS time delay
-                    function displaySOSTimeConfirmationMessage(message) {
-                        var sosTimeConfirmationMessageElement = document.getElementById("sosTimeConfirmationMessage");
-                        sosTimeConfirmationMessageElement.innerSText = message;
-                        sosTimeConfirmationMessageElement.style.display = "block"; // Display the SOS time delay confirmation message
-                        setTimeout(function() {
-                            sosTimeConfirmationMessageElement.style.display = "none"; // Hide the SOS time delay confirmation message after 5 seconds
-                        }, 5000);
-                    }
-
-                    // Inside the updateSOSNumber() function, after updating the SOS number:
-
-                    // Display confirmation message for SOS number
-                    displaySOSNumConfirmationMessage("SOS number updated successfully!");
-
-                    // Inside the updateSOSTime() function, after updating the SOS time delay:
-
-                    // Display confirmation message for SOS time delay
-                    displaySOSTimeConfirmationMessage("SOS time delay updated successfully!");
-
 
 
                     
@@ -311,6 +281,38 @@
                                 successMessageElement.style.display = "none"; // Hide the success message after 5 seconds
                             }, 5000);
                         }
+
+
+                        // Function to display confirmation message for SOS number
+                        function displaySOSNumConfirmationMessage(message) {
+                            var sosNumConfirmationMessageElement = document.getElementById("sosNumConfirmationMessage");
+                            sosNumConfirmationMessageElement.innerText = message;
+                            sosNumConfirmationMessageElement.style.display = "block"; // Display the SOS number confirmation message
+                            setTimeout(function() {
+                                sosNumConfirmationMessageElement.style.display = "none"; // Hide the SOS number confirmation message after 5 seconds
+                            }, 5000);
+                        }
+
+                        // Function to display confirmation message for SOS time delay
+                        function displaySOSTimeConfirmationMessage(message) {
+                            var sosTimeConfirmationMessageElement = document.getElementById("sosTimeConfirmationMessage");
+                            sosTimeConfirmationMessageElement.innerText = message;
+                            sosTimeConfirmationMessageElement.style.display = "block"; // Display the SOS time delay confirmation message
+                            setTimeout(function() {
+                                sosTimeConfirmationMessageElement.style.display = "none"; // Hide the SOS time delay confirmation message after 5 seconds
+                            }, 5000);
+                        }
+
+                        // Inside the updateSOSNumber() function, after updating the SOS number:
+
+                        // Display confirmation message for SOS number
+                        displaySOSNumConfirmationMessage("SOS number updated successfully!");
+
+                        // Inside the updateSOSTime() function, after updating the SOS time delay:
+
+                        // Display confirmation message for SOS time delay
+                        displaySOSTimeConfirmationMessage("SOS time delay updated successfully!");
+
         
 
 
