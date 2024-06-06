@@ -237,21 +237,29 @@ main .analyse{
 
 .sensor-data {
     width: calc(50% - 20px); /* 50% width for each circle with 20px margin */
-    margin: 10px;
+    margin: 5px;
     box-sizing: border-box;
 }
 
 
+#fireSensorStatus {
+    width: 100%; /* Set the width to 100% to match the container */
+    text-align: center; /* Center the text for better alignment */
+    font-size: 1.4rem; /* Adjust the font size to match other elements */
+    margin: 0; /* Remove default margin */
+    padding: 0.5rem; /* Add some padding for spacing */
+}
+
 main .analyse > div{
     background-color: var(--color-white);
-    padding: 3rem;
+    padding: 2rem;
     border-radius: var(--card-border-radius);
-   
     box-shadow: var(--box-shadow);
     cursor: pointer;
     transition: all 0.3s ease;
-    margin: 50px;
+    margin: 15px;
 }
+
 
 main .analyse > div:hover{
     box-shadow: none;
