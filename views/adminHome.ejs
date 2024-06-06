@@ -115,7 +115,7 @@
             </div>
             <!-- Modal structure for the alert -->
             <div id="alertModal" class="modal">
-                <div class="modal-content">
+                <div class="modal-content"> 
                     <span class="close-btn" onclick="closeAlertModal()">&times;</span>
                     <i class="fas fa-exclamation-triangle fa-10x blinking" style="color: red;"></i>
                     <div class="modal-message">
@@ -133,18 +133,18 @@
 
             let modalLatitude, modalLongitude;
 
-            function showAlertModal(latitude, longitude) {
+            function showAlertModal(latitude, longitude, message, index) {
                 console.log('Show alert modal called with coordinates:', latitude, longitude);
                 
                 // Get the modal
                 var modal = document.getElementById('alertModal');
                 var fireMessage = document.getElementById('modalFireMessage');
-
+            
                 // Set the message and store coordinates for the modal
-                fireMessage.innerHTML = `Fire detected  on FDAS-1 at coordinates (${latitude}, ${longitude})`;
+                fireMessage.innerHTML = `${message}, Fire detected on FDAS-${index + 1} at coordinates (${latitude}, ${longitude})`;
                 modalLatitude = latitude;
                 modalLongitude = longitude;
-
+            
                 // Display the modal
                 modal.style.display = "flex";
             }
@@ -169,7 +169,8 @@
 
             const socket = io.connect('https://fuego1.onrender.com');
             console.log('Connecting to Socket.IO');
-            socket.on('mqttMessage', (payload) => {
+           // MQTT message handler
+                socket.on('mqttMessage', (payload) => {
                 console.log('Received mqttMessage:', payload);
                 
                 const index = parseInt(payload.topic.substr(-1)); // Extract the index from the topic
@@ -182,11 +183,11 @@
                         // Concatenate the label with the received value
                         const label = dataType === 'Temp' ? 'Temperature: ' : dataType === 'Humid' ? 'Humidity: ' : dataType === 'Smoke' ? 'Smoke: ' : '';
                         element.innerHTML = label + payload.message;
-            
+                
                         // Check if the MQTT message indicates a fire alarm
                         if (dataType === 'Fire' && payload.message.includes('Alarm is Triggered')) {
                             const sensorData = fdasData[index];
-                            showAlertModal(sensorData.latitude, sensorData.longitude, payload.message);
+                            showAlertModal(sensorData.latitude, sensorData.longitude, payload.message, index);
                         }
                     } else {
                         console.error(`Element ${dataType}${index} not found.`);
