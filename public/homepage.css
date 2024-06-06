@@ -556,9 +556,9 @@ main .analyse .sensor-data .percentage{
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
-    max-width: 500px;
+    max-width: 700px;
     position: relative;
-    top: 50%;
+    top: 20%;
     transform: translateY(-50%);
 }
 
