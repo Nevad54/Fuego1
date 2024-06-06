@@ -118,7 +118,7 @@ b{
     width: 96%;
     margin: 0 auto;
     gap: 1.8rem;
-    grid-template-columns: 12rem auto 18rem;
+    grid-template-columns: 14rem 66rem 18rem;
 }
 
 aside{
@@ -259,12 +259,13 @@ main .analyse{
 }
 
 .fire {
-    width: 100%; /* Ensure it takes up the full width of its container */
-    text-align: center; /* Center the text for better alignment */
-    font-size: 1.4rem; /* Match the font size to other elements */
-    margin: 0; /* Remove default margin */
-    padding: 0.5rem; /* Add padding for spacing */
+    width: 100%;
+    text-align: justify;
+    font-size: .9rem;
+    margin: 0;
+    padding: 0.5rem;
 }
+
 
 
 main .analyse > div{
