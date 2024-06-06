@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +12,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.1.0/mqtt.min.js"></script>
     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
 </head>
-
 <body>
     <div class="container">
         <!-- Sidebar Section -->
@@ -129,7 +127,10 @@
         </main>
         <!-- End of Main Content -->
 
+        <!-- Embed fdasData into a script tag -->
         <script>
+            const fdasData = <%- JSON.stringify(fdasData) %>;
+
             let modalLatitude, modalLongitude;
 
             function showAlertModal(latitude, longitude) {
@@ -183,20 +184,16 @@
                         const label = dataType === 'Temp' ? 'Temperature: ' : dataType === 'Humid' ? 'Humidity: ' : dataType === 'Smoke' ? 'Smoke: ' : '';
                         element.innerHTML = label + payload.message;
 
-                        // Check if the MQTT message is related to fire
-                        if (dataType === 'Fire' && payload.message === 'Alarm is Triggered!!') {
+                        // Check if the MQTT message indicates a fire alarm
+                        if (dataType === 'Fire' && payload.message.includes('Alarm is Triggered')) {
                             const fireDataElement = document.getElementById(`fire-data${index}`);
                             if (fireDataElement) {
-                                fireDataElement.style.display = 'block'; // Make the fire data icon visible
-
-                                // Retrieve the sensor's latitude and longitude
-                                const latitude = fdasData[index].latitude;
-                                const longitude = fdasData[index].longitude;
-                                
-                                showAlertModal(latitude, longitude);
-                            } else {
-                                console.error(`Element fire-data${index} not found.`);
+                                fireDataElement.style.display = 'flex'; // Show the fire data element
                             }
+
+                            // Show alert modal with coordinates
+                            const sensorData = fdasData[index];
+                            showAlertModal(sensorData.latitude, sensorData.longitude);
                         }
                     } else {
                         console.error(`Element ${dataType}${index} not found.`);
@@ -245,5 +242,4 @@
     </div>
     <script src="../js/control.js"></script>
 </body>
-
 </html>
