@@ -133,6 +133,7 @@
             const fdasData = <%- JSON.stringify(fdasData) %>;
 
             let modalLatitude, modalLongitude;
+            let sound; // Declare a variable to hold the audio element
 
             function showAlertModal(latitude, longitude, message, index) {
                 console.log('Show alert modal called with coordinates:', latitude, longitude);
@@ -158,6 +159,9 @@
                 // Play sound notification
                 const notificationSound = document.getElementById('notificationSound');
                 notificationSound.play();
+                sound = new Audio('/audio/Alarm Sound Effect.mp3'); // Replace 'path/to/alert-sound.mp3' with the actual path to your sound file
+                sound.loop = true;
+                sound.play();
             }
 
             function closeAlertModal() {
@@ -165,6 +169,10 @@
                 
                 var modal = document.getElementById('alertModal');
                 modal.style.display = "none";
+                // Stop the sound when the modal is closed
+                if (sound) {
+                    sound.pause();
+                }
             }
 
             function redirectToFDAS(latitude, longitude) {
