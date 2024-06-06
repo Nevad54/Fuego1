@@ -161,6 +161,10 @@
                 notificationSound.play();
                 sound = new Audio('/audio/Alarm Sound Effect.mp3'); // Replace 'path/to/alert-sound.mp3' with the actual path to your sound file
                 sound.loop = true;
+                sound.addEventListener('ended', function() {
+                    this.currentTime = 0;
+                    this.play();
+                }, false);
                 sound.play();
             }
 
