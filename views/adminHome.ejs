@@ -115,7 +115,7 @@
             </div>
             <!-- Modal structure for the alert -->
             <div id="alertModal" class="modal">
-                <div class="modal-content"> 
+                <div class="modal-content shake-animation"> <!-- Add the shake-animation class -->
                     <span class="close-btn" onclick="closeAlertModal()">&times;</span>
                     <i class="fas fa-exclamation-triangle fa-10x blinking" style="color: red;"></i>
                     <div class="modal-message">
@@ -147,6 +147,16 @@
             
                 // Display the modal
                 modal.style.display = "flex";
+                modal.classList.add('shake-animation');
+
+                // Vibration (if supported)
+                if ("vibrate" in navigator) {
+                    navigator.vibrate([200, 100, 200]);
+                }
+            
+                // Play sound notification
+                const notificationSound = document.getElementById('notificationSound');
+                notificationSound.play();
             }
 
             function closeAlertModal() {
