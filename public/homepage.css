@@ -880,6 +880,22 @@ main .analyse .sensor-data .percentage{
     #fire-icon {
         display: none; /* Initially hide the icon */
     }
+    #fireSensorInfo {
+        width: 100%;
+        text-align: left;
+        font-size: 1.3rem;
+        margin: 0;
+        padding: 0.5rem;
+    }
+
+
+    #fireSensorStatus {
+        width: 100%;
+        text-align: left;
+        font-size: 1.4rem;
+        margin: 0;
+        padding: 0.5rem;
+    }
 }
 .material-icons-sharp {
     font-size: 24px;
@@ -894,6 +910,7 @@ main .analyse .sensor-data .percentage{
         width: calc(100% - 10px); /* Adjust width and margin as needed */
     }
 }
+
 /* CSS for icon-with-percentage class */
 .icon-with-percentage {
     text-align: center; /* Center-align the content */
