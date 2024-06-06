@@ -103,7 +103,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="sensor-data" onclick="showAlertModal('<%= fdasSensor.latitude %>', '<%= fdasSensor.longitude %>')">
+                    <div class="sensor-data" onclick="showAlertModal('<%= fdasSensor.latitude %>', '<%= fdasSensor.longitude %>')" style="display: none;">
                         <div class="icon-with-message" id="fire-data<%= index %>" style="display: none;">
                             <i class="fas fa-exclamation-triangle fa-6x blinking" style="color: red;"></i>
                             <div class="message">
@@ -169,7 +169,6 @@
 
             const socket = io.connect('https://fuego1.onrender.com');
             console.log('Connecting to Socket.IO');
-
             socket.on('mqttMessage', (payload) => {
                 console.log('Received mqttMessage:', payload);
                 
@@ -183,17 +182,11 @@
                         // Concatenate the label with the received value
                         const label = dataType === 'Temp' ? 'Temperature: ' : dataType === 'Humid' ? 'Humidity: ' : dataType === 'Smoke' ? 'Smoke: ' : '';
                         element.innerHTML = label + payload.message;
-
+            
                         // Check if the MQTT message indicates a fire alarm
                         if (dataType === 'Fire' && payload.message.includes('Alarm is Triggered')) {
-                            const fireDataElement = document.getElementById(`fire-data${index}`);
-                            if (fireDataElement) {
-                                fireDataElement.style.display = 'flex'; // Show the fire data element
-                            }
-
-                            // Show alert modal with coordinates
                             const sensorData = fdasData[index];
-                            showAlertModal(sensorData.latitude, sensorData.longitude);
+                            showAlertModal(sensorData.latitude, sensorData.longitude, payload.message);
                         }
                     } else {
                         console.error(`Element ${dataType}${index} not found.`);
