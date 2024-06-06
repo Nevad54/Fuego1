@@ -140,8 +140,10 @@
                 var modal = document.getElementById('alertModal');
                 var fireMessage = document.getElementById('modalFireMessage');
 
-                // Set the message and store coordinates for the modal
-                fireMessage.innerHTML = message + ` at coordinates (${latitude}, ${longitude})`;
+                
+               // Set the message and store coordinates for the modal
+                fireMessage.innerHTML = `${message}, Fire detected at coordinates (${latitude}, ${longitude})`;
+
                 modalLatitude = latitude;
                 modalLongitude = longitude;
 
@@ -186,7 +188,8 @@
                         // Check if the MQTT message indicates a fire alarm
                         if (dataType === 'Fire' && payload.message.includes('Alarm is Triggered')) {
                             const sensorData = fdasData[index];
-                            showAlertModal(sensorData.latitude, sensorData.longitude, payload.message);}
+                            showAlertModal(sensorData.latitude, sensorData.longitude, payload.message);
+                        }
                     } else {
                         console.error(`Element ${dataType}${index} not found.`);
                     }
