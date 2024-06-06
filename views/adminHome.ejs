@@ -97,6 +97,23 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- New Fault Battery and False Alarm icons -->
+                                    <div class="sensor-data">
+                                        <div class="icon-with-percentage">
+                                            <i class="fas fa-battery-half fa-6x" style="color: yellow;"></i>
+                                            <div class="percentage">
+                                                <p id="FaultBattery<%= index %>">No Fault</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="sensor-data">
+                                        <div class="icon-with-percentage">
+                                            <i class="fas fa-exclamation-circle fa-6x" style="color: purple;"></i>
+                                            <div class="percentage">
+                                                <p id="FalseAlarm<%= index %>">No False Alarm</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -199,12 +216,14 @@
                         // Concatenate the label with the received value
                         const label = dataType === 'Temp' ? 'Temperature: ' :
                                       dataType === 'Humid' ? 'Humidity: ' :
-                                      dataType === 'Smoke' ? 'Smoke: ' : '';
+                                      dataType === 'Smoke' ? 'Smoke: ' :
+                                      dataType === 'FaultBattery' ? 'Battery Status: ' :
+                                      dataType === 'FalseAlarm' ? 'Alarm Status: ' : '';
                         element.innerHTML = label + payload.message;
 
                         // Check if the MQTT message indicates a fire alarm
                         if (dataType === 'Fire') {
-                            if (payload.message === 'Alarm is Triggered' || payload.message === 'False Alarm') {
+                            if (payload.message === 'Alarm is Triggered') {
                                 const sensorData = fdasData[index];
                                 showAlertModal(sensorData.latitude, sensorData.longitude, payload.message, index);
                             }
