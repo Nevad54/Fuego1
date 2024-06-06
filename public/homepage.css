@@ -610,6 +610,25 @@ main .analyse .sensor-data .percentage{
     background-color: #45a049;
 }
 
+/* Shake Animation */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    10%, 90% { transform: translateX(-10px); }
+    20%, 80% { transform: translateX(10px); }
+    30%, 50%, 70% { transform: translateX(-10px); }
+    40%, 60% { transform: translateX(10px); }
+    100% { transform: translateX(0); }
+}
+
+.shake-animation {
+    animation: shake 0.5s;
+}
+
+/* Sound Notification */
+#notificationSound {
+    display: none;
+}
+
 
 @media screen and (max-width: 1200px) {
     .container{
