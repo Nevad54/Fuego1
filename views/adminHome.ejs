@@ -189,7 +189,35 @@
             const socket = io.connect('https://fuego1.onrender.com');
             console.log('Connecting to Socket.IO');
            // MQTT message handler
-                socket.on('mqttMessage', (payload) => {
+           socket.on('mqttMessage', (payload) => {
+            console.log('Received mqttMessage:', payload);
+        
+            const index = parseInt(payload.topic.substr(-1)); // Extract the index from the topic
+        
+            if (!isNaN(index)) {
+                const dataType = payload.topic.substring(0, payload.topic.length - 1); // Extract the data type (e.g., Temp, Humid, Smoke)
+                const element = document.getElementById(`${dataType}${index}`);
+        
+                if (element) {
+                    // Concatenate the label with the received value
+                    const label = dataType === 'Temp' ? 'Temperature: ' :
+                                  dataType === 'Humid' ? 'Humidity: ' :
+                                  dataType === 'Smoke' ? 'Smoke: ' : '';
+                    element.innerHTML = label + payload.message;
+        
+                    // Check if the MQTT message indicates a fire alarm
+                    if (dataType === 'Fire') {
+                        if (payload.message === 'Alarm is Triggered' || payload.message === 'False Alarm') {
+                            const sensorData = fdasData[index];
+                            showAlertModal(sensorData.latitude, sensorData.longitude, payload.message, index);
+                        }
+                    }
+                } else {
+                    console.error(`Element ${dataType}${index} not found.`);
+                }
+            }
+        });
+        
                 console.log('Received mqttMessage:', payload);
                 
                 const index = parseInt(payload.topic.substr(-1)); // Extract the index from the topic
@@ -204,7 +232,10 @@
                         element.innerHTML = label + payload.message;
                 
                         // Check if the MQTT message indicates a fire alarm
-                        if (dataType === 'Fire' && payload.message.includes('Alarm is Triggered')) {
+
+                     
+
+                        if (dataType === 'Fire' && payload.message.includes('Alarm is Triggered') ) {
                             const sensorData = fdasData[index];
                             showAlertModal(sensorData.latitude, sensorData.longitude, payload.message, index);
                         }
