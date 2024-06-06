@@ -243,14 +243,22 @@ main .analyse{
 
 
 #fireSensorStatus {
-    width: 100%; /* Set the width to 100% to match the container */
-    text-align: center; /* Center the text for better alignment */
-    font-size: 1.4rem; /* Adjust the font size to match other elements */
-    margin: 0; /* Remove default margin */
-    padding: 0.5rem; /* Add some padding for spacing */
+    width: 50%;
+    text-align: left;
+    font-size: 1.4rem;
+    margin: 0;
+    padding: 0.5rem;/
 }
 
 #fireSensorInfo {
+    width: 12%;
+    text-align: left;
+    font-size: 1.3rem;
+    margin: 0;
+    padding: 0.5rem;
+}
+
+.fire {
     width: 100%; /* Ensure it takes up the full width of its container */
     text-align: center; /* Center the text for better alignment */
     font-size: 1.4rem; /* Match the font size to other elements */
@@ -287,8 +295,8 @@ main .analyse h3{
 
 main .analyse .sensor-data{
     position: relative;
-    width: 120px;
-    height: 120px;
+    width: 112px;
+    height: 100px;
     border-radius: 50%;
 }
 
