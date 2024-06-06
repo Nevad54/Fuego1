@@ -185,8 +185,7 @@
                         element.innerHTML = label + payload.message;
 
                         // Check if the MQTT message indicates a fire alarm
-                        if (dataType === 'Fire') {
-                            if (payload.message === 'Alarm is Triggered' || payload.message === 'False Alarm') {
+                        if (dataType === 'Fire' && payload.message.includes('Alarm is Triggered')) {
                             const fireDataElement = document.getElementById(`fire-data${index}`);
                             if (fireDataElement) {
                                 fireDataElement.style.display = 'flex'; // Show the fire data element
