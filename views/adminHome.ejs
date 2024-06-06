@@ -103,7 +103,14 @@
                             </div>
                         </div>
                     </div>
-                   
+                    <div class="sensor-data" onclick="showAlertModal('<%= fdasSensor.latitude %>', '<%= fdasSensor.longitude %>')">
+                        <div class="icon-with-message" id="fire-data<%= index %>" style="display: none;">
+                            <i class="fas fa-exclamation-triangle fa-6x blinking" style="color: red;"></i>
+                            <div class="message">
+                                <p id="Fire<%= index %>"></p>
+                            </div>
+                        </div>
+                    </div>
                 <% }); %>
             </div>
             <!-- Modal structure for the alert -->
@@ -112,9 +119,6 @@
                     <span class="close-btn" onclick="closeAlertModal()">&times;</span>
                     <i class="fas fa-exclamation-triangle fa-10x blinking" style="color: red;"></i>
                     <div class="modal-message">
-                        <div class="message">
-                            <p id="Fire<%= index %>"></p>
-                        </div>
                         <p id="modalFireMessage"></p>
                     </div>
                     <button id="viewDirectionsBtn" class="view-directions-btn">View Directions</button>
