@@ -103,7 +103,7 @@
                             </div>
                         </div>
                     </div>
-                    
+                   
                 <% }); %>
             </div>
             <!-- Modal structure for the alert -->
@@ -112,6 +112,9 @@
                     <span class="close-btn" onclick="closeAlertModal()">&times;</span>
                     <i class="fas fa-exclamation-triangle fa-10x blinking" style="color: red;"></i>
                     <div class="modal-message">
+                        <div class="message">
+                            <p id="Fire<%= index %>"></p>
+                        </div>
                         <p id="modalFireMessage"></p>
                     </div>
                     <button id="viewDirectionsBtn" class="view-directions-btn">View Directions</button>
