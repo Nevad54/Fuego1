@@ -65,7 +65,6 @@
                                         <h1 id="fireSensorStatus"><%= fdasSensor.title %></h1>
                                     </div>
                                     <div class="sensor-data">
-                                        <!-- Icon and percentage wrapped inside a div -->
                                         <div class="icon-with-percentage">
                                             <i class="material-icons-sharp" style="font-size: 6rem; color: red;">location_on</i>
                                             <div class="percentage">
@@ -128,6 +127,7 @@
                     </div>
                 <% }); %>
             </div>
+            
             <!-- Modal structure for the alert -->
             <div id="alertModal" class="modal">
                 <div class="modal-content shake-animation"> <!-- Add the shake-animation class -->
@@ -201,38 +201,53 @@
 
             const socket = io.connect('https://fuego1.onrender.com');
             console.log('Connecting to Socket.IO');
-           
-            // MQTT message handler
-            socket.on('mqttMessage', (payload) => {
-                console.log('Received mqttMessage:', payload);
+         
+    // MQTT message handler
+                socket.on('mqttMessage', (payload) => {
+                    console.log('Received mqttMessage:', payload);
 
-                const index = parseInt(payload.topic.substr(-1)); // Extract the index from the topic
+                    const index = parseInt(payload.topic.substr(-1)); // Extract the index from the topic
 
-                if (!isNaN(index)) {
-                    const dataType = payload.topic.substring(0, payload.topic.length - 1); // Extract the data type (e.g., Temp, Humid, Smoke)
-                    const element = document.getElementById(`${dataType}${index}`);
+                    if (!isNaN(index)) {
+                        const dataType = payload.topic.substring(0, payload.topic.length - 1); // Extract the data type (e.g., Temp, Humid, Smoke)
+                        const element = document.getElementById(`${dataType}${index}`);
 
-                    if (element) {
-                        // Concatenate the label with the received value
-                        const label = dataType === 'Temp' ? 'Temperature: ' :
-                                      dataType === 'Humid' ? 'Humidity: ' :
-                                      dataType === 'Smoke' ? 'Smoke: ' :
-                                      dataType === 'FaultBattery' ? 'Battery Status: ' :
-                                      dataType === 'FalseAlarm' ? 'Alarm Status: ' : '';
-                        element.innerHTML = label + payload.message;
+                        if (element) {
+                            // Concatenate the label with the received value
+                            const label = dataType === 'Temp' ? 'Temperature: ' :
+                                        dataType === 'Humid' ? 'Humidity: ' :
+                                        dataType === 'Smoke' ? 'Smoke: ' :
+                                        dataType === 'FaultBattery' ? 'Battery Status: ' :
+                                        dataType === 'FalseAlarm' ? 'Alarm Status: ' : '';
+                            element.innerHTML = label + payload.message;
 
-                        // Check if the MQTT message indicates a fire alarm
-                        if (dataType === 'Fire') {
-                            if (payload.message === 'Alarm is Triggered') {
-                                const sensorData = fdasData[index];
-                                showAlertModal(sensorData.latitude, sensorData.longitude, payload.message, index);
+                            // Handle "False Alarm" and "Battery Fault" cases
+                            if (dataType === 'Fire') {
+                                const iconElement = document.querySelector(`#FalseAlarm${index}`).closest('.sensor-data').querySelector('i');
+                                
+                                if (payload.message === 'False Alarm') {
+                                    iconElement.classList.add('blinking'); // Add blinking class to the icon
+                                    element.innerHTML = 'Alarm Status: False Alarm'; // Update the text
+                                } else if (payload.message === 'Battery Fault') {
+                                    const batteryElement = document.querySelector(`#FaultBattery${index}`);
+                                    batteryElement.innerHTML = 'Battery Status: Fault';
+                                    const batteryIconElement = batteryElement.closest('.sensor-data').querySelector('i');
+                                    batteryIconElement.classList.add('blinking'); // Add blinking class to the battery icon
+                                } else {
+                                    iconElement.classList.remove('blinking'); // Remove blinking class if it's not a false alarm
+                                }
+
+                                // Handle "Alarm is Triggered"
+                                if (payload.message === 'Alarm is Triggered') {
+                                    const sensorData = fdasData[index];
+                                    showAlertModal(sensorData.latitude, sensorData.longitude, payload.message, index);
+                                }
                             }
+                        } else {
+                            console.error(`Element ${dataType}${index} not found.`);
                         }
-                    } else {
-                        console.error(`Element ${dataType}${index} not found.`);
                     }
-                }
-            });
+                });
         </script>
 
         <div class="right-section">

@@ -341,7 +341,7 @@ main .analyse .smoke svg circle {
 
 main .analyse .sensor-data .percentage{
     position: absolute;
-    top: -3px;
+    top: 15px;
     left: -1px;
     display: flex;
     align-items: center;
