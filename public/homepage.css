@@ -250,6 +250,15 @@ main .analyse{
     padding: 0.5rem; /* Add some padding for spacing */
 }
 
+#fireSensorInfo {
+    width: 100%; /* Ensure it takes up the full width of its container */
+    text-align: center; /* Center the text for better alignment */
+    font-size: 1.4rem; /* Match the font size to other elements */
+    margin: 0; /* Remove default margin */
+    padding: 0.5rem; /* Add padding for spacing */
+}
+
+
 main .analyse > div{
     background-color: var(--color-white);
     padding: 2rem;
