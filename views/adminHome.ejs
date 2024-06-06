@@ -171,22 +171,29 @@
 
             socket.on('mqttMessage', (payload) => {
                 console.log('Received mqttMessage:', payload);
-                // Update values based on the received MQTT message
+                
                 const index = parseInt(payload.topic.substr(-1)); // Extract the index from the topic
+                
                 if (!isNaN(index)) {
                     const dataType = payload.topic.substring(0, payload.topic.length - 1); // Extract the data type (e.g., Temp, Humid, Smoke)
                     const element = document.getElementById(`${dataType}${index}`);
+                    
                     if (element) {
                         // Concatenate the label with the received value
-                        const label = dataType === 'Temp' ? 'Temperature: ' : dataType === 'Humid' ? 'Humidity: ' : dataType === 'Smoke' ? 'Smoke: ' : ' ';
+                        const label = dataType === 'Temp' ? 'Temperature: ' : dataType === 'Humid' ? 'Humidity: ' : dataType === 'Smoke' ? 'Smoke: ' : '';
                         element.innerHTML = label + payload.message;
 
                         // Check if the MQTT message is related to fire
-                        if (dataType === 'Fire' && payload.message === 'Alarm is Triggered') {
+                        if (dataType === 'Fire' && payload.message === 'Alarm is Triggered!!') {
                             const fireDataElement = document.getElementById(`fire-data${index}`);
                             if (fireDataElement) {
                                 fireDataElement.style.display = 'block'; // Make the fire data icon visible
-                                showAlertModal(fdasSensor.latitude, fdasSensor.longitude);
+
+                                // Retrieve the sensor's latitude and longitude
+                                const latitude = fdasData[index].latitude;
+                                const longitude = fdasData[index].longitude;
+                                
+                                showAlertModal(latitude, longitude);
                             } else {
                                 console.error(`Element fire-data${index} not found.`);
                             }
@@ -198,7 +205,6 @@
             });
         </script>
 
-        <!-- Right Section -->
         <div class="right-section">
             <div class="nav">
                 <button id="menu-btn">
@@ -208,7 +214,6 @@
                     <span class="material-icons-sharp active">light_mode</span>
                     <span class="material-icons-sharp">dark_mode</span>
                 </div>
-
                 <!-- Profile dropdown -->
                 <div class="profile">
                     <div class="dropdown">
