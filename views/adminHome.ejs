@@ -133,6 +133,8 @@
             let modalLatitude, modalLongitude;
 
             function showAlertModal(latitude, longitude) {
+                console.log('Show alert modal called with coordinates:', latitude, longitude);
+                
                 // Get the modal
                 var modal = document.getElementById('alertModal');
                 var fireMessage = document.getElementById('modalFireMessage');
@@ -147,11 +149,15 @@
             }
 
             function closeAlertModal() {
+                console.log('Close alert modal called');
+                
                 var modal = document.getElementById('alertModal');
                 modal.style.display = "none";
             }
 
             function redirectToFDAS(latitude, longitude) {
+                console.log('Redirect to FDAS called with coordinates:', latitude, longitude);
+                
                 window.location.href = `/location?latitude=${latitude}&longitude=${longitude}`;
             }
 
@@ -159,29 +165,6 @@
             document.getElementById('viewDirectionsBtn').addEventListener('click', () => {
                 redirectToFDAS(modalLatitude, modalLongitude);
             });
-
-            function associateFDAS() {
-                // Extract selected user and FDAS IDs
-                const userId = document.getElementById('user').value;
-                const fdasId = document.getElementById('fdas').value;
-
-                // Make an AJAX request or use Fetch API to send the association data
-                fetch('https://fuego1.onrender.com/associateFDAS', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ userId, fdasId }),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // Handle the response, update UI or show a confirmation message
-                    console.log(data);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-            }
 
             const socket = io.connect('https://fuego1.onrender.com');
             console.log('Connecting to Socket.IO');
@@ -213,19 +196,6 @@
                     }
                 }
             });
-
-            // Function to toggle dark mode
-            function toggleDarkMode() {
-                const body = document.body;
-                body.classList.toggle('dark-mode');
-
-                // Update dark mode button icon
-                const darkModeIcons = document.querySelectorAll('.dark-mode span.material-icons-sharp');
-                darkModeIcons.forEach(icon => icon.classList.toggle('active'));
-            }
-
-            // Event listener for dark mode button click
-            document.querySelector('.dark-mode').addEventListener('click', toggleDarkMode);
         </script>
 
         <!-- Right Section -->
