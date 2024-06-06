@@ -115,18 +115,16 @@
             </div>
             <!-- Modal structure for the alert -->
           <!-- Pop-up Modal for Fire Alerts -->
-       <!-- Pop-up Modal for Fire Alerts -->
         <div id="fireAlertModal" class="modal" style="display: none;">
             <div class="modal-content">
                 <span class="close-btn" onclick="closeFireAlertModal()">&times;</span>
                 <i class="fas fa-exclamation-triangle fa-10x blinking" style="color: red;"></i>
-                <div class="message">
+                <div class="modal-message">
                     <p id="fireAlertMessage"></p>
                 </div>
                 <button id="viewDirectionsBtn" class="view-directions-btn" onclick="redirectToLocation()">View Directions</button>
             </div>
-        </div>
-    </div>
+</div>
         </main>
         <!-- End of Main Content -->
 
@@ -144,7 +142,7 @@
                 var fireMessage = document.getElementById('modalFireMessage');
 
                 // Set the message and store coordinates for the modal
-                fireMessage.innerHTML = `Fire detected on FDAS-1 at coordinates (${latitude}, ${longitude})`;
+                fireMessage.innerHTML = `Fire detected', 'id="fireSensorStatus"><%= fdasSensor.title %> ' ,'at coordinates (${latitude}, ${longitude})`;
                 modalLatitude = latitude;
                 modalLongitude = longitude;
 
