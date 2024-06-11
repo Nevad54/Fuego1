@@ -232,14 +232,13 @@
                                             const iconElement = falseAlarmElement.closest('.sensor-data').querySelector('i');
                                             iconElement.classList.add('blinking');
                                             falseAlarmElement.innerHTML = 'Alarm Status: False Alarm';
-                        
-                                          ;
-                                        } else if (payload.message === 'Battery Fault') {
+                                        } 
+                                        if (payload.message === 'Battery Fault') {
                                             const batteryElement = document.getElementById(`FaultBattery${index}`);
                                             const batteryIconElement = batteryElement.closest('.sensor-data').querySelector('i');
                                             batteryIconElement.classList.add('blinking');
                                             batteryElement.innerHTML = 'Battery Status: Fault';
-                                        } else if (payload.message === 'No Fault') {
+                                        } else  {
                                             // Reset Battery Status to "No Fault" and remove blinking if no Battery Fault
                                             const batteryElement = document.getElementById(`FaultBattery${index}`);
                                             batteryElement.innerHTML = 'Battery Status: No Fault';
@@ -250,12 +249,6 @@
                                 } else {
                                     console.error(`Element ${dataType}${index} not found.`);
                                 }
-
-                                  // Reset Battery Status to "No Fault" and remove blinking if no False Alarm
-                                  const batteryElement = document.getElementById(`FaultBattery${index}`);
-                                  batteryElement.innerHTML = 'Battery Status: No Fault';
-                                  const batteryIconElement = batteryElement.closest('.sensor-data').querySelector('i');
-                                  batteryIconElement.classList.remove('blinking')
                             }
                         });
                                 
