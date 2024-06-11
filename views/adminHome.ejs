@@ -233,11 +233,7 @@
                                             iconElement.classList.add('blinking');
                                             falseAlarmElement.innerHTML = 'Alarm Status: False Alarm';
                         
-                                            // Reset Battery Status to "No Fault" and remove blinking if no False Alarm
-                                            const batteryElement = document.getElementById(`FaultBattery${index}`);
-                                            batteryElement.innerHTML = 'Battery Status: No Fault';
-                                            const batteryIconElement = batteryElement.closest('.sensor-data').querySelector('i');
-                                            batteryIconElement.classList.remove('blinking');
+                                          ;
                                         } else if (payload.message === 'Battery Fault') {
                                             const batteryElement = document.getElementById(`FaultBattery${index}`);
                                             const batteryIconElement = batteryElement.closest('.sensor-data').querySelector('i');
@@ -254,6 +250,12 @@
                                 } else {
                                     console.error(`Element ${dataType}${index} not found.`);
                                 }
+
+                                  // Reset Battery Status to "No Fault" and remove blinking if no False Alarm
+                                  const batteryElement = document.getElementById(`FaultBattery${index}`);
+                                  batteryElement.innerHTML = 'Battery Status: No Fault';
+                                  const batteryIconElement = batteryElement.closest('.sensor-data').querySelector('i');
+                                  batteryIconElement.classList.remove('blinking')
                             }
                         });
                                 
