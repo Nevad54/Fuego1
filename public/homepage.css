@@ -608,15 +608,7 @@ main .analyse .sensor-data .percentage{
     font-weight: bold;
 }
 
-.blinking {
-    animation: blinkingText 1.5s infinite; /* Adjusted interval */
-}
 
-@keyframes blinkingText {
-    0% { transform: translateX(-5px); } /* Initial position */
-    50% { transform: translateX(5px); } /* Shake to the right */
-    100% { transform: translateX(-5px); } /* Back to initial position */
-}
 .view-directions-btn {
     background-color: #4CAF50;
     color: var(--color-background);
