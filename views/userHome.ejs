@@ -224,20 +224,7 @@
             }
         });
         
-        console.log('Received mqttMessage:', payload);
-              // Update values based on the received MQTT message
-              if (payload.topic === 'Temp0') {
-                document.getElementById('Temperature').innerHTML = `Temperature: ${payload.message}`;
-              } else if (payload.topic === 'Humid0') {
-                document.getElementById('Humidity').innerHTML = `Humidity: ${payload.message}`;
-              } else if (payload.topic === 'esp32/test0') {
-                document.getElementById('mqtt').innerHTML = `System: ${payload.message}`;
-              } else if (payload.topic === 'Smoke0') {
-                document.getElementById('Smoke').innerHTML = `Smoke: ${payload.message}`;
-              }
-              
-              // You can customize the update logic based on your HTML structure
-            });
+       
           </script>
         <!-- Right Section -->
         <div class="right-section">
