@@ -72,79 +72,158 @@
 
         <!-- Main Content -->
         <main>
-            <h1>Monitoring</h1>
-            
+            <h1 style="font-size: 36px; font-weight: bold; margin-right: 20px; white-space: nowrap;">FDAS STATUS</h1>
             <!-- Display FDAS areas dynamically based on fetched data -->
             <div class="fdas-list">
                 <% fdasData.forEach((fdasSensor, index) => { %>
                     <div class="box-border">
-                        <p><%= fdasSensor.title %></p>
-                    </div>
-                    <div class="analyse">
-                        <div class="fire">
-                            <div class="status" id="sensorStatus<%= index %>">
-                                <div class="info" id="fireSensorInfo">
-                                    <h4>FDAS-<%= index + 1 %></h4>
-                                    <h1 id="fireSensorStatus"><%= fdasSensor.title %></h1>
-                                </div>
-                                <div class="sensor-data">
-                                    <!-- Icon and percentage wrapped inside a div -->
-                                    <div class="icon-with-percentage">
-                                        <!-- Use fa-3x class to make the icon 3 times larger -->
-                                        <i class="material-icons-sharp" style="font-size: 6rem; color: red;">location_on</i>
-                                        <div class="percentage">
-                                            <p id="mqtt"><%= fdasSensor.title %></p>
+                        <div class="analyse">
+                            <div class="fire">
+                                <div class="status" id="sensorStatus<%= index %>">
+                                    <div class="info" id="fireSensorInfo">
+                                        <h4>FDAS-<%= index + 1 %></h4>
+                                        <h1 id="fireSensorStatus"><%= fdasSensor.title %></h1>
+                                    </div>
+                                    <div class="sensor-data">
+                                        <div class="icon-with-percentage">
+                                            <i class="material-icons-sharp" style="font-size: 6rem; color: red;">location_on</i>
+                                            <div class="percentage">
+                                                <p id="esp32/test<%= index %>">Not Active</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="sensor-data">
-                                    <!-- Icon and percentage wrapped inside a div -->
-                                    <div class="icon-with-percentage">
-                                        <!-- Use fa-3x class to make the icon 3 times larger -->
-                                        <i class="fas fa-thermometer-half fa-6x" style="color: orange;"></i>
-                                        <div class="percentage">
-                                            <p id="Temperature">Temperature: </p>
+                                    <div class="sensor-data">
+                                        <div class="icon-with-percentage">
+                                            <i class="fas fa-thermometer-half fa-6x" style="color: orange;"></i>
+                                            <div class="percentage">
+                                                <p id="Temp<%= index %>">No Reading</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="sensor-data">
-                                    <!-- Icon and percentage wrapped inside a div -->
-                                    <div class="icon-with-percentage">
-                                        <!-- Use fa-3x class to make the icon 3 times larger -->
-                                        <i class="fas fa-tint fa-6x" style="color: blue;"></i>
-                                        <div class="percentage">
-                                            <p id="Humidity">Humidity: </p>
+                                    <div class="sensor-data">
+                                        <div class="icon-with-percentage">
+                                            <i class="fas fa-tint fa-6x" style="color: blue;"></i>
+                                            <div class="percentage">
+                                                <p id="Humid<%= index %>">No Reading</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="sensor-data">
-                                    <!-- Icon and percentage wrapped inside a div -->
-                                    <div class="icon-with-percentage">
-                                        <!-- Use fa-3x class to make the icon 3 times larger -->
-                                        <i class="fas fa-smog fa-6x" style="color: rgb(104, 100, 104);"></i>
-                                        <div class="percentage">
-                                            <p id="Smoke">Smoke: </p>
+                                    <div class="sensor-data">
+                                        <div class="icon-with-percentage">
+                                            <i class="fas fa-smog fa-6x" style="color: rgb(104, 100, 104);"></i>
+                                            <div class="percentage">
+                                                <p id="Smoke<%= index %>">No Reading</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- New Fault Battery and False Alarm icons -->
+                                    <div class="sensor-data">
+                                        <div class="icon-with-percentage">
+                                            <i class="fas fa-battery-half fa-6x" style="color: yellow;"></i>
+                                            <div class="percentage">
+                                                <p id="FaultBattery<%= index %>">No Fault</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="sensor-data">
+                                        <div class="icon-with-percentage">
+                                            <i class="fas fa-exclamation-circle fa-6x" style="color: purple;"></i>
+                                            <div class="percentage">
+                                                <p id="FalseAlarm<%= index %>">No False Alarm</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
+                        </div>
+                    </div>
+                    <div class="sensor-data" onclick="showAlertModal('<%= fdasSensor.latitude %>', '<%= fdasSensor.longitude %>')" style="display: none;">
+                        <div class="icon-with-message" id="fire-data<%= index %>" style="display: none;">
+                            <i class="fas fa-exclamation-triangle fa-6x blinking" style="color: red;"></i>
+                            <div class="message">
+                                <p id="Fire<%= index %>"></p>
+                            </div>
                         </div>
                     </div>
                 <% }); %>
             </div>
+            
+            <!-- Modal structure for the alert -->
+            <div id="alertModal" class="modal">
+                <div class="modal-content shake-animation"> <!-- Add the shake-animation class -->
+                    <span class="close-btn" onclick="closeAlertModal()">&times;</span>
+                    <i class="fas fa-exclamation-triangle fa-10x blinking" style="color: red;"></i>
+                    <div class="modal-message">
+                        <p id="modalFireMessage"></p>
+                    </div>
+                    <button id="viewDirectionsBtn" class="view-directions-btn">View Directions</button>
+                </div>
+            </div>
+            <audio id="notificationSound" src="/audio/Alarm Sound Effect.mp3" loop></audio> <!-- Ensure the loop attribute is added here -->
         </main>
         
         <!-- End of Main Content -->
         <script>
-            const socket = io.connect('https://fuego1-1.onrender.com');
-        console.log('Connecting to Socket.IO');
+           
 
         socket.on('connect', () => {
         console.log('Connected to Socket.IO');
         });
 
+        const socket = io.connect('https://fuego1-1.onrender.com');
+        console.log('Connecting to Socket.IO');
+        
+        // MQTT message handler
         socket.on('mqttMessage', (payload) => {
+            console.log('Received mqttMessage:', payload);
+        
+            const index = parseInt(payload.topic.substr(-1)); // Extract the index from the topic
+        
+            if (!isNaN(index)) {
+                const dataType = payload.topic.substring(0, payload.topic.length - 1); // Extract the data type (e.g., Temp, Humid, Smoke, Fire)
+                const element = document.getElementById(`${dataType}${index}`);
+        
+                if (element) {
+                    // Concatenate the label with the received value
+                    const label = dataType === 'Temp' ? 'Temperature: ' :
+                                dataType === 'Humid' ? 'Humidity: ' :
+                                dataType === 'Smoke' ? 'Smoke: ' :
+                                dataType === 'FaultBattery' ? 'Battery Status: ' :
+                                dataType === 'FalseAlarm' ? 'Alarm Status: ' : '';
+                    element.innerHTML = label + payload.message;
+        
+                    if (dataType === 'Fire') {
+                        const sensorData = fdasData[index];
+        
+                        if (payload.message === 'Alarm is Triggered') {
+                            showAlertModal(sensorData.latitude, sensorData.longitude, payload.message, index);
+                        } else if (payload.message === 'False Alarm') {
+                            const falseAlarmElement = document.getElementById(`FalseAlarm${index}`);
+                            const iconElement = falseAlarmElement.closest('.sensor-data').querySelector('i');
+                            iconElement.classList.add('blinking');
+                            falseAlarmElement.innerHTML = 'Alarm Status: False Alarm';
+                        }
+                    }
+        
+                    // Check if the message contains 'Battery Fault'
+                    if (payload.message.includes('Battery Fault')) {
+                        const batteryElement = document.getElementById(`FaultBattery${index}`);
+                        const batteryIconElement = batteryElement.closest('.sensor-data').querySelector('i');
+                        batteryIconElement.classList.add('blinking');
+                        batteryElement.innerHTML = 'Battery Status: Fault';
+                    } else if (dataType === 'Fire' && !payload.message.includes('Battery Fault')) {
+                        const batteryElement = document.getElementById(`FaultBattery${index}`);
+                        const batteryIconElement = batteryElement.closest('.sensor-data').querySelector('i');
+                        batteryIconElement.classList.remove('blinking');
+                        batteryElement.innerHTML = 'Battery Status: No Fault';
+                    }
+                } else {
+                    console.error(`Element ${dataType}${index} not found.`);
+                }
+            }
+        });
+        
         console.log('Received mqttMessage:', payload);
               // Update values based on the received MQTT message
               if (payload.topic === 'Temp0') {
@@ -156,6 +235,7 @@
               } else if (payload.topic === 'Smoke0') {
                 document.getElementById('Smoke').innerHTML = `Smoke: ${payload.message}`;
               }
+              
               // You can customize the update logic based on your HTML structure
             });
           </script>
