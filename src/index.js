@@ -50,7 +50,7 @@ const httpServer = http.createServer(app);
 const mqttClient = mqtt.connect(mqttOptions);
 const port = 5000;
 const io = require('socket.io')(httpServer);
-const WebURL = 'fuego1.onrender.com';
+const WebURL = 'fuego1-1.onrender.com';
 
 
 const mongoHost = 'mongodb+srv://systembfp8:iwantaccess@bfp.ezea3nm.mongodb.net/?retryWrites=true&w=majority/accounts';
@@ -94,6 +94,7 @@ mqttClient.on('connect', () => {
   });
   const topicConfig = [
     { name: "esp32/test0" },
+    { name: "esp32/test1" },
     { name: "Fire0" },
     { name: "Fire1" },
     { name: "Temp0" },
@@ -571,21 +572,43 @@ app.get("/user", authMiddleware.requireLogin, async (req, res) => {
   }
 });
 
+
+
+
 app.get("/userUser", authMiddleware.requireLogin, async (req, res) => {
   try {
-      const userId = req.session.user._id; // Assuming the user ID is stored in the session
-      const userData = await User.findById(userId); // Fetch regular user data based on ID
 
-      if (userData) {
-          res.render("userUser", { user: userData });
-      } else {
-          res.status(404).send("User data not found");
-      }
+    // Connect to the 'accounts' database
+    const client = await connectToDatabase();
+    const db = client.db('accounts');
+
+    // Fetch users data from the 'users' collection
+    const usersCollection = db.collection('users');
+    const users = await usersCollection.find().toArray();
+
+    // Fetch FDAS data from the 'fdas' collection
+    const fdasCollection = db.collection('fdas');
+    const fdasData = await fdasCollection.find({}, { projection: { _id: 1, title: 1, latitude: 1, longitude: 1 } }).toArray();
+
+    console.log('fdasData:', fdasData);
+
+    // Check if there's a confirmation message
+    const confirmationMessage = req.query.confirmationMessage;
+
+    // Ensure both users and fdasData are defined before rendering the view
+    if (users.length > 0 && fdasData.length > 0) {
+      res.render("userUser", { user: req.session.user, admin1: req.session.user, users: users, fdasData: fdasData, confirmationMessage: confirmationMessage }); // Pass fdasData to the template
+    } else if (users.length === 0) {
+      res.status(404).send("Users not found");
+    } else {
+      res.status(404).send("FDAS data not found");
+    }
   } catch (error) {
-      console.error('Error fetching user data:', error);
-      res.status(500).send('Error fetching user data: ' + error.message);
+    console.error('Error fetching data:', error);
+    res.status(500).send('Internal Server Error');
   }
 });
+
 
 
 
