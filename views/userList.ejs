@@ -239,7 +239,7 @@
                     // Function to update SOS number
                     function updateSOSNumber() {
                         const sosNum = document.getElementById("sosNumInput").value;
-                        const message = JSON.stringify({ "SOS_NUM": sosNum });
+                        const message = JSON.stringify({ "updatedSOS_NUM": sosNum });
                         publishToMQTT(mqttTopic, message);
                         // Display success message
                         displayMessage("SOS number updated successfully!", "success");
@@ -248,7 +248,7 @@
                     // Function to update SOS time delay
                     function updateSOSTime() {
                         const sosTime = document.getElementById("sosTimeInput").value;
-                        const message = JSON.stringify({ "SOS_Time": sosTime });
+                        const message = JSON.stringify({ "updatedSOS_Time": sosTime });
                         publishToMQTT(mqttTopic, message);
                         // Display success message
                         displayMessage("SOS time delay updated successfully!", "success");
