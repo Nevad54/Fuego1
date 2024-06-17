@@ -197,7 +197,7 @@
             
                 <script>
 
-                    // MQTT Broker configuration
+                   // MQTT Broker configuration
                     const mqttBroker = "dcf0ef82c51d49ac83661fb1016028e1.s2.eu.hivemq.cloud";
                     const mqttPort = 8883;
                     const mqttWebSocketPort = 8884; // Port for secure WebSocket connection
@@ -205,21 +205,21 @@
                     const mqttPassword = "Iwantaccess1";
                     const mqttTopic = "esp32/settings";
 
-                 // Function to publish message to MQTT topic
-                function publishToMQTT(topic, message) {
-                    const client = mqtt.connect(`wss://${mqttBroker}:${mqttWebSocketPort}/mqtt`, {
-                        username: mqttUsername,
-                        password: mqttPassword,
-                        clientId: `web_${Math.random().toString(16).substr(2, 8)}`
-                    });
+                    // Function to publish message to MQTT topic
+                    function publishToMQTT(topic, message) {
+                        const client = mqtt.connect(`wss://${mqttBroker}:${mqttWebSocketPort}/mqtt`, {
+                            username: mqttUsername,
+                            password: mqttPassword,
+                            clientId: `web_${Math.random().toString(16).substr(2, 8)}`
+                        });
 
-                    client.on("connect", function () {
-                        client.publish(topic, message);
-                        client.end();
-                    });
-                }
+                        client.on("connect", function () {
+                            client.publish(topic, message);
+                            client.end();
+                        });
+                    }
 
-                 // Function to display success and confirmation messages
+                    // Function to display success and confirmation messages
                     function displayMessage(message, messageType) {
                         var messageElement;
                         if (messageType === "success") {
@@ -241,8 +241,8 @@
                         const sosNum = document.getElementById("sosNumInput").value;
                         const message = JSON.stringify({ "SOS_NUM": sosNum });
                         publishToMQTT(mqttTopic, message);
-                        // Mockup of success callback
-                        displayMessage("SOS number updated successfully!", "confirmation");
+                        // Display success message
+                        displayMessage("SOS number updated successfully!", "success");
                     }
 
                     // Function to update SOS time delay
@@ -250,8 +250,8 @@
                         const sosTime = document.getElementById("sosTimeInput").value;
                         const message = JSON.stringify({ "SOS_Time": sosTime });
                         publishToMQTT(mqttTopic, message);
-                        // Mockup of success callback
-                        displayMessage("SOS time delay updated successfully!", "confirmation");
+                        // Display success message
+                        displayMessage("SOS time delay updated successfully!", "success");
                     }
 
                     // Function to open the SOS number modal
