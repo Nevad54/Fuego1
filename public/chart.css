@@ -868,7 +868,7 @@ main .recent-orders a {
   
   .action-button {
     background-color:var(--color-danger);
-    color: #fff;
+    color: var(--color-background);
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
