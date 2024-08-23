@@ -2162,10 +2162,10 @@ main #map {
 
 .arrow-circle {
     position: absolute;
-    bottom: 690px;
-    right: 33px;
+    bottom: 0px;
+    right: 0px;
     width: 15px;
-    height: 15px;
+    height: 15px; 
     border-radius: 50%;
     background-color: var(--color-background);
     display: flex;

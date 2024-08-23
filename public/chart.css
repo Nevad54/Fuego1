@@ -861,7 +861,7 @@ main .recent-orders a {
     width: 200px;
     padding: 8px;
     margin-bottom: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--color-background);
     border-radius: 5px;
     font-size: 16px;
   }
@@ -890,17 +890,17 @@ main .recent-orders a {
 
 .data-table td,
 .data-table th {
-    border: 1px solid #dddddd;
+    border: 1px solid var(--color-background);
     text-align: left;
     padding: 8px;
 }
 
 .data-table tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: var(--color-background);
 }
 
 .data-table th {
-    background-color: #dddddd;
+    background-color: var(--color-background);
     color: black;
 }
 
